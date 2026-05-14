@@ -9,7 +9,7 @@
 <meta name="googlebot" content="noindex, nofollow">
 <meta name="bingbot" content="noindex, nofollow">
 
-<title>demxetname</title>
+<title>diyarbakır zaman çizelgesi</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -284,10 +284,7 @@ body{
   font-weight:400;
 }
 .legend-count{
-  font-size:10px;
-  color:var(--ink-60);
-  letter-spacing:0.04em;
-  font-weight:700;
+  display:none;
 }
 #event-list{padding:16px 20px 40px}
 .event-card{
@@ -489,9 +486,9 @@ body{
 }
 #intro-title{
   font-weight:700;
-  font-size:80px;
-  letter-spacing:-0.05em;
-  line-height:0.9;
+  font-size:64px;
+  letter-spacing:-0.04em;
+  line-height:0.95;
   margin-bottom:24px;
   color:var(--ink);
 }
@@ -607,7 +604,7 @@ body{
   #brand-sub{display:none}
   #brand-mark{font-size:16px}
   .h-btn{padding:5px 10px;font-size:9px}
-  #intro-title{font-size:44px}
+  #intro-title{font-size:36px}
   #intro-subtitle{font-size:16px}
   .intro-inner{grid-template-columns:1fr;gap:30px}
   .intro-content{padding:30px 20px}
@@ -628,7 +625,7 @@ body{
 <!-- INTRO -->
 <div id="intro" style="display:none">
   <div class="intro-bar">
-    <div class="intro-bar-l">demxetname · document 001</div>
+    <div class="intro-bar-l">diyarbakır zaman çizelgesi</div>
     <div class="intro-lang">
       <button class="h-btn lang-btn active" data-lang="tr">TR</button>
       <button class="h-btn lang-btn" data-lang="en">EN</button>
@@ -642,7 +639,7 @@ body{
           <span>1853 — 2026</span>
           <span data-tr="173 yıl · 90 olay" data-en="173 years · 90 events">173 yıl · 90 olay</span>
         </div>
-        <div id="intro-title">demxetname</div>
+        <div id="intro-title">diyarbakır<br>zaman çizelgesi</div>
         <div id="intro-subtitle"
           data-tr="Diyarbakır ve Kürdistan'da bir zaman çizelgesi."
           data-en="A timeline of Diyarbakır and Kurdistan.">
@@ -653,13 +650,13 @@ body{
           <span data-tr="ARAŞTIRMA · DERLEME" data-en="RESEARCH · COMPILATION">ARAŞTIRMA · DERLEME</span><br>
           <strong>Yıldız Tahtacı — Pelin Tan — Yelta Köm</strong><br>
           2020 / 2026<br><br>
-          <span data-tr="ARAZİ ASSEMBLY " data-en="ARAZI ASSEMBLY ">ARAZİ ASSEMBLY </span>
+          <span data-tr="ARAZİ ASSEMBLY · BERLİN" data-en="ARAZI ASSEMBLY · BERLIN">ARAZİ ASSEMBLY · BERLİN</span>
         </div>
       </div>
 
       <div class="intro-right">
-        <p data-tr="Demxetname, <strong>173 yıllık bir dönemi</strong> — Osmanlı Şehremaneti'nden 2026 TBMM Komisyonu'na — toprak, mülksüzleştirme, mekânsal yıkım ve mimarlık üzerinden haritalandırır."
-          data-en="Demxetname maps <strong>173 years</strong>, from the Ottoman Şehremaneti to the 2026 Parliamentary Commission, through the registers of land, dispossession, spatial destruction, and architecture."></p>
+        <p data-tr="Bu çizelge, <strong>173 yıllık bir dönemi</strong> — Osmanlı Şehremaneti'nden 2026 TBMM Komisyonu'na — toprak, mülksüzleştirme, mekânsal yıkım ve mimarlık üzerinden haritalandırır."
+          data-en="This timeline maps <strong>173 years</strong>, from the Ottoman Şehremaneti to the 2026 Parliamentary Commission, through the registers of land, dispossession, spatial destruction, and architecture."></p>
 
         <p data-tr="<em>Doksan olay</em>, coğrafyasında işaretlenmiş, beş kategoriye ayrılmış. Her olayı haritada, listede veya zaman şeridinde açabilirsiniz."
           data-en="<em>Ninety events</em>, plotted to their geography, sorted into five categories. Each can be opened on the map, the list, or the timeline."></p>
@@ -669,7 +666,7 @@ body{
 
         <div class="intro-enter-row">
           <button id="intro-enter" data-tr="Haritaya Gir →" data-en="Enter Map →">Haritaya Gir →</button>
-          <div class="intro-enter-meta">Doc. 001 / 2026</div>
+          <div class="intro-enter-meta">1853 — 2026</div>
         </div>
       </div>
     </div>
@@ -679,8 +676,8 @@ body{
 <!-- HEADER -->
 <header id="header" style="display:none">
   <div id="brand">
-    <div id="brand-mark">demxetname</div>
-    <div id="brand-sub">DOC. 001 · 1853 — 2026</div>
+    <div id="brand-mark">diyarbakır zaman çizelgesi</div>
+    <div id="brand-sub">1853 — 2026</div>
   </div>
   <div id="header-ctrl">
     <button class="h-btn lang-btn active" data-lang="tr">TR</button>
@@ -833,7 +830,7 @@ function initApp(){
   // Map init
   window._map=L.map('map',{center:[38.5,41.0],zoom:7,minZoom:4,maxZoom:14,preferCanvas:true,zoomControl:true});
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',{
-    attribution:'demxetname / tahtacı · tan · köm / 2020 – 2026 / arazi assembly / © carto · © osm',
+    attribution:'© Leaflet · CartoDB · OpenStreetMap',
     subdomains:'abcd',maxZoom:19
   }).addTo(window._map);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',{
@@ -860,7 +857,7 @@ function initApp(){
     {f:1853,t:1922,tr:'Geç Osmanlı',en:'Late Ottoman'},
     {f:1923,t:1949,tr:'Tek Parti',en:'One-Party'},
     {f:1950,t:1999,tr:'Soğuk Savaş',en:'Cold War'},
-    {f:2000,t:2023,tr:'AKP',en:'AKP'},
+    {f:2000,t:2023,tr:'Ak Parti Dönemi',en:'AKP Era'},
     {f:2024,t:2026,tr:'Süreç 2.0',en:'Process 2.0'}
   ];
   eras.forEach(era=>{
