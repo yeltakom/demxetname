@@ -689,24 +689,13 @@ body{
 <div id="map" style="display:none"></div>
 
 <aside id="side-panel" style="display:none">
-  <div id="stats">
-    <div class="stat">
-      <span class="stat-num" id="stat-total">0</span>
-      <div class="stat-label" data-tr="Toplam" data-en="Total">Toplam</div>
-    </div>
-    <div class="stat">
-      <span class="stat-num" id="stat-visible">0</span>
-      <div class="stat-label" data-tr="Görünen" data-en="Visible">Görünen</div>
-    </div>
-  </div>
-
   <div id="legend">
     <div class="section-title" data-tr="Kategoriler — Filtre" data-en="Categories — Filter">Kategoriler — Filtre</div>
-    <div class="legend-row" data-cat="hukuki"><div class="legend-mark"></div><div class="legend-label" data-tr="Hukuki & İdari" data-en="Legal & Administrative">Hukuki & İdari</div><div class="legend-count" id="count-hukuki">0</div></div>
-    <div class="legend-row" data-cat="yikim"><div class="legend-mark"></div><div class="legend-label" data-tr="Kentsel Yıkım" data-en="Urban Destruction">Kentsel Yıkım</div><div class="legend-count" id="count-yikim">0</div></div>
-    <div class="legend-row" data-cat="yerinden"><div class="legend-mark"></div><div class="legend-label" data-tr="Yerinden Edilme" data-en="Displacement">Yerinden Edilme</div><div class="legend-count" id="count-yerinden">0</div></div>
-    <div class="legend-row" data-cat="mimarlik"><div class="legend-mark"></div><div class="legend-label" data-tr="Mimarlık & Miras" data-en="Architecture & Heritage">Mimarlık & Miras</div><div class="legend-count" id="count-mimarlik">0</div></div>
-    <div class="legend-row" data-cat="direnis"><div class="legend-mark"></div><div class="legend-label" data-tr="Direniş & Siyaset" data-en="Resistance & Politics">Direniş & Siyaset</div><div class="legend-count" id="count-direnis">0</div></div>
+    <div class="legend-row" data-cat="hukuki"><div class="legend-mark"></div><div class="legend-label" data-tr="Hukuki & İdari" data-en="Legal & Administrative">Hukuki & İdari</div></div>
+    <div class="legend-row" data-cat="yikim"><div class="legend-mark"></div><div class="legend-label" data-tr="Kentsel Yıkım" data-en="Urban Destruction">Kentsel Yıkım</div></div>
+    <div class="legend-row" data-cat="yerinden"><div class="legend-mark"></div><div class="legend-label" data-tr="Yerinden Edilme" data-en="Displacement">Yerinden Edilme</div></div>
+    <div class="legend-row" data-cat="mimarlik"><div class="legend-mark"></div><div class="legend-label" data-tr="Mimarlık & Miras" data-en="Architecture & Heritage">Mimarlık & Miras</div></div>
+    <div class="legend-row" data-cat="direnis"><div class="legend-mark"></div><div class="legend-label" data-tr="Direniş & Siyaset" data-en="Resistance & Politics">Direniş & Siyaset</div></div>
   </div>
 
   <div id="event-list">
@@ -1004,11 +993,7 @@ function applyFilters(rerender=true){
 }
 
 function updateStats(){
-  document.getElementById('stat-total').textContent=pad(events.length);
-  document.getElementById('stat-visible').textContent=pad(getFiltered().length);
-  ['hukuki','yikim','yerinden','mimarlik','direnis'].forEach(cat=>{
-    document.getElementById('count-'+cat).textContent=pad(events.filter(e=>e.cat===cat).length);
-  });
+  // İstatistik kutuları kaldırıldı — fonksiyon boş, filtre değiştiğinde çağrıldığı için duruyor
 }
 
 function renderEventList(){
