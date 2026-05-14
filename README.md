@@ -1,10 +1,10 @@
 # demxetname
 
-Diyarbakır ve Kürdistan'da bir zaman çizelgesi, 1853–2026.
+zaman çizelgesi, 1853–2026.
 
 Araştırma · derleme: Yıldız Tahtacı — Pelin Tan — Yelta Köm
 2020 / 2026
-Arazi Assembly · Berlin
+Arazi Assembly 
 
 ---
 
