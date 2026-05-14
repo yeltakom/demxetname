@@ -95,7 +95,7 @@ body{
   background:var(--paper)!important;
   font-family:var(--font);
 }
-.leaflet-tile-pane{filter:contrast(1.05)}
+.leaflet-tile-pane{filter:grayscale(1) contrast(1.15)}
 .leaflet-popup-content-wrapper{
   background:var(--paper);
   color:var(--ink);
@@ -832,9 +832,12 @@ function initApp(){
 
   // Map init
   window._map=L.map('map',{center:[38.5,41.0],zoom:7,minZoom:4,maxZoom:14,preferCanvas:true,zoomControl:true});
-  L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}.png',{
-    attribution:'demxetname / tahtacı, tan, köm / 2020 – 2026 / arazi assembly / © stadia · stamen · osm',
-    subdomains:'abcd',maxZoom:20
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',{
+    attribution:'demxetname / tahtacı · tan · köm / 2020 – 2026 / arazi assembly / © carto · © osm',
+    subdomains:'abcd',maxZoom:19
+  }).addTo(window._map);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',{
+    subdomains:'abcd',maxZoom:19,pane:'shadowPane',opacity:0.6
   }).addTo(window._map);
 
   // Timeline decade marks
