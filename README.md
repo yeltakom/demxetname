@@ -57,14 +57,15 @@ O satırı sil, kaydet, GitHub'a yükle.
 
 - Tek HTML dosyası (`index.html`)
 - Veri: `events.csv` (112 olay)
-- Dört görünüm (üst menüden): **Liste** (dikey omurga), **Yatay** (onyıl kolonlu bant),
-  **Halka** (çevrede kronoloji, içeride ilişki kirişleri), **Ağ 3B** (kuvvet yerleşimli
-  üç boyutlu ilişki haritası — coğrafya değil; sürükle: döndür, tekerlek: yakınlaş)
+- Beş görünüm (üst menüden): **Liste** (dikey omurga), **Yatay** (onyıl kolonlu bant),
+  **Halka** (çevrede kronoloji, içeride ilişki kirişleri), **Harita 3B** (eğik perspektifli
+  gerçek harita — olaylar `lat`/`lng` konumlarından iğne olarak yükselir, ilişkiler
+  mekânlar arasında kırmızı yay çizer), **Ağ 3B** (kuvvet yerleşimli üç boyutlu
+  ilişki haritası — coğrafyasız)
 - İlişkiler yalnızca veriden türetilir: bir olayın açıklamasında anılan yıllar,
   o yıllardaki diğer olaylara bağlanır (tıklayınca kırmızı çizgilerle vurgulanır)
-- `lat` / `lng` sütunları veri olarak korunuyor ama artık haritada gösterilmiyor
-  (harita kaldırıldı; istenirse geri eklenebilir)
-- Bağımlılık yok, build yok, framework yok, CDN yok
+- Kütüphane bağımlılığı yok, build yok, framework yok — 3B görünümler elle yazılmış
+  canvas projeksiyonu; yalnızca Harita 3B, karoları CARTO/OpenStreetMap'ten çeker
 - Arama motorlarından gizli (`robots.txt` + `noindex` meta)
 
 ## Lisans
