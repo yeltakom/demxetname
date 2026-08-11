@@ -23,11 +23,11 @@
   --red:#ff2d00;
   --sans:Arial,Helvetica,sans-serif;
   --serif:Georgia,'Times New Roman',serif;
-  --spine:112px;   /* omurga cizgisinin x konumu */
+  --spine:112px;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html,body{height:100%}
 body{
   font-family:var(--sans);
   font-size:13px;
@@ -35,205 +35,191 @@ body{
   background:var(--paper);
   color:var(--ink);
   -webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;
 }
 
 /* ---------- HEADER ---------- */
 #header{
-  position:sticky;top:0;z-index:50;
   background:var(--paper);
   border-bottom:1px solid var(--ink);
+  flex-shrink:0;
+  z-index:50;
 }
 .hrow{
   display:flex;align-items:baseline;justify-content:space-between;
-  gap:16px;flex-wrap:wrap;
-  padding:14px 24px 10px;
+  gap:10px 16px;flex-wrap:wrap;
+  padding:12px 24px 4px;
 }
+.hrow.second{padding:0 24px 10px;border-top:none}
 #brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-#brand-mark{
-  font-family:var(--serif);
-  font-size:19px;
-  letter-spacing:-0.01em;
-}
+#brand-mark{font-family:var(--serif);font-size:19px;letter-spacing:-0.01em}
 #brand-sub{
-  font-size:9px;
-  letter-spacing:0.12em;
-  text-transform:uppercase;
-  color:var(--ink-60);
+  font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-60);
 }
+#views{display:flex;gap:0}
+.v-btn{
+  background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:10px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--ink-40);
+  padding:4px 10px;border-left:1px solid var(--ink-10);
+}
+.v-btn:first-child{border-left:none;padding-left:0}
+.v-btn:hover{color:var(--ink)}
+.v-btn.active{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
 #ctrl{display:flex;align-items:baseline;gap:2px 14px;flex-wrap:wrap}
 #filters{display:flex;gap:2px 12px;flex-wrap:wrap}
 .f-btn{
   background:none;border:none;cursor:pointer;
-  font-family:var(--sans);
-  font-size:9px;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
+  font-family:var(--sans);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;
   color:var(--ink);
   display:flex;align-items:center;gap:6px;
-  padding:4px 0;
-  transition:opacity 0.15s;
+  padding:4px 0;transition:opacity 0.15s;
 }
 .f-btn.off{opacity:0.25}
 .f-btn:hover{text-decoration:underline}
 #langs{display:flex;gap:0;border-left:1px solid var(--ink-10);padding-left:14px}
 .lang-btn{
   background:none;border:none;cursor:pointer;
-  font-family:var(--sans);
-  font-size:10px;font-weight:700;
-  letter-spacing:0.08em;
-  color:var(--ink-40);
-  padding:4px 6px;
+  font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:0.08em;
+  color:var(--ink-40);padding:4px 6px;
 }
 .lang-btn.active{color:var(--ink)}
 .lang-btn:hover{color:var(--ink)}
 
 /* kategori isaretleri */
-.glyph{
-  width:9px;height:9px;flex-shrink:0;
-  background:var(--ink);border-radius:50%;
-}
+.glyph{width:9px;height:9px;flex-shrink:0;background:var(--ink);border-radius:50%}
 .glyph[data-cat="yikim"]{background:var(--paper);border:1.5px solid var(--ink)}
 .glyph[data-cat="yerinden"]{border-radius:0}
-.glyph[data-cat="mimarlik"]{
-  background:linear-gradient(135deg,var(--ink) 50%,var(--paper) 50%);
-  border:1px solid var(--ink);
-}
+.glyph[data-cat="mimarlik"]{background:linear-gradient(135deg,var(--ink) 50%,var(--paper) 50%);border:1px solid var(--ink)}
 .glyph[data-cat="direnis"]{background:var(--red)}
 
-/* ---------- CHART ---------- */
+/* ---------- STAGE ---------- */
+#stage{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.view{display:none;flex:1;min-height:0}
+.view.active{display:block}
+
+/* ---------- LISTE ---------- */
+#view-liste{overflow-y:auto}
 #chart{
-  position:relative;
-  max-width:920px;
-  margin:0 auto;
-  padding:36px 24px 80px;
+  position:relative;max-width:920px;margin:0 auto;padding:36px 24px 80px;
 }
 #spine-line{
-  position:absolute;
-  top:36px;bottom:80px;
+  position:absolute;top:36px;bottom:80px;
   left:calc(24px + var(--spine));
-  width:1px;
-  background:var(--ink);
+  width:1px;background:var(--ink);
 }
-#arcs{
-  position:absolute;inset:0;
-  pointer-events:none;
-  z-index:5;
-}
-
+#arcs{position:absolute;inset:0;pointer-events:none;z-index:5}
 .decade{
-  display:grid;
-  grid-template-columns:var(--spine) 28px 1fr;
-  align-items:baseline;
-  margin:34px 0 10px;
+  display:grid;grid-template-columns:var(--spine) 28px 1fr;
+  align-items:baseline;margin:34px 0 10px;
 }
 .decade:first-child{margin-top:0}
-.decade .d-label{
-  font-family:var(--serif);
-  font-size:17px;
-  color:var(--ink);
-  text-align:right;
-  padding-right:18px;
-}
+.decade .d-label{font-family:var(--serif);font-size:17px;color:var(--ink);text-align:right;padding-right:18px}
 .decade .d-rule{grid-column:2/4;border-top:1px solid var(--ink-10);align-self:center}
-
 .ev{
-  display:grid;
-  grid-template-columns:var(--spine) 28px 1fr;
-  align-items:start;
-  cursor:pointer;
-  padding:7px 0;
-  transition:opacity 0.2s;
+  display:grid;grid-template-columns:var(--spine) 28px 1fr;
+  align-items:start;cursor:pointer;padding:7px 0;transition:opacity 0.2s;
 }
 .ev-year{
-  font-family:var(--serif);
-  font-size:13px;
-  color:var(--ink-80);
-  text-align:right;
-  padding-right:18px;
-  padding-top:1px;
+  font-family:var(--serif);font-size:13px;color:var(--ink-80);
+  text-align:right;padding-right:18px;padding-top:1px;
 }
 .ev-year.repeat{color:var(--ink-20)}
-.ev-spine{
-  position:relative;height:100%;
-}
-.ev-spine .glyph{
-  position:absolute;
-  left:-4px;top:6px;    /* omurga cizgisine oturur */
-}
+.ev-spine{position:relative;height:100%}
+.ev-spine .glyph{position:absolute;left:-4px;top:6px}
 .ev-body{padding-left:2px;min-width:0}
-.ev-title{
-  font-size:13px;
-  line-height:1.35;
-}
-.ev-loc{
-  font-size:8.5px;
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  color:var(--ink-40);
-  margin-top:2px;
-}
+.ev-title{font-size:13px;line-height:1.35}
+.ev-loc{font-size:8.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-40);margin-top:2px}
 .ev:hover .ev-title{text-decoration:underline}
-
-/* secim durumlari */
 #chart.has-sel .ev{opacity:0.16}
 #chart.has-sel .ev.rel{opacity:1}
 #chart.has-sel .ev.sel{opacity:1}
 .ev.sel .ev-title{font-weight:700}
 .ev.sel .ev-spine .glyph{box-shadow:0 0 0 3px var(--paper),0 0 0 4px var(--red)}
-.ev.rel .ev-title{color:var(--ink)}
-
 .ev-detail{display:none;max-width:60ch;padding:10px 0 6px}
 .ev.sel .ev-detail{display:block}
-.ev-desc{
-  font-size:12.5px;
-  line-height:1.6;
-  color:var(--ink-80);
-}
+.ev-desc{font-size:12.5px;line-height:1.6;color:var(--ink-80)}
 .ev-links{margin-top:10px;display:flex;flex-direction:column;gap:3px;align-items:flex-start}
 .ev-link{
   background:none;border:none;cursor:pointer;
-  font-family:var(--sans);
-  font-size:10px;
-  letter-spacing:0.04em;
-  color:var(--red);
-  text-align:left;
-  padding:0;
+  font-family:var(--sans);font-size:10px;letter-spacing:0.04em;
+  color:var(--red);text-align:left;padding:0;
 }
 .ev-link:hover{text-decoration:underline}
 .ev-link .yl{font-family:var(--serif);font-size:11px}
 
+/* ---------- YATAY ---------- */
+#view-yatay{overflow:auto}
+#hband{position:relative}
+#hband svg{display:block}
+.h-clickable{cursor:pointer}
+
+/* ---------- HALKA ---------- */
+#view-halka{overflow:hidden;display:none;align-items:center;justify-content:center}
+#view-halka.active{display:flex}
+#halka-svg{display:block;max-width:100%;max-height:100%}
+
+/* ---------- AG ---------- */
+#view-ag{overflow:hidden;position:relative}
+#ag-canvas{display:block;width:100%;height:100%;cursor:grab}
+#ag-canvas.dragging{cursor:grabbing}
+#ag-hint{
+  position:absolute;left:24px;top:14px;
+  font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-40);
+  pointer-events:none;
+}
+
+/* ---------- DETAIL PANEL (yatay/halka/ag) ---------- */
+#panel{
+  position:absolute;left:24px;bottom:24px;
+  width:360px;max-width:calc(100vw - 48px);
+  max-height:46%;
+  background:var(--paper);
+  border:1px solid var(--ink);
+  padding:16px 18px;
+  overflow-y:auto;
+  z-index:60;
+  display:none;
+}
+#panel.open{display:block}
+#panel-close{
+  position:absolute;top:6px;right:10px;
+  background:none;border:none;cursor:pointer;
+  font-size:14px;color:var(--ink);font-family:var(--sans);
+}
+#panel-year{font-family:var(--serif);font-size:26px;line-height:1;margin-bottom:2px}
+#panel-title{font-size:14px;font-weight:700;line-height:1.3;margin-bottom:4px;padding-right:16px}
+#panel-loc{font-size:8.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-40);margin-bottom:10px}
+#panel-desc{font-size:12px;line-height:1.6;color:var(--ink-80)}
+#panel-links{margin-top:10px;display:flex;flex-direction:column;gap:3px;align-items:flex-start}
+
 /* ---------- FOOTER ---------- */
 #footer{
   border-top:1px solid var(--ink);
-  padding:16px 24px 40px;
-  font-size:9px;
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  color:var(--ink-60);
-  line-height:2;
+  padding:10px 24px;
+  font-size:8.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-60);
+  flex-shrink:0;
 }
-
 #loading{
-  padding:120px 24px;
-  text-align:center;
-  font-size:10px;
-  letter-spacing:0.12em;
-  text-transform:uppercase;
-  color:var(--ink-60);
+  padding:120px 24px;text-align:center;
+  font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-60);
 }
 
 @media(max-width:640px){
   :root{--spine:52px}
-  .hrow{padding:12px 14px 8px}
+  .hrow{padding:10px 14px 4px}
+  .hrow.second{padding:0 14px 8px}
   #chart{padding:24px 14px 60px}
   #spine-line{left:calc(14px + var(--spine));top:24px;bottom:60px}
   .ev-year{font-size:11px;padding-right:10px}
   .decade .d-label{font-size:14px;padding-right:10px}
   .ev{grid-template-columns:var(--spine) 22px 1fr}
   .decade{grid-template-columns:var(--spine) 22px 1fr}
+  #panel{left:10px;right:10px;bottom:10px;width:auto}
 }
 
-::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-track{background:var(--paper)}
 ::-webkit-scrollbar-thumb{background:var(--ink-20);border:3px solid var(--paper)}
 ::-webkit-scrollbar-thumb:hover{background:var(--ink-60)}
@@ -249,6 +235,18 @@ body{
         data-tr="Diyarbakır ve Kürdistan'da bir zaman çizelgesi · 1853 — 2026"
         data-en="A timeline of Diyarbakır and Kurdistan · 1853 — 2026">Diyarbakır ve Kürdistan'da bir zaman çizelgesi · 1853 — 2026</div>
     </div>
+    <div id="langs">
+      <button class="lang-btn active" data-lang="tr">TR</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </div>
+  <div class="hrow second">
+    <div id="views">
+      <button class="v-btn active" data-view="liste" data-tr="Liste" data-en="List">Liste</button>
+      <button class="v-btn" data-view="yatay" data-tr="Yatay" data-en="Horizontal">Yatay</button>
+      <button class="v-btn" data-view="halka" data-tr="Halka" data-en="Circle">Halka</button>
+      <button class="v-btn" data-view="ag" data-tr="Ağ 3B" data-en="Network 3D">Ağ 3B</button>
+    </div>
     <div id="ctrl">
       <div id="filters">
         <button class="f-btn" data-cat="hukuki"><span class="glyph" data-cat="hukuki"></span><span data-tr="Hukuki &amp; İdari" data-en="Legal &amp; Administrative">Hukuki &amp; İdari</span></button>
@@ -257,42 +255,68 @@ body{
         <button class="f-btn" data-cat="mimarlik"><span class="glyph" data-cat="mimarlik"></span><span data-tr="Mimarlık &amp; Miras" data-en="Architecture &amp; Heritage">Mimarlık &amp; Miras</span></button>
         <button class="f-btn" data-cat="direnis"><span class="glyph" data-cat="direnis"></span><span data-tr="Direniş &amp; Siyaset" data-en="Resistance &amp; Politics">Direniş &amp; Siyaset</span></button>
       </div>
-      <div id="langs">
-        <button class="lang-btn active" data-lang="tr">TR</button>
-        <button class="lang-btn" data-lang="en">EN</button>
-      </div>
     </div>
   </div>
 </header>
 
 <div id="loading">veri yükleniyor / loading data…</div>
 
-<main id="chart" style="display:none">
-  <div id="spine-line"></div>
-  <svg id="arcs"></svg>
-  <div id="rows"></div>
+<main id="stage" style="display:none">
+  <!-- LISTE -->
+  <div class="view active" id="view-liste">
+    <div id="chart">
+      <div id="spine-line"></div>
+      <svg id="arcs"></svg>
+      <div id="rows"></div>
+    </div>
+  </div>
+
+  <!-- YATAY -->
+  <div class="view" id="view-yatay"><div id="hband"></div></div>
+
+  <!-- HALKA -->
+  <div class="view" id="view-halka"></div>
+
+  <!-- AG 3B -->
+  <div class="view" id="view-ag">
+    <canvas id="ag-canvas"></canvas>
+    <div id="ag-hint"
+      data-tr="sürükle: döndür · tekerlek: yakınlaş · tık: olay"
+      data-en="drag: rotate · wheel: zoom · click: event">sürükle: döndür · tekerlek: yakınlaş · tık: olay</div>
+  </div>
+
+  <!-- DETAIL PANEL -->
+  <aside id="panel">
+    <button id="panel-close">×</button>
+    <div id="panel-year"></div>
+    <div id="panel-title"></div>
+    <div id="panel-loc"></div>
+    <div id="panel-desc"></div>
+    <div id="panel-links"></div>
+  </aside>
 </main>
 
 <footer id="footer" style="display:none">
   <span data-tr="Araştırma · Derleme" data-en="Research · Compilation">Araştırma · Derleme</span>
-  — Yıldız Tahtacı — Pelin Tan — Yelta Köm<br>
-  Arazi Assembly · 2020 / 2026
+  — Yıldız Tahtacı — Pelin Tan — Yelta Köm · Arazi Assembly · 2020 / 2026
 </footer>
 
 <script>
 // ============================================================
-// demxetname — sade zaman çizelgesi
+// demxetname — dört görünüm: liste, yatay, halka, ağ 3B
 // Veri: events.csv. İlişkiler yalnızca veriden türetilir:
 // bir olayın metninde anılan yıllar, o yıllardaki olaylara bağlanır.
 // ============================================================
 
+const YEAR_MIN=1853, YEAR_MAX=2026;
 let events=[];
 const state={
-  lang:'tr',
+  view:'liste', lang:'tr',
   cats:new Set(['hukuki','yikim','yerinden','mimarlik','direnis']),
   sel:null
 };
-const rel=new Map();   // id -> Set(id)
+const rel=new Map();          // id -> Set(id)
+let edges=[];                 // [{a,b}] benzersiz kenarlar
 
 /* ---- CSV ---- */
 function parseCSV(text){
@@ -339,7 +363,7 @@ async function load(){
   }
 }
 
-/* ---- iliskiler: metinde anilan yillar ---- */
+/* ---- iliskiler ---- */
 function buildRelations(){
   const byYear=new Map();
   events.forEach(e=>{
@@ -361,20 +385,35 @@ function buildRelations(){
       });
     });
   });
+  const seen=new Set();
+  rel.forEach((set,a)=>{
+    set.forEach(b=>{
+      const k=a<b?a+'|'+b:b+'|'+a;
+      if(!seen.has(k)){seen.add(k);edges.push({a,b});}
+    });
+  });
 }
 
+const visible=()=>events.filter(e=>state.cats.has(e.cat));
+const byId=id=>events.find(e=>e.id===id);
+const relSetOf=id=>id?(rel.get(id)||new Set()):new Set();
+
+/* ---- init ---- */
 function init(){
   document.getElementById('loading').style.display='none';
-  document.getElementById('chart').style.display='block';
+  document.getElementById('stage').style.display='flex';
   document.getElementById('footer').style.display='block';
 
+  document.querySelectorAll('.v-btn').forEach(b=>{
+    b.addEventListener('click',()=>setView(b.dataset.view));
+  });
   document.querySelectorAll('.f-btn').forEach(b=>{
     b.addEventListener('click',()=>{
       const c=b.dataset.cat;
       if(state.cats.has(c)){state.cats.delete(c);b.classList.add('off');}
       else{state.cats.add(c);b.classList.remove('off');}
-      if(state.sel&&!visible().some(e=>e.id===state.sel))state.sel=null;
-      render();
+      if(state.sel&&!visible().some(e=>e.id===state.sel))select(null);
+      renderAll();
     });
   });
   document.querySelectorAll('.lang-btn').forEach(b=>{
@@ -386,17 +425,78 @@ function init(){
         const t=el.getAttribute('data-'+state.lang);
         if(t)el.innerHTML=t;
       });
-      render();
+      renderAll();
     });
   });
-  window.addEventListener('resize',()=>drawArcs());
-  render();
+  document.getElementById('panel-close').addEventListener('click',()=>select(null));
+  window.addEventListener('resize',()=>{renderCurrent();});
+
+  const h=(location.hash||'').replace('#','');
+  if(['liste','yatay','halka','ag'].includes(h))state.view=h;
+  setView(state.view,true);
+  agInitInteraction();
 }
 
-const visible=()=>events.filter(e=>state.cats.has(e.cat));
+function setView(v,force){
+  if(!force&&state.view===v)return;
+  state.view=v;
+  location.hash=v;
+  document.querySelectorAll('.v-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
+  document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id==='view-'+v));
+  renderCurrent();
+  updatePanel();
+}
 
-/* ---- liste ---- */
-function render(){
+function renderAll(){renderCurrent();updatePanel();}
+function renderCurrent(){
+  if(state.view==='liste')renderListe();
+  else if(state.view==='yatay')renderYatay();
+  else if(state.view==='halka')renderHalka();
+  else if(state.view==='ag')renderAg(true);
+}
+
+/* ---- secim ---- */
+function select(id,scroll){
+  state.sel=id;
+  if(state.view==='liste'){applySelectionListe();}
+  else if(state.view==='yatay'){renderYatay();if(id&&scroll)yatayScrollTo(id);}
+  else if(state.view==='halka'){renderHalka();}
+  else if(state.view==='ag'){agDraw();}
+  updatePanel();
+  if(state.view==='liste'&&id&&scroll){
+    const row=document.querySelector(`.ev[data-id="${id}"]`);
+    if(row)row.scrollIntoView({block:'center'});
+  }
+}
+
+/* ---- detay paneli (liste disi) ---- */
+function updatePanel(){
+  const p=document.getElementById('panel');
+  if(state.view==='liste'||!state.sel){p.classList.remove('open');return;}
+  const e=byId(state.sel);
+  if(!e){p.classList.remove('open');return;}
+  const t=e[state.lang];
+  document.getElementById('panel-year').textContent=e.year;
+  document.getElementById('panel-title').textContent=t.t;
+  document.getElementById('panel-loc').textContent=t.l;
+  document.getElementById('panel-desc').textContent=t.d;
+  const links=document.getElementById('panel-links');
+  links.innerHTML='';
+  const rs=relSetOf(e.id);
+  visible().filter(x=>rs.has(x.id)).forEach(x=>{
+    const b=document.createElement('button');
+    b.className='ev-link';
+    b.innerHTML=`↔ <span class="yl">${x.year}</span> · ${x[state.lang].t}`;
+    b.addEventListener('click',()=>select(x.id,true));
+    links.appendChild(b);
+  });
+  p.classList.add('open');
+}
+
+/* ============================================================
+   GORUNUM 1 — LISTE (dikey omurga + kirmizi yaylar)
+============================================================ */
+function renderListe(){
   const c=document.getElementById('rows');
   c.innerHTML='';
   let prevYear=null,prevDecade=null;
@@ -425,46 +525,33 @@ function render(){
     c.appendChild(row);
     prevYear=e.year;
   });
-  applySelection();
+  applySelectionListe();
 }
 
-function select(id,scroll){
-  state.sel=id;
-  applySelection();
-  if(id&&scroll){
-    const row=document.querySelector(`.ev[data-id="${id}"]`);
-    if(row)row.scrollIntoView({block:'center'});
-  }
-}
-
-function applySelection(){
+function applySelectionListe(){
   const chart=document.getElementById('chart');
-  const relSet=state.sel?(rel.get(state.sel)||new Set()):new Set();
+  const rs=relSetOf(state.sel);
   chart.classList.toggle('has-sel',!!state.sel);
-  document.querySelectorAll('.ev').forEach(row=>{
+  document.querySelectorAll('#rows .ev').forEach(row=>{
     const id=row.dataset.id;
     row.classList.toggle('sel',id===state.sel);
-    row.classList.toggle('rel',relSet.has(id));
-    if(id===state.sel)fillLinks(row,relSet);
+    row.classList.toggle('rel',rs.has(id));
+    if(id===state.sel){
+      const box=row.querySelector('.ev-links');
+      box.innerHTML='';
+      visible().filter(e=>rs.has(e.id)).forEach(e=>{
+        const b=document.createElement('button');
+        b.className='ev-link';
+        b.innerHTML=`↔ <span class="yl">${e.year}</span> · ${e[state.lang].t}`;
+        b.addEventListener('click',()=>select(e.id,true));
+        box.appendChild(b);
+      });
+    }
   });
-  drawArcs();
+  drawArcsListe();
 }
 
-function fillLinks(row,relSet){
-  const box=row.querySelector('.ev-links');
-  box.innerHTML='';
-  const targets=visible().filter(e=>relSet.has(e.id));
-  targets.forEach(e=>{
-    const b=document.createElement('button');
-    b.className='ev-link';
-    b.innerHTML=`↔ <span class="yl">${e.year}</span> · ${e[state.lang].t}`;
-    b.addEventListener('click',()=>select(e.id,true));
-    box.appendChild(b);
-  });
-}
-
-/* ---- kirmizi yaylar ---- */
-function drawArcs(){
+function drawArcsListe(){
   const svg=document.getElementById('arcs');
   const chart=document.getElementById('chart');
   const W=chart.clientWidth,H=chart.scrollHeight;
@@ -474,17 +561,17 @@ function drawArcs(){
   if(!state.sel)return;
   const cr=chart.getBoundingClientRect();
   const dot=id=>{
-    const g=document.querySelector(`.ev[data-id="${id}"] .glyph`);
+    const g=document.querySelector(`#rows .ev[data-id="${id}"] .glyph`);
     if(!g)return null;
     const r=g.getBoundingClientRect();
     return{x:r.left-cr.left+r.width/2,y:r.top-cr.top+r.height/2};
   };
   const s=dot(state.sel);
   if(!s)return;
-  const relSet=rel.get(state.sel)||new Set();
+  const rs=relSetOf(state.sel);
   let paths='';
   visible().forEach(e=>{
-    if(!relSet.has(e.id))return;
+    if(!rs.has(e.id))return;
     const t=dot(e.id);
     if(!t)return;
     const k=Math.min(s.x-10,34+Math.abs(t.y-s.y)*0.05);
@@ -493,6 +580,418 @@ function drawArcs(){
   });
   paths+=`<circle cx="${s.x}" cy="${s.y}" r="2.5" fill="#ff2d00"/>`;
   svg.innerHTML=paths;
+}
+
+/* ============================================================
+   GORUNUM 2 — YATAY (bant: onyil kolonlari, kulvarli etiketler)
+============================================================ */
+const H_YEARW=26, H_PADL=70, H_PADR=220, H_AXISY=64, H_ROWH=30, H_TOP=110;
+const hX=y=>H_PADL+(y-YEAR_MIN)*H_YEARW;
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function renderYatay(){
+  const host=document.getElementById('hband');
+  const evs=visible();
+  // kulvar atama
+  const lanes=[];
+  evs.forEach(e=>{
+    const x=hX(e.year);
+    const t=e[state.lang].t;
+    const w=14+t.length*5.6+34;
+    let li=lanes.findIndex(end=>end+16<x);
+    if(li<0){li=lanes.length;lanes.push(0);}
+    lanes[li]=x+w;
+    e._lane=li;
+  });
+  const W=H_PADL+H_PADR+(YEAR_MAX-YEAR_MIN)*H_YEARW;
+  const H=Math.max(H_TOP+lanes.length*H_ROWH+60,420);
+  const rs=relSetOf(state.sel);
+  const hasSel=!!state.sel;
+
+  let g='';
+  // onyil dikey cizgileri + etiketler (bahce cizelgesi kolonlari)
+  for(let y=1860;y<=2020;y+=10){
+    const x=hX(y);
+    g+=`<line x1="${x}" y1="${H_AXISY}" x2="${x}" y2="${H-30}" stroke="#e5e5e5" stroke-width="1"/>`;
+    g+=`<text x="${x}" y="${H_AXISY-26}" font-family="Georgia,serif" font-size="15" fill="#000" text-anchor="middle">${y}</text>`;
+  }
+  // eksen
+  g+=`<line x1="${hX(YEAR_MIN)-20}" y1="${H_AXISY}" x2="${hX(YEAR_MAX)+20}" y2="${H_AXISY}" stroke="#000" stroke-width="1"/>`;
+
+  const pos=new Map();
+  evs.forEach(e=>{
+    const x=hX(e.year), y=H_TOP+e._lane*H_ROWH;
+    pos.set(e.id,{x,y});
+  });
+
+  // yaylar (secim)
+  let arcs='';
+  if(hasSel&&pos.has(state.sel)){
+    const s=pos.get(state.sel);
+    evs.forEach(e=>{
+      if(!rs.has(e.id))return;
+      const t=pos.get(e.id);
+      const mid=H_AXISY-34-Math.min(24,Math.abs(t.x-s.x)*0.02);
+      arcs+=`<path d="M ${s.x} ${s.y} C ${s.x} ${mid}, ${t.x} ${mid}, ${t.x} ${t.y}" fill="none" stroke="#ff2d00" stroke-width="1" opacity="0.85"/>`;
+      arcs+=`<circle cx="${t.x}" cy="${t.y}" r="2.5" fill="#ff2d00"/>`;
+    });
+    arcs+=`<circle cx="${s.x}" cy="${s.y}" r="3" fill="#ff2d00"/>`;
+  }
+
+  // olaylar
+  let items='';
+  evs.forEach(e=>{
+    const p=pos.get(e.id);
+    const t=e[state.lang];
+    const isSel=e.id===state.sel, isRel=rs.has(e.id);
+    const op=!hasSel||isSel||isRel?1:0.14;
+    const glyph=hGlyph(p.x,p.y,e.cat,isSel);
+    const fw=isSel?'bold':'normal';
+    items+=`<g class="h-clickable" data-id="${e.id}" opacity="${op}">`+
+      `<line x1="${p.x}" y1="${H_AXISY}" x2="${p.x}" y2="${p.y-6}" stroke="#c0c0c0" stroke-width="0.7"/>`+
+      glyph+
+      `<text x="${p.x+10}" y="${p.y+3}" font-family="Arial" font-size="11" font-weight="${fw}" fill="#000">${esc(t.t)}</text>`+
+      `<text x="${p.x+10}" y="${p.y+14}" font-family="Georgia,serif" font-size="9" fill="#808080">${e.year} · ${esc(t.l)}</text>`+
+      `</g>`;
+  });
+
+  host.innerHTML=`<svg id="hsvg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${g}${items}${arcs}</svg>`;
+  host.querySelectorAll('.h-clickable').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const id=el.dataset.id;
+      select(state.sel===id?null:id,false);
+    });
+  });
+}
+
+function hGlyph(x,y,cat,isSel){
+  const ring=isSel?`<circle cx="${x}" cy="${y}" r="7" fill="none" stroke="#ff2d00" stroke-width="1.5"/>`:'';
+  if(cat==='yikim')return ring+`<circle cx="${x}" cy="${y}" r="4" fill="#fff" stroke="#000" stroke-width="1.5"/>`;
+  if(cat==='yerinden')return ring+`<rect x="${x-4}" y="${y-4}" width="8" height="8" fill="#000"/>`;
+  if(cat==='mimarlik')return ring+`<circle cx="${x}" cy="${y}" r="4" fill="#fff" stroke="#000" stroke-width="1"/><path d="M ${x-2.85} ${y-2.85} A 4 4 0 0 0 ${x+2.85} ${y+2.85} Z" fill="#000"/>`;
+  if(cat==='direnis')return ring+`<circle cx="${x}" cy="${y}" r="4" fill="#ff2d00"/>`;
+  return ring+`<circle cx="${x}" cy="${y}" r="4" fill="#000"/>`;
+}
+
+function yatayScrollTo(id){
+  const el=document.querySelector(`#hband .h-clickable[data-id="${id}"]`);
+  const wrap=document.getElementById('view-yatay');
+  if(!el||!wrap)return;
+  const x=hX(byId(id).year);
+  wrap.scrollLeft=x-wrap.clientWidth/2;
+}
+
+/* ============================================================
+   GORUNUM 3 — HALKA (cevrede kronoloji, iceride kirisler)
+============================================================ */
+function renderHalka(){
+  const host=document.getElementById('view-halka');
+  const stage=document.getElementById('stage');
+  const S=Math.min(stage.clientWidth,stage.clientHeight)-8;
+  const cx=S/2, cy=S/2;
+  const R=S/2-120;
+  const evs=visible();
+  const n=evs.length;
+  const GAP=Math.PI/9;            // ustte bosluk
+  const a0=-Math.PI/2+GAP/2, sweep=Math.PI*2-GAP;
+  const ang=i=>a0+(i/Math.max(n-1,1))*sweep;
+  const pt=(a,r)=>({x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r});
+  const pos=new Map(), angOf=new Map();
+  evs.forEach((e,i)=>{pos.set(e.id,pt(ang(i),R));angOf.set(e.id,ang(i));});
+
+  const rs=relSetOf(state.sel);
+  const hasSel=!!state.sel;
+
+  // kirisler — hepsi soluk, secilenler kirmizi
+  let chords='', chordsSel='';
+  edges.forEach(({a,b})=>{
+    if(!pos.has(a)||!pos.has(b))return;
+    const p1=pos.get(a),p2=pos.get(b);
+    const mx=(p1.x+p2.x)/2, my=(p1.y+p2.y)/2;
+    const qx=cx+(mx-cx)*0.25, qy=cy+(my-cy)*0.25;
+    const d=`M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} Q ${qx.toFixed(1)} ${qy.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+    const isSelEdge=hasSel&&(a===state.sel||b===state.sel);
+    if(isSelEdge)chordsSel+=`<path d="${d}" fill="none" stroke="#ff2d00" stroke-width="1.1" opacity="0.9"/>`;
+    else chords+=`<path d="${d}" fill="none" stroke="#000" stroke-width="0.6" opacity="${hasSel?0.03:0.10}"/>`;
+  });
+
+  // onyil isaretleri (kronolojik indeks uzerinden ilk olayina)
+  let ticks='';
+  const seenDec=new Set();
+  evs.forEach((e,i)=>{
+    const dec=Math.floor(e.year/10)*10;
+    if(seenDec.has(dec))return;
+    seenDec.add(dec);
+    const a=ang(i);
+    const p1=pt(a,R+2),p2=pt(a,R+8);
+    ticks+=`<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#000" stroke-width="1"/>`;
+  });
+
+  // olay noktalari + etiketler
+  let items='';
+  evs.forEach((e,i)=>{
+    const a=ang(i);
+    const p=pos.get(e.id);
+    const t=e[state.lang];
+    const isSel=e.id===state.sel, isRel=rs.has(e.id);
+    const op=!hasSel||isSel||isRel?1:0.13;
+    const deg=a*180/Math.PI;
+    const flip=deg>90&&deg<270;
+    const lp=pt(a,R+14);
+    const anchor=flip?'end':'start';
+    const rot=flip?deg+180:deg;
+    const fw=isSel?'bold':'normal';
+    const label=t.t.startsWith(String(e.year))?t.t:`${e.year} ${t.t}`;
+    const short=label.length>34?label.slice(0,33)+'…':label;
+    items+=`<g class="h-clickable" data-id="${e.id}" opacity="${op}">`+
+      hGlyphSmall(p.x,p.y,e.cat,isSel)+
+      `<text x="${lp.x}" y="${lp.y}" font-family="Arial" font-size="8.5" font-weight="${fw}" fill="#000" text-anchor="${anchor}" transform="rotate(${rot} ${lp.x} ${lp.y})" dominant-baseline="middle">${esc(short)}</text>`+
+      `</g>`;
+  });
+
+  const title=`<text x="${cx}" y="${cy-R-58}" font-family="Georgia,serif" font-size="15" fill="#000" text-anchor="middle">1853 — 2026</text>`;
+
+  host.innerHTML=`<svg id="halka-svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">`+
+    `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#e5e5e5" stroke-width="1"/>`+
+    ticks+chords+chordsSel+items+title+`</svg>`;
+  host.querySelectorAll('.h-clickable').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const id=el.dataset.id;
+      select(state.sel===id?null:id,false);
+    });
+  });
+}
+
+function hGlyphSmall(x,y,cat,isSel){
+  const ring=isSel?`<circle cx="${x}" cy="${y}" r="6.5" fill="none" stroke="#ff2d00" stroke-width="1.4"/>`:'';
+  if(cat==='yikim')return ring+`<circle cx="${x}" cy="${y}" r="3.2" fill="#fff" stroke="#000" stroke-width="1.3"/>`;
+  if(cat==='yerinden')return ring+`<rect x="${x-3.2}" y="${y-3.2}" width="6.4" height="6.4" fill="#000"/>`;
+  if(cat==='mimarlik')return ring+`<circle cx="${x}" cy="${y}" r="3.2" fill="#fff" stroke="#000" stroke-width="0.9"/><path d="M ${x-2.3} ${y-2.3} A 3.2 3.2 0 0 0 ${x+2.3} ${y+2.3} Z" fill="#000"/>`;
+  if(cat==='direnis')return ring+`<circle cx="${x}" cy="${y}" r="3.2" fill="#ff2d00"/>`;
+  return ring+`<circle cx="${x}" cy="${y}" r="3.2" fill="#000"/>`;
+}
+
+/* ============================================================
+   GORUNUM 4 — AG 3B (kuvvet yerlesimi, canvas, coğrafyasız)
+============================================================ */
+const ag={nodes:[],yaw:0,pitch:-0.15,zoom:1,auto:true,laidOut:false,raf:null,drag:null,hover:null};
+
+function agLayout(){
+  // 3B kuvvet yerlesimi — tum olaylar (filtre cizimde uygulanir)
+  const N=events.length;
+  const nodes=events.map((e,i)=>{
+    // kure uzerinde rastgele ama deterministik baslangic
+    const t1=(i*2.399963)%(Math.PI*2), t2=Math.acos(1-2*((i*0.618034)%1));
+    const r=170;
+    return{e,
+      x:r*Math.sin(t2)*Math.cos(t1),
+      y:r*Math.sin(t2)*Math.sin(t1),
+      z:r*Math.cos(t2),
+      vx:0,vy:0,vz:0,deg:relSetOf(e.id).size};
+  });
+  const iOf=new Map();nodes.forEach((n,i)=>iOf.set(n.e.id,i));
+  const eIdx=edges.map(({a,b})=>[iOf.get(a),iOf.get(b)]).filter(p=>p[0]!=null&&p[1]!=null);
+  const REST=115;
+  for(let it=0;it<280;it++){
+    // itme
+    for(let i=0;i<N;i++)for(let j=i+1;j<N;j++){
+      const A=nodes[i],B=nodes[j];
+      let dx=A.x-B.x,dy=A.y-B.y,dz=A.z-B.z;
+      let d2=dx*dx+dy*dy+dz*dz+0.01;
+      if(d2>90000)continue;
+      const f=2600/d2;
+      const d=Math.sqrt(d2);
+      dx/=d;dy/=d;dz/=d;
+      A.vx+=dx*f;A.vy+=dy*f;A.vz+=dz*f;
+      B.vx-=dx*f;B.vy-=dy*f;B.vz-=dz*f;
+    }
+    // yaylar
+    eIdx.forEach(([i,j])=>{
+      const A=nodes[i],B=nodes[j];
+      let dx=B.x-A.x,dy=B.y-A.y,dz=B.z-A.z;
+      const d=Math.sqrt(dx*dx+dy*dy+dz*dz)+0.01;
+      const f=(d-REST)*0.012;
+      dx/=d;dy/=d;dz/=d;
+      A.vx+=dx*f*d*0.02;A.vy+=dy*f*d*0.02;A.vz+=dz*f*d*0.02;
+      B.vx-=dx*f*d*0.02;B.vy-=dy*f*d*0.02;B.vz-=dz*f*d*0.02;
+    });
+    // merkez + surtunme
+    nodes.forEach(n=>{
+      n.vx-=n.x*0.004;n.vy-=n.y*0.004;n.vz-=n.z*0.004;
+      n.x+=n.vx;n.y+=n.vy;n.z+=n.vz;
+      n.vx*=0.8;n.vy*=0.8;n.vz*=0.8;
+    });
+  }
+  ag.nodes=nodes;
+  ag.laidOut=true;
+}
+
+function agProject(n,W,H){
+  const cy=Math.cos(ag.yaw),sy=Math.sin(ag.yaw);
+  const cp=Math.cos(ag.pitch),sp=Math.sin(ag.pitch);
+  let x=n.x*cy+n.z*sy;
+  let z=-n.x*sy+n.z*cy;
+  let y=n.y*cp-z*sp;
+  z=n.y*sp+z*cp;
+  const f=760;
+  const s=(f/(f+z))*ag.zoom;
+  return{x:W/2+x*s,y:H/2+y*s,s,z};
+}
+
+function renderAg(reset){
+  if(!ag.laidOut)agLayout();
+  agDraw();
+  if(ag.raf)cancelAnimationFrame(ag.raf);
+  const loop=()=>{
+    if(state.view==='ag'){
+      if(ag.auto&&!ag.drag){ag.yaw+=0.0022;agDraw();}
+      ag.raf=requestAnimationFrame(loop);
+    }
+  };
+  ag.raf=requestAnimationFrame(loop);
+}
+
+function agDraw(){
+  const cv=document.getElementById('ag-canvas');
+  const wrap=document.getElementById('view-ag');
+  const W=wrap.clientWidth,H=wrap.clientHeight;
+  if(cv.width!==W*devicePixelRatio){cv.width=W*devicePixelRatio;cv.height=H*devicePixelRatio;}
+  const ctx=cv.getContext('2d');
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  ctx.clearRect(0,0,W,H);
+  if(!ag.nodes.length)return;
+
+  const visSet=new Set(visible().map(e=>e.id));
+  const rs=relSetOf(state.sel);
+  const hasSel=!!state.sel;
+  const proj=new Map();
+  ag.nodes.forEach(n=>{if(visSet.has(n.e.id))proj.set(n.e.id,agProject(n,W,H));});
+
+  // kenarlar
+  edges.forEach(({a,b})=>{
+    const p1=proj.get(a),p2=proj.get(b);
+    if(!p1||!p2)return;
+    const selEdge=hasSel&&(a===state.sel||b===state.sel);
+    if(selEdge){ctx.strokeStyle='rgba(255,45,0,0.9)';ctx.lineWidth=1.2;}
+    else{
+      const depth=Math.max(0.06,Math.min(0.30,(p1.s+p2.s)/2*0.3));
+      ctx.strokeStyle=`rgba(0,0,0,${hasSel?0.04:depth*0.6})`;
+      ctx.lineWidth=0.7;
+    }
+    ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
+  });
+
+  // dugumler (derinlige gore sirali)
+  const order=[...proj.entries()].sort((A,B)=>B[1].z-A[1].z);
+  order.forEach(([id,p])=>{
+    const n=ag.nodes.find(x=>x.e.id===id);
+    const e=n.e;
+    const isSel=id===state.sel, isRel=rs.has(id);
+    const dim=hasSel&&!isSel&&!isRel;
+    const r=Math.max(2,(3+Math.min(n.deg,6)*0.55)*p.s);
+    ctx.globalAlpha=dim?0.10:Math.max(0.35,Math.min(1,p.s));
+    agGlyph(ctx,p.x,p.y,r,e.cat,isSel);
+    ctx.globalAlpha=1;
+    if(isSel||isRel||id===ag.hover){
+      const t=e[state.lang].t;
+      const label=t.startsWith(String(e.year))?t:`${e.year} ${t}`;
+      const short=label.length>34?label.slice(0,33)+'…':label;
+      ctx.font=(isSel?'bold ':'')+'10px Arial';
+      ctx.fillStyle=isSel?'#ff2d00':'#000';
+      ctx.fillText(short,p.x+r+5,p.y+3);
+    }
+  });
+}
+
+function agGlyph(ctx,x,y,r,cat,isSel){
+  if(isSel){ctx.strokeStyle='#ff2d00';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,r+3.5,0,7);ctx.stroke();}
+  if(cat==='direnis'){ctx.fillStyle='#ff2d00';ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();return;}
+  if(cat==='yikim'){ctx.fillStyle='#fff';ctx.strokeStyle='#000';ctx.lineWidth=1.3;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();ctx.stroke();return;}
+  if(cat==='yerinden'){ctx.fillStyle='#000';ctx.fillRect(x-r,y-r,r*2,r*2);return;}
+  if(cat==='mimarlik'){
+    ctx.fillStyle='#fff';ctx.strokeStyle='#000';ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#000';ctx.beginPath();ctx.arc(x,y,r,Math.PI*0.75,Math.PI*1.75);ctx.closePath();ctx.fill();
+    return;
+  }
+  ctx.fillStyle='#000';ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();
+}
+
+function agNodeAt(mx,my){
+  const wrap=document.getElementById('view-ag');
+  const W=wrap.clientWidth,H=wrap.clientHeight;
+  const visSet=new Set(visible().map(e=>e.id));
+  let best=null,bd=144;
+  ag.nodes.forEach(n=>{
+    if(!visSet.has(n.e.id))return;
+    const p=agProject(n,W,H);
+    const d=(p.x-mx)**2+(p.y-my)**2;
+    if(d<bd){bd=d;best=n.e.id;}
+  });
+  return best;
+}
+
+function agInitInteraction(){
+  const cv=document.getElementById('ag-canvas');
+  let moved=false;
+  cv.addEventListener('mousedown',ev=>{
+    ag.drag={x:ev.clientX,y:ev.clientY};moved=false;
+    cv.classList.add('dragging');
+  });
+  window.addEventListener('mousemove',ev=>{
+    if(ag.drag){
+      const dx=ev.clientX-ag.drag.x, dy=ev.clientY-ag.drag.y;
+      if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
+      ag.yaw+=dx*0.005;
+      ag.pitch=Math.max(-1.4,Math.min(1.4,ag.pitch+dy*0.005));
+      ag.drag={x:ev.clientX,y:ev.clientY};
+      agDraw();
+    }else if(state.view==='ag'){
+      const r=cv.getBoundingClientRect();
+      const h=agNodeAt(ev.clientX-r.left,ev.clientY-r.top);
+      if(h!==ag.hover){ag.hover=h;agDraw();}
+      cv.style.cursor=h?'pointer':'grab';
+    }
+  });
+  window.addEventListener('mouseup',ev=>{
+    if(ag.drag){
+      cv.classList.remove('dragging');
+      if(!moved){
+        const r=cv.getBoundingClientRect();
+        const id=agNodeAt(ev.clientX-r.left,ev.clientY-r.top);
+        select(state.sel===id?null:id,false);
+      }
+      ag.drag=null;
+    }
+  });
+  cv.addEventListener('wheel',ev=>{
+    ev.preventDefault();
+    ag.zoom=Math.max(0.4,Math.min(3,ag.zoom*(ev.deltaY<0?1.08:0.92)));
+    agDraw();
+  },{passive:false});
+  // dokunmatik
+  cv.addEventListener('touchstart',ev=>{
+    if(ev.touches.length===1){ag.drag={x:ev.touches[0].clientX,y:ev.touches[0].clientY};moved=false;}
+  },{passive:true});
+  cv.addEventListener('touchmove',ev=>{
+    if(ag.drag&&ev.touches.length===1){
+      const dx=ev.touches[0].clientX-ag.drag.x, dy=ev.touches[0].clientY-ag.drag.y;
+      if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
+      ag.yaw+=dx*0.005;
+      ag.pitch=Math.max(-1.4,Math.min(1.4,ag.pitch+dy*0.005));
+      ag.drag={x:ev.touches[0].clientX,y:ev.touches[0].clientY};
+      agDraw();
+    }
+  },{passive:true});
+  cv.addEventListener('touchend',ev=>{
+    if(ag.drag&&!moved&&ev.changedTouches.length===1){
+      const r=cv.getBoundingClientRect();
+      const id=agNodeAt(ev.changedTouches[0].clientX-r.left,ev.changedTouches[0].clientY-r.top);
+      select(state.sel===id?null:id,false);
+    }
+    ag.drag=null;
+  });
 }
 
 load();

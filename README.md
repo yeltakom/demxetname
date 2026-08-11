@@ -57,9 +57,11 @@ O satırı sil, kaydet, GitHub'a yükle.
 
 - Tek HTML dosyası (`index.html`)
 - Veri: `events.csv` (112 olay)
-- Tasarım: sade zaman çizelgesi — dikey omurga, kategori işaretleri, kırmızı ilişki yayları
+- Dört görünüm (üst menüden): **Liste** (dikey omurga), **Yatay** (onyıl kolonlu bant),
+  **Halka** (çevrede kronoloji, içeride ilişki kirişleri), **Ağ 3B** (kuvvet yerleşimli
+  üç boyutlu ilişki haritası — coğrafya değil; sürükle: döndür, tekerlek: yakınlaş)
 - İlişkiler yalnızca veriden türetilir: bir olayın açıklamasında anılan yıllar,
-  o yıllardaki diğer olaylara bağlanır (tıklayınca kırmızı yaylarla çizilir)
+  o yıllardaki diğer olaylara bağlanır (tıklayınca kırmızı çizgilerle vurgulanır)
 - `lat` / `lng` sütunları veri olarak korunuyor ama artık haritada gösterilmiyor
   (harita kaldırıldı; istenirse geri eklenebilir)
 - Bağımlılık yok, build yok, framework yok, CDN yok
