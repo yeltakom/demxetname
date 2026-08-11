@@ -9,10 +9,7 @@
 <meta name="googlebot" content="noindex, nofollow">
 <meta name="bingbot" content="noindex, nofollow">
 
-<title>diyarbakır zaman çizelgesi</title>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<title>demxetname — diyarbakır zaman çizelgesi</title>
 
 <style>
 :root{
@@ -23,593 +20,217 @@
   --ink-40:#808080;
   --ink-20:#c0c0c0;
   --ink-10:#e5e5e5;
-  --ink-05:#f4f4f4;
-  --evidence:#ff2d00;
-
-  --font:Arial,Helvetica,sans-serif;
+  --red:#ff2d00;
+  --sans:Arial,Helvetica,sans-serif;
+  --serif:Georgia,'Times New Roman',serif;
+  --spine:112px;   /* omurga cizgisinin x konumu */
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
+html{scroll-behavior:smooth}
 body{
-  font-family:var(--font);
-  font-weight:400;
+  font-family:var(--sans);
   font-size:13px;
+  line-height:1.5;
   background:var(--paper);
   color:var(--ink);
-  overflow:hidden;
   -webkit-font-smoothing:antialiased;
-  line-height:1.5;
 }
 
-/* HEADER */
+/* ---------- HEADER ---------- */
 #header{
-  position:fixed;top:0;left:0;right:0;height:54px;
+  position:sticky;top:0;z-index:50;
   background:var(--paper);
   border-bottom:1px solid var(--ink);
-  z-index:1000;
-  padding:0 20px;
-  display:flex;align-items:center;justify-content:space-between;
 }
-#brand{display:flex;align-items:baseline;gap:18px}
+.hrow{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+  padding:14px 24px 10px;
+}
+#brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 #brand-mark{
-  font-weight:700;
-  font-size:18px;
-  letter-spacing:-0.02em;
-  color:var(--ink);
-  text-transform:lowercase;
+  font-family:var(--serif);
+  font-size:19px;
+  letter-spacing:-0.01em;
 }
 #brand-sub{
-  font-size:10px;
-  letter-spacing:0.08em;
-  color:var(--ink-60);
-  text-transform:uppercase;
-  font-weight:400;
-}
-#header-ctrl{display:flex;align-items:center;gap:0}
-.h-btn{
-  background:transparent;border:none;
-  font-family:var(--font);
-  font-size:10px;
-  font-weight:700;
-  color:var(--ink-60);
-  padding:6px 12px;
-  cursor:pointer;
-  transition:color 0.15s;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  border-left:1px solid var(--ink-10);
-}
-.h-btn:first-of-type{border-left:none}
-.h-btn:hover{color:var(--ink)}
-.h-btn.active{background:var(--ink);color:var(--paper)}
-
-/* MAP */
-#map{
-  position:fixed;
-  top:54px;left:0;right:340px;bottom:160px;
-  background:var(--paper);
-  border-right:1px solid var(--ink);
-}
-.leaflet-container{
-  background:var(--paper)!important;
-  font-family:var(--font);
-}
-.leaflet-tile-pane{filter:grayscale(1) contrast(1.15)}
-.leaflet-popup-content-wrapper{
-  background:var(--paper);
-  color:var(--ink);
-  border-radius:0;
-  border:1px solid var(--ink);
-  box-shadow:none;
-  padding:0;
-}
-.leaflet-popup-content{margin:0;min-width:280px;max-width:340px}
-.leaflet-popup-tip{
-  background:var(--paper);
-  border:1px solid var(--ink);
-  box-shadow:none;
-}
-.leaflet-popup-close-button{
-  color:var(--ink)!important;
-  font-size:18px!important;
-  padding:8px 10px!important;
-  font-weight:400!important;
-}
-.leaflet-control-zoom{
-  border:none!important;
-  box-shadow:none!important;
-  margin:14px!important;
-}
-.leaflet-control-zoom a{
-  background:var(--paper)!important;
-  color:var(--ink)!important;
-  border:1px solid var(--ink)!important;
-  border-radius:0!important;
-  width:28px!important;height:28px!important;
-  line-height:26px!important;
-  font-weight:400!important;
-  font-family:var(--font)!important;
-  font-size:14px!important;
-}
-.leaflet-control-zoom a:hover{background:var(--ink)!important;color:var(--paper)!important}
-.leaflet-control-zoom-in{border-bottom:none!important}
-.leaflet-control-attribution{
-  background:var(--paper)!important;
-  color:var(--ink-60)!important;
-  font-family:var(--font)!important;
-  font-size:9px!important;
-  border:1px solid var(--ink)!important;
-  border-right:none!important;
-  border-bottom:none!important;
-  border-radius:0!important;
-  padding:4px 10px!important;
-  letter-spacing:0.03em;
-}
-.leaflet-control-attribution a{color:var(--ink)!important}
-
-/* MARKERS */
-.event-marker{
-  width:10px;height:10px;
-  background:var(--ink);
-  border:1.5px solid var(--paper);
-  cursor:pointer;
-  transition:transform 0.15s ease;
-  box-shadow:0 0 0 1px var(--ink);
-  border-radius:50%;
-}
-.event-marker:hover{transform:scale(1.8);z-index:1000}
-.event-marker.evidence{background:var(--evidence);box-shadow:0 0 0 1px var(--evidence)}
-
-/* POPUP */
-.popup-inner{padding:16px 18px 18px}
-.popup-num{
-  font-size:9px;
-  color:var(--ink-60);
-  letter-spacing:0.1em;
-  border-bottom:1px solid var(--ink);
-  padding-bottom:8px;
-  margin-bottom:12px;
-  display:flex;justify-content:space-between;
-  text-transform:uppercase;
-  font-weight:700;
-}
-.popup-year{
-  font-weight:700;
-  font-size:32px;
-  line-height:1;
-  color:var(--ink);
-  letter-spacing:-0.03em;
-  margin-bottom:4px;
-}
-.popup-title{
-  font-weight:700;
-  font-size:15px;
-  line-height:1.25;
-  color:var(--ink);
-  margin-bottom:12px;
-  letter-spacing:-0.01em;
-}
-.popup-loc{
-  font-size:10px;
-  color:var(--ink-60);
-  text-transform:uppercase;
-  letter-spacing:0.06em;
-  margin-bottom:14px;
-  padding-bottom:14px;
-  border-bottom:1px solid var(--ink-10);
-  font-weight:700;
-}
-.popup-desc{
-  font-size:12.5px;
-  line-height:1.55;
-  color:var(--ink-80);
-}
-
-/* SIDE PANEL */
-#side-panel{
-  position:fixed;
-  top:54px;right:0;bottom:160px;
-  width:340px;
-  background:var(--paper);
-  overflow-y:auto;
-  z-index:100;
-}
-#stats{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  border-bottom:1px solid var(--ink);
-}
-.stat{
-  padding:18px 20px;
-  border-right:1px solid var(--ink-10);
-}
-.stat:last-child{border-right:none}
-.stat-num{
-  font-weight:700;
-  font-size:32px;
-  line-height:1;
-  color:var(--ink);
-  display:block;
-  letter-spacing:-0.03em;
-}
-.stat-label{
-  font-size:9px;
-  letter-spacing:0.1em;
-  color:var(--ink-60);
-  text-transform:uppercase;
-  margin-top:8px;
-  font-weight:700;
-}
-#legend{
-  padding:18px 20px;
-  border-bottom:1px solid var(--ink);
-}
-.section-title{
   font-size:9px;
   letter-spacing:0.12em;
-  color:var(--ink-60);
   text-transform:uppercase;
-  margin-bottom:14px;
-  font-weight:700;
+  color:var(--ink-60);
 }
-.legend-row{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:6px 0;
-  cursor:pointer;
+#ctrl{display:flex;align-items:baseline;gap:2px 14px;flex-wrap:wrap}
+#filters{display:flex;gap:2px 12px;flex-wrap:wrap}
+.f-btn{
+  background:none;border:none;cursor:pointer;
+  font-family:var(--sans);
+  font-size:9px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--ink);
+  display:flex;align-items:center;gap:6px;
+  padding:4px 0;
   transition:opacity 0.15s;
 }
-.legend-row.disabled{opacity:0.3}
-.legend-mark{
-  width:10px;height:10px;
-  background:var(--ink);
-  border-radius:50%;
-  flex-shrink:0;
+.f-btn.off{opacity:0.25}
+.f-btn:hover{text-decoration:underline}
+#langs{display:flex;gap:0;border-left:1px solid var(--ink-10);padding-left:14px}
+.lang-btn{
+  background:none;border:none;cursor:pointer;
+  font-family:var(--sans);
+  font-size:10px;font-weight:700;
+  letter-spacing:0.08em;
+  color:var(--ink-40);
+  padding:4px 6px;
 }
-.legend-row[data-cat="hukuki"] .legend-mark{background:var(--ink)}
-.legend-row[data-cat="yikim"] .legend-mark{background:var(--paper);border:1.5px solid var(--ink)}
-.legend-row[data-cat="yerinden"] .legend-mark{background:var(--ink);border-radius:0}
-.legend-row[data-cat="mimarlik"] .legend-mark{
+.lang-btn.active{color:var(--ink)}
+.lang-btn:hover{color:var(--ink)}
+
+/* kategori isaretleri */
+.glyph{
+  width:9px;height:9px;flex-shrink:0;
+  background:var(--ink);border-radius:50%;
+}
+.glyph[data-cat="yikim"]{background:var(--paper);border:1.5px solid var(--ink)}
+.glyph[data-cat="yerinden"]{border-radius:0}
+.glyph[data-cat="mimarlik"]{
   background:linear-gradient(135deg,var(--ink) 50%,var(--paper) 50%);
   border:1px solid var(--ink);
-  border-radius:50%;
 }
-.legend-row[data-cat="direnis"] .legend-mark{background:var(--evidence);border-radius:50%}
-.legend-label{
-  font-size:13px;
-  color:var(--ink);
-  flex:1;
-  font-weight:400;
-}
-.legend-count{
-  display:none;
-}
-#event-list{padding:16px 20px 40px}
-.event-card{
-  padding:14px 0;
-  border-bottom:1px solid var(--ink-10);
-  cursor:pointer;
-  display:grid;
-  grid-template-columns:auto 1fr;
-  gap:14px;
-  align-items:start;
-  transition:padding 0.15s;
-}
-.event-card:hover{padding-left:6px}
-.event-card:hover .ec-title{text-decoration:underline}
-.event-card:last-child{border-bottom:none}
-.ec-num{
-  font-size:10px;
-  color:var(--ink-40);
-  letter-spacing:0.04em;
-  min-width:28px;
-  font-weight:700;
-}
-.ec-year{
-  font-weight:700;
-  font-size:14px;
-  color:var(--ink);
-  letter-spacing:-0.02em;
-  margin-bottom:2px;
-}
-.ec-title{
-  font-size:13px;
-  line-height:1.3;
-  color:var(--ink);
-  margin-bottom:6px;
-  font-weight:400;
-}
-.ec-meta{
-  font-size:9px;
-  color:var(--ink-60);
-  text-transform:uppercase;
-  letter-spacing:0.06em;
-  display:flex;align-items:center;gap:8px;
-  font-weight:700;
-}
-.ec-dot{width:5px;height:5px;background:var(--ink);border-radius:50%;flex-shrink:0}
+.glyph[data-cat="direnis"]{background:var(--red)}
 
-/* TIMELINE */
-#timeline{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  height:160px;
-  background:var(--paper);
-  border-top:1px solid var(--ink);
-  padding:18px 24px 16px;
-  z-index:100;
-}
-#tl-head{
-  display:flex;justify-content:space-between;align-items:baseline;
-  margin-bottom:14px;
-}
-#tl-title{
-  font-size:10px;
-  letter-spacing:0.12em;
-  color:var(--ink-60);
-  text-transform:uppercase;
-  font-weight:700;
-}
-#tl-readout{
-  font-size:13px;
-  color:var(--ink);
-  max-width:60%;
-  text-align:right;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  letter-spacing:-0.005em;
-  font-weight:400;
-}
-#tl-track{
+/* ---------- CHART ---------- */
+#chart{
   position:relative;
-  height:96px;
-  background:var(--paper);
-  border:1px solid var(--ink);
+  max-width:920px;
+  margin:0 auto;
+  padding:36px 24px 80px;
 }
-#tl-events{position:absolute;inset:0;overflow:hidden}
-.tl-event{
+#spine-line{
   position:absolute;
-  bottom:0;
+  top:36px;bottom:80px;
+  left:calc(24px + var(--spine));
   width:1px;
-  height:74px;
   background:var(--ink);
-  cursor:pointer;
-  transition:width 0.15s, background 0.15s;
 }
-.tl-event:hover{
-  width:3px;
-  background:var(--evidence);
-  transform:translateX(-1px);
-}
-#tl-decades{position:absolute;inset:0;pointer-events:none}
-.d-mark{
-  position:absolute;
-  bottom:0;
-  width:1px;
-  background:var(--ink-20);
-  height:5px;
-}
-.d-mark.major{background:var(--ink);height:8px}
-.d-label{
-  position:absolute;
-  bottom:-4px;
-  transform:translateX(-50%);
-  font-size:9px;
-  color:var(--ink-60);
-  background:var(--paper);
-  padding:0 6px;
-  letter-spacing:0.04em;
-  font-weight:700;
-}
-#tl-scrub{
-  position:absolute;
-  top:0;bottom:0;
-  width:1px;
-  background:var(--evidence);
+#arcs{
+  position:absolute;inset:0;
   pointer-events:none;
-  z-index:10;
-  display:none;
-}
-.era-mark{
-  position:absolute;
-  bottom:74px;
-  height:3px;
-  background:var(--ink);
-  pointer-events:none;
-}
-.era-label{
-  position:absolute;
-  top:6px;
-  font-size:8.5px;
-  color:var(--ink-60);
-  letter-spacing:0.06em;
-  text-transform:uppercase;
-  pointer-events:none;
-  white-space:nowrap;
-  font-weight:700;
+  z-index:5;
 }
 
-/* INTRO */
-#intro{
-  position:fixed;
-  inset:0;
-  background:var(--paper);
-  z-index:9999;
-  display:flex;
-  flex-direction:column;
-  padding:0;
-  overflow-y:auto;
-}
-.intro-bar{
-  height:48px;
-  border-bottom:1px solid var(--ink);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 24px;
-  flex-shrink:0;
-}
-.intro-bar-l{
-  font-size:10px;
-  letter-spacing:0.12em;
-  color:var(--ink-60);
-  text-transform:uppercase;
-  font-weight:700;
-}
-.intro-lang{display:flex;gap:0}
-.intro-content{
-  flex:1;
-  padding:60px 40px 40px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.intro-inner{
-  max-width:920px;
-  width:100%;
+.decade{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:60px;
+  grid-template-columns:var(--spine) 28px 1fr;
+  align-items:baseline;
+  margin:34px 0 10px;
 }
-.intro-left{display:flex;flex-direction:column}
-.intro-meta{
-  font-size:10px;
-  letter-spacing:0.12em;
-  color:var(--ink-60);
-  text-transform:uppercase;
-  margin-bottom:20px;
-  padding-bottom:14px;
-  border-bottom:1px solid var(--ink);
-  display:flex;justify-content:space-between;
-  font-weight:700;
-}
-#intro-title{
-  font-weight:700;
-  font-size:64px;
-  letter-spacing:-0.04em;
-  line-height:0.95;
-  margin-bottom:24px;
-  color:var(--ink);
-}
-#intro-subtitle{
-  font-style:italic;
-  font-weight:400;
-  font-size:20px;
-  line-height:1.3;
-  margin-bottom:40px;
-  color:var(--ink-80);
-  letter-spacing:-0.01em;
-}
-.intro-credits{
-  font-size:10px;
-  line-height:1.7;
-  color:var(--ink-60);
-  letter-spacing:0.04em;
-  margin-top:auto;
-  padding-top:30px;
-  border-top:1px solid var(--ink);
-  font-weight:400;
-  text-transform:uppercase;
-}
-.intro-credits strong{color:var(--ink);font-weight:700}
-.intro-right p{
-  font-size:15px;
-  line-height:1.55;
-  color:var(--ink-80);
-  margin-bottom:18px;
-  font-weight:400;
-}
-.intro-right p:first-child{
+.decade:first-child{margin-top:0}
+.decade .d-label{
+  font-family:var(--serif);
   font-size:17px;
   color:var(--ink);
+  text-align:right;
+  padding-right:18px;
 }
-.intro-right p strong{color:var(--ink);font-weight:700}
-.intro-right p em{
-  color:var(--evidence);
-  font-style:normal;
-  font-weight:700;
+.decade .d-rule{grid-column:2/4;border-top:1px solid var(--ink-10);align-self:center}
+
+.ev{
+  display:grid;
+  grid-template-columns:var(--spine) 28px 1fr;
+  align-items:start;
+  cursor:pointer;
+  padding:7px 0;
+  transition:opacity 0.2s;
 }
-.intro-enter-row{
-  margin-top:32px;
-  padding-top:24px;
+.ev-year{
+  font-family:var(--serif);
+  font-size:13px;
+  color:var(--ink-80);
+  text-align:right;
+  padding-right:18px;
+  padding-top:1px;
+}
+.ev-year.repeat{color:var(--ink-20)}
+.ev-spine{
+  position:relative;height:100%;
+}
+.ev-spine .glyph{
+  position:absolute;
+  left:-4px;top:6px;    /* omurga cizgisine oturur */
+}
+.ev-body{padding-left:2px;min-width:0}
+.ev-title{
+  font-size:13px;
+  line-height:1.35;
+}
+.ev-loc{
+  font-size:8.5px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--ink-40);
+  margin-top:2px;
+}
+.ev:hover .ev-title{text-decoration:underline}
+
+/* secim durumlari */
+#chart.has-sel .ev{opacity:0.16}
+#chart.has-sel .ev.rel{opacity:1}
+#chart.has-sel .ev.sel{opacity:1}
+.ev.sel .ev-title{font-weight:700}
+.ev.sel .ev-spine .glyph{box-shadow:0 0 0 3px var(--paper),0 0 0 4px var(--red)}
+.ev.rel .ev-title{color:var(--ink)}
+
+.ev-detail{display:none;max-width:60ch;padding:10px 0 6px}
+.ev.sel .ev-detail{display:block}
+.ev-desc{
+  font-size:12.5px;
+  line-height:1.6;
+  color:var(--ink-80);
+}
+.ev-links{margin-top:10px;display:flex;flex-direction:column;gap:3px;align-items:flex-start}
+.ev-link{
+  background:none;border:none;cursor:pointer;
+  font-family:var(--sans);
+  font-size:10px;
+  letter-spacing:0.04em;
+  color:var(--red);
+  text-align:left;
+  padding:0;
+}
+.ev-link:hover{text-decoration:underline}
+.ev-link .yl{font-family:var(--serif);font-size:11px}
+
+/* ---------- FOOTER ---------- */
+#footer{
   border-top:1px solid var(--ink);
-  display:flex;align-items:center;justify-content:space-between;
-}
-#intro-enter{
-  background:var(--ink);
-  border:none;
-  color:var(--paper);
-  padding:14px 28px;
-  font-family:var(--font);
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:0.12em;
-  cursor:pointer;
-  border-radius:0;
-  transition:background 0.15s;
+  padding:16px 24px 40px;
+  font-size:9px;
+  letter-spacing:0.1em;
   text-transform:uppercase;
-}
-#intro-enter:hover{background:var(--evidence)}
-.intro-enter-meta{
-  font-size:10px;
-  letter-spacing:0.06em;
   color:var(--ink-60);
-  text-transform:uppercase;
-  font-weight:700;
+  line-height:2;
 }
 
-/* LOADING STATE */
 #loading{
-  position:fixed;inset:0;
-  background:var(--paper);
-  z-index:99999;
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;
+  padding:120px 24px;
+  text-align:center;
+  font-size:10px;
   letter-spacing:0.12em;
   text-transform:uppercase;
   color:var(--ink-60);
-  font-weight:700;
 }
 
-/* MOBILE */
-#panel-toggle{
-  display:none;
-  position:fixed;
-  top:64px;right:14px;
-  z-index:200;
-  background:var(--paper);
-  border:1px solid var(--ink);
-  color:var(--ink);
-  padding:6px 14px;
-  font-family:var(--font);
-  font-size:10px;
-  letter-spacing:0.08em;
-  cursor:pointer;
-  text-transform:uppercase;
-  font-weight:700;
-}
-
-@media(max-width:900px){
-  #map{right:0;bottom:180px;border-right:none}
-  #side-panel{
-    width:100%;bottom:180px;top:54px;
-    border-left:1px solid var(--ink);
-    transform:translateX(100%);
-    transition:transform 0.25s;
-  }
-  #side-panel.open{transform:translateX(0)}
-  #panel-toggle{display:block}
-  #timeline{height:180px;padding:14px 16px}
-  #brand-sub{display:none}
-  #brand-mark{font-size:16px}
-  .h-btn{padding:5px 10px;font-size:9px}
-  #intro-title{font-size:36px}
-  #intro-subtitle{font-size:16px}
-  .intro-inner{grid-template-columns:1fr;gap:30px}
-  .intro-content{padding:30px 20px}
-  .intro-right p{font-size:14px}
-  .intro-right p:first-child{font-size:15px}
+@media(max-width:640px){
+  :root{--spine:52px}
+  .hrow{padding:12px 14px 8px}
+  #chart{padding:24px 14px 60px}
+  #spine-line{left:calc(14px + var(--spine));top:24px;bottom:60px}
+  .ev-year{font-size:11px;padding-right:10px}
+  .decade .d-label{font-size:14px;padding-right:10px}
+  .ev{grid-template-columns:var(--spine) 22px 1fr}
+  .decade{grid-template-columns:var(--spine) 22px 1fr}
 }
 
 ::-webkit-scrollbar{width:10px}
@@ -620,133 +241,69 @@ body{
 </head>
 <body>
 
-<div id="loading">veri yükleniyor / loading data…</div>
-
-<!-- INTRO -->
-<div id="intro" style="display:none">
-  <div class="intro-bar">
-    <div class="intro-bar-l">diyarbakır zaman çizelgesi</div>
-    <div class="intro-lang">
-      <button class="h-btn lang-btn active" data-lang="tr">TR</button>
-      <button class="h-btn lang-btn" data-lang="en">EN</button>
+<header id="header">
+  <div class="hrow">
+    <div id="brand">
+      <div id="brand-mark">demxetname</div>
+      <div id="brand-sub"
+        data-tr="Diyarbakır ve Kürdistan'da bir zaman çizelgesi · 1853 — 2026"
+        data-en="A timeline of Diyarbakır and Kurdistan · 1853 — 2026">Diyarbakır ve Kürdistan'da bir zaman çizelgesi · 1853 — 2026</div>
     </div>
-  </div>
-
-  <div class="intro-content">
-    <div class="intro-inner">
-      <div class="intro-left">
-        <div class="intro-meta">
-          <span>1853 — 2026</span>
-          <span data-tr="173 yıl · 90 olay" data-en="173 years · 90 events">173 yıl · 90 olay</span>
-        </div>
-        <div id="intro-title">diyarbakır<br>zaman çizelgesi</div>
-        <div id="intro-subtitle"
-          data-tr="Diyarbakır ve Kürdistan'da bir zaman çizelgesi."
-          data-en="A timeline of Diyarbakır and Kurdistan.">
-          Diyarbakır ve Kürdistan'da bir zaman çizelgesi.
-        </div>
-
-        <div class="intro-credits">
-          <span data-tr="ARAŞTIRMA · DERLEME" data-en="RESEARCH · COMPILATION">ARAŞTIRMA · DERLEME</span><br>
-          <strong>Yıldız Tahtacı — Pelin Tan — Yelta Köm</strong><br>
-          2020 / 2026<br><br>
-          <span data-tr="ARAZİ ASSEMBLY · BERLİN" data-en="ARAZI ASSEMBLY · BERLIN">ARAZİ ASSEMBLY · BERLİN</span>
-        </div>
+    <div id="ctrl">
+      <div id="filters">
+        <button class="f-btn" data-cat="hukuki"><span class="glyph" data-cat="hukuki"></span><span data-tr="Hukuki &amp; İdari" data-en="Legal &amp; Administrative">Hukuki &amp; İdari</span></button>
+        <button class="f-btn" data-cat="yikim"><span class="glyph" data-cat="yikim"></span><span data-tr="Kentsel Yıkım" data-en="Urban Destruction">Kentsel Yıkım</span></button>
+        <button class="f-btn" data-cat="yerinden"><span class="glyph" data-cat="yerinden"></span><span data-tr="Yerinden Edilme" data-en="Displacement">Yerinden Edilme</span></button>
+        <button class="f-btn" data-cat="mimarlik"><span class="glyph" data-cat="mimarlik"></span><span data-tr="Mimarlık &amp; Miras" data-en="Architecture &amp; Heritage">Mimarlık &amp; Miras</span></button>
+        <button class="f-btn" data-cat="direnis"><span class="glyph" data-cat="direnis"></span><span data-tr="Direniş &amp; Siyaset" data-en="Resistance &amp; Politics">Direniş &amp; Siyaset</span></button>
       </div>
-
-      <div class="intro-right">
-        <p data-tr="Bu çizelge, <strong>173 yıllık bir dönemi</strong> — Osmanlı Şehremaneti'nden 2026 TBMM Komisyonu'na — toprak, mülksüzleştirme, mekânsal yıkım ve mimarlık üzerinden haritalandırır."
-          data-en="This timeline maps <strong>173 years</strong>, from the Ottoman Şehremaneti to the 2026 Parliamentary Commission, through the registers of land, dispossession, spatial destruction, and architecture."></p>
-
-        <p data-tr="<em>Doksan olay</em>, coğrafyasında işaretlenmiş, beş kategoriye ayrılmış. Her olayı haritada, listede veya zaman şeridinde açabilirsiniz."
-          data-en="<em>Ninety events</em>, plotted to their geography, sorted into five categories. Each can be opened on the map, the list, or the timeline."></p>
-
-        <p data-tr="Alt şerit 1853'ten 2026'ya uzanır. Yan panelden kategorileri filtreleyin; üstten dili değiştirin."
-          data-en="The lower band reads 1853 to 2026. Filter categories from the side panel; switch language from the header."></p>
-
-        <div class="intro-enter-row">
-          <button id="intro-enter" data-tr="Haritaya Gir →" data-en="Enter Map →">Haritaya Gir →</button>
-          <div class="intro-enter-meta">1853 — 2026</div>
-        </div>
+      <div id="langs">
+        <button class="lang-btn active" data-lang="tr">TR</button>
+        <button class="lang-btn" data-lang="en">EN</button>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- HEADER -->
-<header id="header" style="display:none">
-  <div id="brand">
-    <div id="brand-mark">diyarbakır zaman çizelgesi</div>
-    <div id="brand-sub">1853 — 2026</div>
-  </div>
-  <div id="header-ctrl">
-    <button class="h-btn lang-btn active" data-lang="tr">TR</button>
-    <button class="h-btn lang-btn" data-lang="en">EN</button>
   </div>
 </header>
 
-<button id="panel-toggle" data-tr="Filtre +" data-en="Filter +" style="display:none">Filtre +</button>
-<div id="map" style="display:none"></div>
+<div id="loading">veri yükleniyor / loading data…</div>
 
-<aside id="side-panel" style="display:none">
-  <div id="legend">
-    <div class="section-title" data-tr="Kategoriler — Filtre" data-en="Categories — Filter">Kategoriler — Filtre</div>
-    <div class="legend-row" data-cat="hukuki"><div class="legend-mark"></div><div class="legend-label" data-tr="Hukuki & İdari" data-en="Legal & Administrative">Hukuki & İdari</div></div>
-    <div class="legend-row" data-cat="yikim"><div class="legend-mark"></div><div class="legend-label" data-tr="Kentsel Yıkım" data-en="Urban Destruction">Kentsel Yıkım</div></div>
-    <div class="legend-row" data-cat="yerinden"><div class="legend-mark"></div><div class="legend-label" data-tr="Yerinden Edilme" data-en="Displacement">Yerinden Edilme</div></div>
-    <div class="legend-row" data-cat="mimarlik"><div class="legend-mark"></div><div class="legend-label" data-tr="Mimarlık & Miras" data-en="Architecture & Heritage">Mimarlık & Miras</div></div>
-    <div class="legend-row" data-cat="direnis"><div class="legend-mark"></div><div class="legend-label" data-tr="Direniş & Siyaset" data-en="Resistance & Politics">Direniş & Siyaset</div></div>
-  </div>
+<main id="chart" style="display:none">
+  <div id="spine-line"></div>
+  <svg id="arcs"></svg>
+  <div id="rows"></div>
+</main>
 
-  <div id="event-list">
-    <div class="section-title" data-tr="Olaylar — Kronolojik" data-en="Events — Chronological">Olaylar — Kronolojik</div>
-    <div id="event-list-items"></div>
-  </div>
-</aside>
-
-<footer id="timeline" style="display:none">
-  <div id="tl-head">
-    <div id="tl-title" data-tr="Zaman Şeridi · 1853 — 2026" data-en="Timeline · 1853 — 2026">Zaman Şeridi · 1853 — 2026</div>
-    <div id="tl-readout">—</div>
-  </div>
-  <div id="tl-track">
-    <div id="tl-decades"></div>
-    <div id="tl-events"></div>
-    <div id="tl-scrub"></div>
-  </div>
+<footer id="footer" style="display:none">
+  <span data-tr="Araştırma · Derleme" data-en="Research · Compilation">Araştırma · Derleme</span>
+  — Yıldız Tahtacı — Pelin Tan — Yelta Köm<br>
+  Arazi Assembly · 2020 / 2026
 </footer>
 
 <script>
 // ============================================================
-// CSV LOADER — events.csv dosyasını okur, harita oluşturur
+// demxetname — sade zaman çizelgesi
+// Veri: events.csv. İlişkiler yalnızca veriden türetilir:
+// bir olayın metninde anılan yıllar, o yıllardaki olaylara bağlanır.
 // ============================================================
 
-const CAT_LABELS={
-  tr:{hukuki:'Hukuki & İdari',yikim:'Kentsel Yıkım',yerinden:'Yerinden Edilme',mimarlik:'Mimarlık & Miras',direnis:'Direniş & Siyaset'},
-  en:{hukuki:'Legal & Administrative',yikim:'Urban Destruction',yerinden:'Displacement',mimarlik:'Architecture & Heritage',direnis:'Resistance & Politics'}
-};
-
-const YEAR_MIN=1853, YEAR_MAX=2026;
 let events=[];
-let TOTAL=0;
-const state={lang:'tr',cats:new Set(['hukuki','yikim','yerinden','mimarlik','direnis']),markers:new Map()};
+const state={
+  lang:'tr',
+  cats:new Set(['hukuki','yikim','yerinden','mimarlik','direnis']),
+  sel:null
+};
+const rel=new Map();   // id -> Set(id)
 
-function pad(n){return String(n).padStart(3,'0');}
-
-// Robust CSV parser: handles quoted fields, escaped quotes, commas in fields
+/* ---- CSV ---- */
 function parseCSV(text){
-  const rows=[];
-  let row=[],field='',inQuotes=false,i=0;
+  const rows=[];let row=[],field='',q=false,i=0;
   while(i<text.length){
     const c=text[i];
-    if(inQuotes){
-      if(c==='"'){
-        if(text[i+1]==='"'){field+='"';i+=2;continue;}
-        inQuotes=false;i++;continue;
-      }
+    if(q){
+      if(c==='"'){ if(text[i+1]==='"'){field+='"';i+=2;continue;} q=false;i++;continue; }
       field+=c;i++;
     }else{
-      if(c==='"'){inQuotes=true;i++;continue;}
+      if(c==='"'){q=true;i++;continue;}
       if(c===','){row.push(field);field='';i++;continue;}
       if(c==='\n'||c==='\r'){
         if(field!==''||row.length>0){row.push(field);rows.push(row);row=[];field='';}
@@ -760,265 +317,185 @@ function parseCSV(text){
   return rows;
 }
 
-async function loadEvents(){
+async function load(){
   try{
-    const res=await fetch('events.csv?'+Date.now());  // cache buster
+    const res=await fetch('events.csv?'+Date.now());
     if(!res.ok)throw new Error('events.csv yüklenemedi');
-    const text=await res.text();
-    const rows=parseCSV(text);
-    const headers=rows[0];
-    const idx={};
-    headers.forEach((h,i)=>idx[h.trim()]=i);
-
+    const rows=parseCSV(await res.text());
+    const idx={};rows[0].forEach((h,i)=>idx[h.trim()]=i);
     events=rows.slice(1).filter(r=>r.length>=11&&r[0]).map(r=>({
-      id:parseInt(r[idx.id]),
+      id:r[idx.id],
       year:parseInt(r[idx.year]),
-      lat:parseFloat(r[idx.lat]),
-      lng:parseFloat(r[idx.lng]),
       cat:r[idx.category].trim(),
       tr:{t:r[idx.title_tr],l:r[idx.location_tr],d:r[idx.description_tr]},
       en:{t:r[idx.title_en],l:r[idx.location_en],d:r[idx.description_en]}
     }));
-
-    TOTAL=events.length;
-    initApp();
+    events.sort((a,b)=>a.year-b.year||(+a.id)-(+b.id));
+    buildRelations();
+    init();
   }catch(e){
     console.error(e);
-    document.getElementById('loading').innerHTML='hata / error: events.csv bulunamadı';
+    document.getElementById('loading').textContent='hata / error: events.csv bulunamadı';
   }
 }
 
-function initApp(){
-  // Hide loading, show UI
-  document.getElementById('loading').style.display='none';
-  document.getElementById('intro').style.display='flex';
-  document.getElementById('header').style.display='flex';
-  document.getElementById('map').style.display='block';
-  document.getElementById('side-panel').style.display='block';
-  document.getElementById('timeline').style.display='block';
-  document.getElementById('panel-toggle').removeAttribute('style');
-
-  // Offset overlapping markers
-  const grouped=new Map();
+/* ---- iliskiler: metinde anilan yillar ---- */
+function buildRelations(){
+  const byYear=new Map();
   events.forEach(e=>{
-    const key=`${e.lat.toFixed(3)}_${e.lng.toFixed(3)}`;
-    if(!grouped.has(key))grouped.set(key,[]);
-    grouped.get(key).push(e);
+    if(!byYear.has(e.year))byYear.set(e.year,[]);
+    byYear.get(e.year).push(e.id);
   });
-  grouped.forEach(g=>{
-    if(g.length>1){
-      const step=(Math.PI*2)/g.length;
-      const r=0.022;
-      g.forEach((e,i)=>{
-        e._lat=e.lat+Math.sin(step*i)*r;
-        e._lng=e.lng+Math.cos(step*i)*r;
+  const RE=/\b(18[5-9]\d|19\d\d|20[0-2]\d)\b/g;
+  events.forEach(e=>{
+    const txt=e.tr.t+' '+e.tr.d;
+    const yrs=new Set([...txt.matchAll(RE)].map(m=>+m[1]));
+    yrs.delete(e.year);
+    yrs.forEach(y=>{
+      (byYear.get(y)||[]).forEach(t=>{
+        if(t===e.id)return;
+        if(!rel.has(e.id))rel.set(e.id,new Set());
+        if(!rel.has(t))rel.set(t,new Set());
+        rel.get(e.id).add(t);
+        rel.get(t).add(e.id);
       });
-    }else{g[0]._lat=g[0].lat;g[0]._lng=g[0].lng;}
+    });
   });
+}
 
-  // Map init
-  window._map=L.map('map',{center:[38.5,41.0],zoom:7,minZoom:4,maxZoom:14,preferCanvas:true,zoomControl:true});
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',{
-    attribution:'© Leaflet · CartoDB · OpenStreetMap',
-    subdomains:'abcd',maxZoom:19
-  }).addTo(window._map);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',{
-    subdomains:'abcd',maxZoom:19,pane:'shadowPane',opacity:0.6
-  }).addTo(window._map);
+function init(){
+  document.getElementById('loading').style.display='none';
+  document.getElementById('chart').style.display='block';
+  document.getElementById('footer').style.display='block';
 
-  // Timeline decade marks
-  const tlDecades=document.getElementById('tl-decades');
-  for(let y=1860;y<=2020;y+=10){
-    const m=document.createElement('div');
-    m.className='d-mark'+(y%20===0?' major':'');
-    m.style.left=yearToPct(y)+'%';
-    tlDecades.appendChild(m);
-    if(y%20===0){
-      const l=document.createElement('div');
-      l.className='d-label';
-      l.style.left=yearToPct(y)+'%';
-      l.textContent=y;
-      tlDecades.appendChild(l);
-    }
-  }
-  // Era markers
-  const eras=[
-    {f:1853,t:1922,tr:'Geç Osmanlı',en:'Late Ottoman'},
-    {f:1923,t:1949,tr:'Tek Parti',en:'One-Party'},
-    {f:1950,t:1999,tr:'Soğuk Savaş',en:'Cold War'},
-    {f:2000,t:2023,tr:'Ak Parti Dönemi',en:'AKP Era'},
-    {f:2024,t:2026,tr:'Süreç 2.0',en:'Process 2.0'}
-  ];
-  eras.forEach(era=>{
-    const m=document.createElement('div');
-    m.className='era-mark';
-    m.style.left=yearToPct(era.f)+'%';
-    m.style.width=(yearToPct(era.t)-yearToPct(era.f))+'%';
-    tlDecades.appendChild(m);
-    const l=document.createElement('div');
-    l.className='era-label';
-    l.style.left=yearToPct(era.f)+'%';
-    l.setAttribute('data-tr',era.tr);
-    l.setAttribute('data-en',era.en);
-    l.textContent=era.tr;
-    tlDecades.appendChild(l);
-  });
-
-  // Wire up filters and language
-  document.querySelectorAll('.legend-row').forEach(r=>{
-    r.addEventListener('click',()=>{
-      const c=r.dataset.cat;
-      if(state.cats.has(c)){state.cats.delete(c);r.classList.add('disabled');}
-      else{state.cats.add(c);r.classList.remove('disabled');}
-      applyFilters();
+  document.querySelectorAll('.f-btn').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const c=b.dataset.cat;
+      if(state.cats.has(c)){state.cats.delete(c);b.classList.add('off');}
+      else{state.cats.add(c);b.classList.remove('off');}
+      if(state.sel&&!visible().some(e=>e.id===state.sel))state.sel=null;
+      render();
     });
   });
   document.querySelectorAll('.lang-btn').forEach(b=>{
-    b.addEventListener('click',()=>applyLanguage(b.dataset.lang));
-  });
-
-  // Timeline interaction
-  const tlTrack=document.getElementById('tl-track');
-  const tlScrub=document.getElementById('tl-scrub');
-  const tlReadout=document.getElementById('tl-readout');
-  tlTrack.addEventListener('mousemove',(ev)=>{
-    const r=tlTrack.getBoundingClientRect();
-    const x=ev.clientX-r.left;
-    const pct=(x/r.width)*100;
-    const y=Math.round(YEAR_MIN+(pct/100)*(YEAR_MAX-YEAR_MIN));
-    if(y>=YEAR_MIN&&y<=YEAR_MAX){
-      tlScrub.style.display='block';
-      tlScrub.style.left=pct+'%';
-      tlReadout.textContent=y;
-    }
-  });
-  tlTrack.addEventListener('mouseleave',()=>{
-    tlScrub.style.display='none';
-    tlReadout.textContent='—';
-  });
-
-  document.getElementById('intro-enter').addEventListener('click',()=>{
-    const intro=document.getElementById('intro');
-    intro.style.transition='opacity 0.5s ease';
-    intro.style.opacity='0';
-    setTimeout(()=>{intro.style.display='none';window._map.invalidateSize();},500);
-  });
-  document.getElementById('panel-toggle').addEventListener('click',()=>{
-    document.getElementById('side-panel').classList.toggle('open');
-  });
-
-  rebuildMarkers();
-  renderTimelineEvents();
-  renderEventList();
-  updateStats();
-  applyLanguage('tr');
-}
-
-function applyLanguage(lang){
-  state.lang=lang;
-  document.querySelectorAll('[data-tr]').forEach(el=>{
-    const txt=el.getAttribute(`data-${lang}`);
-    if(txt)el.innerHTML=txt;
-  });
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
-  document.documentElement.lang=lang;
-  renderEventList();
-  renderTimelineEvents();
-  rebuildMarkers();
-}
-
-function buildPopup(e){
-  const t=e[state.lang];
-  const catLabel=CAT_LABELS[state.lang][e.cat];
-  return `<div class="popup-inner">
-    <div class="popup-num"><span>${pad(e.id)} / ${pad(TOTAL)}</span><span>${catLabel}</span></div>
-    <div class="popup-year">${e.year}</div>
-    <div class="popup-title">${t.t}</div>
-    <div class="popup-loc">${t.l} · ${e.lat.toFixed(3)}, ${e.lng.toFixed(3)}</div>
-    <div class="popup-desc">${t.d}</div>
-  </div>`;
-}
-
-function rebuildMarkers(){
-  state.markers.forEach(m=>window._map.removeLayer(m));
-  state.markers.clear();
-  events.forEach(e=>{
-    const cls=e.cat==='direnis'?'event-marker evidence':'event-marker';
-    const html=`<div class="${cls}"></div>`;
-    const icon=L.divIcon({html,className:'event-marker-wrapper',iconSize:[10,10],iconAnchor:[5,5]});
-    const m=L.marker([e._lat,e._lng],{icon,riseOnHover:true});
-    m.bindPopup(buildPopup(e),{maxWidth:360,autoPan:true,closeButton:true});
-    m.addTo(window._map);
-    state.markers.set(e.id,m);
-  });
-  applyFilters(false);
-}
-
-function yearToPct(y){return((y-YEAR_MIN)/(YEAR_MAX-YEAR_MIN))*100;}
-
-function renderTimelineEvents(){
-  const tlEvents=document.getElementById('tl-events');
-  const tlReadout=document.getElementById('tl-readout');
-  tlEvents.innerHTML='';
-  getFiltered().forEach(e=>{
-    const el=document.createElement('div');
-    el.className='tl-event';
-    el.style.left=yearToPct(e.year)+'%';
-    if(e.cat==='direnis')el.style.background='var(--evidence)';
-    el.dataset.id=e.id;
-    el.title=`${e.year} · ${e[state.lang].t}`;
-    el.addEventListener('click',(ev)=>{
-      ev.stopPropagation();
-      const m=state.markers.get(e.id);
-      if(m){
-        window._map.setView([e._lat,e._lng],Math.max(window._map.getZoom(),9),{animate:true});
-        m.openPopup();
-      }
+    b.addEventListener('click',()=>{
+      state.lang=b.dataset.lang;
+      document.documentElement.lang=state.lang;
+      document.querySelectorAll('.lang-btn').forEach(x=>x.classList.toggle('active',x.dataset.lang===state.lang));
+      document.querySelectorAll('[data-tr]').forEach(el=>{
+        const t=el.getAttribute('data-'+state.lang);
+        if(t)el.innerHTML=t;
+      });
+      render();
     });
-    el.addEventListener('mouseenter',()=>{tlReadout.textContent=`${e.year} — ${e[state.lang].t}`;});
-    tlEvents.appendChild(el);
   });
+  window.addEventListener('resize',()=>drawArcs());
+  render();
 }
 
-function getFiltered(){return events.filter(e=>state.cats.has(e.cat));}
+const visible=()=>events.filter(e=>state.cats.has(e.cat));
 
-function applyFilters(rerender=true){
-  const visible=new Set(getFiltered().map(e=>e.id));
-  state.markers.forEach((m,id)=>{
-    if(visible.has(id)){if(!window._map.hasLayer(m))m.addTo(window._map);}
-    else{if(window._map.hasLayer(m))window._map.removeLayer(m);}
-  });
-  if(rerender){renderTimelineEvents();renderEventList();}
-  updateStats();
-}
-
-function updateStats(){
-  // İstatistik kutuları kaldırıldı — fonksiyon boş, filtre değiştiğinde çağrıldığı için duruyor
-}
-
-function renderEventList(){
-  const c=document.getElementById('event-list-items');
+/* ---- liste ---- */
+function render(){
+  const c=document.getElementById('rows');
   c.innerHTML='';
-  const sorted=[...getFiltered()].sort((a,b)=>a.year-b.year);
-  sorted.forEach(e=>{
+  let prevYear=null,prevDecade=null;
+  visible().forEach(e=>{
+    const dec=Math.floor(e.year/10)*10;
+    if(dec!==prevDecade){
+      const d=document.createElement('div');
+      d.className='decade';
+      d.innerHTML=`<div class="d-label">${dec}</div><div class="d-rule"></div>`;
+      c.appendChild(d);
+      prevDecade=dec;prevYear=null;
+    }
     const t=e[state.lang];
-    const card=document.createElement('div');
-    card.className='event-card';
-    card.innerHTML=`<div class="ec-num">${pad(e.id)}</div><div><div class="ec-year">${e.year}</div><div class="ec-title">${t.t}</div><div class="ec-meta"><span class="ec-dot"></span>${t.l}</div></div>`;
-    card.addEventListener('click',()=>{
-      const m=state.markers.get(e.id);
-      if(m){
-        window._map.setView([e._lat,e._lng],Math.max(window._map.getZoom(),9),{animate:true});
-        m.openPopup();
-        document.getElementById('side-panel').classList.remove('open');
-      }
+    const row=document.createElement('div');
+    row.className='ev';
+    row.dataset.id=e.id;
+    row.innerHTML=
+      `<div class="ev-year${e.year===prevYear?' repeat':''}">${e.year}</div>`+
+      `<div class="ev-spine"><span class="glyph" data-cat="${e.cat}"></span></div>`+
+      `<div class="ev-body"><div class="ev-title">${t.t}</div><div class="ev-loc">${t.l}</div>`+
+      `<div class="ev-detail"><div class="ev-desc">${t.d}</div><div class="ev-links"></div></div></div>`;
+    row.addEventListener('click',ev=>{
+      if(ev.target.closest('.ev-link'))return;
+      select(state.sel===e.id?null:e.id,false);
     });
-    c.appendChild(card);
+    c.appendChild(row);
+    prevYear=e.year;
+  });
+  applySelection();
+}
+
+function select(id,scroll){
+  state.sel=id;
+  applySelection();
+  if(id&&scroll){
+    const row=document.querySelector(`.ev[data-id="${id}"]`);
+    if(row)row.scrollIntoView({block:'center'});
+  }
+}
+
+function applySelection(){
+  const chart=document.getElementById('chart');
+  const relSet=state.sel?(rel.get(state.sel)||new Set()):new Set();
+  chart.classList.toggle('has-sel',!!state.sel);
+  document.querySelectorAll('.ev').forEach(row=>{
+    const id=row.dataset.id;
+    row.classList.toggle('sel',id===state.sel);
+    row.classList.toggle('rel',relSet.has(id));
+    if(id===state.sel)fillLinks(row,relSet);
+  });
+  drawArcs();
+}
+
+function fillLinks(row,relSet){
+  const box=row.querySelector('.ev-links');
+  box.innerHTML='';
+  const targets=visible().filter(e=>relSet.has(e.id));
+  targets.forEach(e=>{
+    const b=document.createElement('button');
+    b.className='ev-link';
+    b.innerHTML=`↔ <span class="yl">${e.year}</span> · ${e[state.lang].t}`;
+    b.addEventListener('click',()=>select(e.id,true));
+    box.appendChild(b);
   });
 }
 
-// Load CSV and start
-loadEvents();
+/* ---- kirmizi yaylar ---- */
+function drawArcs(){
+  const svg=document.getElementById('arcs');
+  const chart=document.getElementById('chart');
+  const W=chart.clientWidth,H=chart.scrollHeight;
+  svg.setAttribute('width',W);svg.setAttribute('height',H);
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  svg.innerHTML='';
+  if(!state.sel)return;
+  const cr=chart.getBoundingClientRect();
+  const dot=id=>{
+    const g=document.querySelector(`.ev[data-id="${id}"] .glyph`);
+    if(!g)return null;
+    const r=g.getBoundingClientRect();
+    return{x:r.left-cr.left+r.width/2,y:r.top-cr.top+r.height/2};
+  };
+  const s=dot(state.sel);
+  if(!s)return;
+  const relSet=rel.get(state.sel)||new Set();
+  let paths='';
+  visible().forEach(e=>{
+    if(!relSet.has(e.id))return;
+    const t=dot(e.id);
+    if(!t)return;
+    const k=Math.min(s.x-10,34+Math.abs(t.y-s.y)*0.05);
+    paths+=`<path d="M ${s.x} ${s.y} C ${s.x-k} ${s.y}, ${s.x-k} ${t.y}, ${t.x} ${t.y}" fill="none" stroke="#ff2d00" stroke-width="1" opacity="0.85"/>`+
+           `<circle cx="${t.x}" cy="${t.y}" r="2" fill="#ff2d00"/>`;
+  });
+  paths+=`<circle cx="${s.x}" cy="${s.y}" r="2.5" fill="#ff2d00"/>`;
+  svg.innerHTML=paths;
+}
+
+load();
 </script>
 </body>
 </html>

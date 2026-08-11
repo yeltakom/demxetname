@@ -56,9 +56,13 @@ O satırı sil, kaydet, GitHub'a yükle.
 ## Teknik
 
 - Tek HTML dosyası (`index.html`)
-- Veri: `events.csv`
-- Harita: Leaflet + Stamen Toner Lite
-- Bağımlılık yok, build yok, framework yok
+- Veri: `events.csv` (112 olay)
+- Tasarım: sade zaman çizelgesi — dikey omurga, kategori işaretleri, kırmızı ilişki yayları
+- İlişkiler yalnızca veriden türetilir: bir olayın açıklamasında anılan yıllar,
+  o yıllardaki diğer olaylara bağlanır (tıklayınca kırmızı yaylarla çizilir)
+- `lat` / `lng` sütunları veri olarak korunuyor ama artık haritada gösterilmiyor
+  (harita kaldırıldı; istenirse geri eklenebilir)
+- Bağımlılık yok, build yok, framework yok, CDN yok
 - Arama motorlarından gizli (`robots.txt` + `noindex` meta)
 
 ## Lisans
