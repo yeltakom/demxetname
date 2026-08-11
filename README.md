@@ -57,15 +57,18 @@ O satırı sil, kaydet, GitHub'a yükle.
 
 - Tek HTML dosyası (`index.html`)
 - Veri: `events.csv` (112 olay)
-- Beş görünüm (üst menüden): **Liste** (dikey omurga), **Yatay** (onyıl kolonlu bant),
-  **Halka** (çevrede kronoloji, içeride ilişki kirişleri), **Harita 3B** (eğik perspektifli
-  gerçek harita — olaylar `lat`/`lng` konumlarından iğne olarak yükselir, ilişkiler
-  mekânlar arasında kırmızı yay çizer), **Ağ 3B** (kuvvet yerleşimli üç boyutlu
-  ilişki haritası — coğrafyasız)
+- Tek bütünleşik görünüm — sekme yok. Sahne, tam ekran düz (2B) gri tonlamalı
+  gerçek harita; olaylar `lat`/`lng` konumlarında kategori işaretleriyle durur.
+  Altta 1853–2026 zaman şeridi, solda açılır kronoloji listesi, sağda (dar
+  ekranda alttan açılan) detay kartı. Dördü tek bir seçim durumunu paylaşır:
+  birinde seçilen olay ötekilerde de vurgulanır.
 - İlişkiler yalnızca veriden türetilir: bir olayın açıklamasında anılan yıllar,
-  o yıllardaki diğer olaylara bağlanır (tıklayınca kırmızı çizgilerle vurgulanır)
-- Kütüphane bağımlılığı yok, build yok, framework yok — 3B görünümler elle yazılmış
-  canvas projeksiyonu; yalnızca Harita 3B, karoları CARTO/OpenStreetMap'ten çeker
+  o yıllardaki diğer olaylara bağlanır. Tüm ilişkiler haritada soluk gri eğriler
+  olarak durur; bir olay seçilince onunkiler kırmızıya döner ve kadraj seçim +
+  ilişkileri kapsayacak şekilde yumuşakça kayar.
+- Klavye: `←` `→` kronolojik gezinme, `Esc` seçimi bırakır. Kalıcı bağlantı: `#e<id>`
+- Kütüphane bağımlılığı yok, build yok, framework yok — harita elle yazılmış
+  Mercator karo projeksiyonu (canvas); karolar CARTO/OpenStreetMap'ten gelir
 - Arama motorlarından gizli (`robots.txt` + `noindex` meta)
 
 ## Lisans

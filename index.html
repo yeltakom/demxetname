@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <!-- ARAMA MOTORLARI BU SİTEYİ GÖSTERMESİN -->
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
@@ -20,14 +20,17 @@
   --ink-40:#808080;
   --ink-20:#c0c0c0;
   --ink-10:#e5e5e5;
+  --ink-05:#f2f2f2;
   --red:#ff2d00;
-  --sans:Arial,Helvetica,sans-serif;
+  --sans:'Helvetica Neue',Arial,Helvetica,sans-serif;
   --serif:Georgia,'Times New Roman',serif;
-  --spine:112px;
+  --drawer:322px;
+  --card:352px;
+  --strip:116px;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
+html,body{height:100%;overflow:hidden}
 body{
   font-family:var(--sans);
   font-size:13px;
@@ -35,57 +38,61 @@ body{
   background:var(--paper);
   color:var(--ink);
   -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
   display:flex;flex-direction:column;
 }
+button{font-family:inherit;color:inherit}
 
-/* ---------- HEADER ---------- */
-#header{
-  background:var(--paper);
+/* ============ MASTHEAD ============ */
+#masthead{
+  flex-shrink:0;background:var(--paper);
   border-bottom:1px solid var(--ink);
-  flex-shrink:0;
-  z-index:50;
+  position:relative;z-index:60;
 }
-.hrow{
-  display:flex;align-items:baseline;justify-content:space-between;
-  gap:10px 16px;flex-wrap:wrap;
-  padding:12px 24px 4px;
+.mrow{display:flex;align-items:baseline;justify-content:space-between;gap:8px 20px;padding:11px 18px 3px}
+.mrow.b{padding:0 18px 9px}
+#brand{display:flex;align-items:baseline;gap:13px;flex-wrap:wrap;min-width:0}
+#mark{
+  font-family:var(--serif);font-size:21px;line-height:1;
+  letter-spacing:-0.015em;white-space:nowrap;
 }
-.hrow.second{padding:0 24px 10px;border-top:none}
-#brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-#brand-mark{font-family:var(--serif);font-size:19px;letter-spacing:-0.01em}
-#brand-sub{
-  font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-60);
+#mark::after{content:'';display:inline-block;width:5px;height:5px;background:var(--red);margin-left:7px;vertical-align:2px}
+#sub{font-size:9px;letter-spacing:0.11em;text-transform:uppercase;color:var(--ink-60);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#colophon{
+  font-size:8.5px;letter-spacing:0.11em;text-transform:uppercase;color:var(--ink-40);
+  text-align:right;white-space:nowrap;
 }
-#views{display:flex;gap:0}
-.v-btn{
-  background:none;border:none;cursor:pointer;
-  font-family:var(--sans);font-size:10px;font-weight:700;
-  letter-spacing:0.1em;text-transform:uppercase;
-  color:var(--ink-40);
-  padding:4px 10px;border-left:1px solid var(--ink-10);
-}
-.v-btn:first-child{border-left:none;padding-left:0}
-.v-btn:hover{color:var(--ink)}
-.v-btn.active{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
-#ctrl{display:flex;align-items:baseline;gap:2px 14px;flex-wrap:wrap}
-#filters{display:flex;gap:2px 12px;flex-wrap:wrap}
-.f-btn{
-  background:none;border:none;cursor:pointer;
-  font-family:var(--sans);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;
-  color:var(--ink);
-  display:flex;align-items:center;gap:6px;
-  padding:4px 0;transition:opacity 0.15s;
-}
-.f-btn.off{opacity:0.25}
-.f-btn:hover{text-decoration:underline}
-#langs{display:flex;gap:0;border-left:1px solid var(--ink-10);padding-left:14px}
+#langs{display:flex;align-self:baseline;margin-left:4px}
 .lang-btn{
   background:none;border:none;cursor:pointer;
-  font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:0.08em;
-  color:var(--ink-40);padding:4px 6px;
+  font-size:9.5px;font-weight:700;letter-spacing:0.1em;
+  color:var(--ink-20);padding:2px 5px;
 }
 .lang-btn.active{color:var(--ink)}
-.lang-btn:hover{color:var(--ink)}
+.lang-btn:hover{color:var(--red)}
+
+#tools{display:flex;align-items:center;gap:4px 16px;flex-wrap:wrap;min-width:0}
+#drawer-toggle{
+  background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;gap:7px;padding:3px 0;
+  font-size:9px;letter-spacing:0.13em;text-transform:uppercase;
+}
+#drawer-toggle .bars{display:inline-flex;flex-direction:column;gap:2px;width:11px}
+#drawer-toggle .bars i{display:block;height:1px;background:var(--ink)}
+#drawer-toggle .bars i:nth-child(2){width:70%}
+#drawer-toggle:hover{color:var(--red)}
+#drawer-toggle:hover .bars i{background:var(--red)}
+
+#filters{display:flex;gap:3px 14px;flex-wrap:wrap;border-left:1px solid var(--ink-10);padding-left:16px}
+.f-btn{
+  background:none;border:none;cursor:pointer;
+  font-size:9px;letter-spacing:0.09em;text-transform:uppercase;
+  display:flex;align-items:center;gap:6px;padding:3px 0;
+  transition:opacity .18s;
+}
+.f-btn.off{opacity:0.22}
+.f-btn:hover{color:var(--red)}
+#hint{font-size:8.5px;letter-spacing:0.11em;text-transform:uppercase;color:var(--ink-40);white-space:nowrap}
 
 /* kategori isaretleri */
 .glyph{width:9px;height:9px;flex-shrink:0;background:var(--ink);border-radius:50%}
@@ -94,147 +101,159 @@ body{
 .glyph[data-cat="mimarlik"]{background:linear-gradient(135deg,var(--ink) 50%,var(--paper) 50%);border:1px solid var(--ink)}
 .glyph[data-cat="direnis"]{background:var(--red)}
 
-/* ---------- STAGE ---------- */
-#stage{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column}
-.view{display:none;flex:1;min-height:0}
-.view.active{display:block}
+/* ============ SAHNE ============ */
+#frame{flex:1;position:relative;min-height:0;overflow:hidden;background:#fafafa}
+#map{display:block;width:100%;height:100%;cursor:crosshair}
+#map.dragging{cursor:grabbing}
+#grain{
+  position:absolute;inset:0;pointer-events:none;opacity:.05;
+  mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
+}
+#attr{
+  position:absolute;right:9px;bottom:7px;z-index:4;
+  font-size:8px;letter-spacing:0.05em;color:var(--ink-40);pointer-events:none;
+  background:rgba(255,255,255,.72);padding:1px 4px;
+}
+#scale{
+  position:absolute;left:14px;bottom:12px;z-index:4;pointer-events:none;
+  font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-60);
+}
+#scale .bar{height:4px;border:1px solid var(--ink);border-top:none;margin-bottom:2px}
+#zoomer{position:absolute;right:14px;top:14px;z-index:4;display:flex;flex-direction:column;border:1px solid var(--ink);background:var(--paper)}
+#zoomer button{
+  width:22px;height:22px;background:none;border:none;cursor:pointer;
+  font-family:var(--serif);font-size:14px;line-height:1;
+}
+#zoomer button+button{border-top:1px solid var(--ink-10)}
+#zoomer button:hover{background:var(--ink);color:var(--paper)}
 
-/* ---------- LISTE ---------- */
-#view-liste{overflow-y:auto}
-#chart{
-  position:relative;max-width:920px;margin:0 auto;padding:36px 24px 80px;
+/* ============ SOL: KRONOLOJI ============ */
+#drawer{
+  position:absolute;left:0;top:0;bottom:0;width:var(--drawer);
+  background:var(--paper);border-right:1px solid var(--ink);
+  z-index:20;display:flex;flex-direction:column;
+  transform:translateX(-100%);transition:transform .34s cubic-bezier(.2,.7,.2,1);
+  box-shadow:1px 0 0 rgba(0,0,0,.05);
 }
-#spine-line{
-  position:absolute;top:36px;bottom:80px;
-  left:calc(24px + var(--spine));
-  width:1px;background:var(--ink);
+#drawer.open{transform:none}
+.pane-head{
+  flex-shrink:0;padding:11px 16px 8px;border-bottom:1px solid var(--ink-10);
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;
 }
-#arcs{position:absolute;inset:0;pointer-events:none;z-index:5}
-.decade{
-  display:grid;grid-template-columns:var(--spine) 28px 1fr;
-  align-items:baseline;margin:34px 0 10px;
+.pane-head .t{font-size:9px;letter-spacing:0.16em;text-transform:uppercase}
+.pane-head .n{font-family:var(--serif);font-size:11px;color:var(--ink-40)}
+.x-btn{background:none;border:none;cursor:pointer;font-size:15px;line-height:1;color:var(--ink-40);padding:0 0 0 8px}
+.x-btn:hover{color:var(--red)}
+#list{flex:1;overflow-y:auto;padding:6px 0 40px;overscroll-behavior:contain}
+.dec{
+  display:grid;grid-template-columns:46px 1fr;align-items:center;gap:8px;
+  padding:16px 16px 4px;
 }
-.decade:first-child{margin-top:0}
-.decade .d-label{font-family:var(--serif);font-size:17px;color:var(--ink);text-align:right;padding-right:18px}
-.decade .d-rule{grid-column:2/4;border-top:1px solid var(--ink-10);align-self:center}
-.ev{
-  display:grid;grid-template-columns:var(--spine) 28px 1fr;
-  align-items:start;cursor:pointer;padding:7px 0;transition:opacity 0.2s;
+.dec:first-child{padding-top:6px}
+.dec .dl{font-family:var(--serif);font-size:14px;text-align:right}
+.dec .dr{border-top:1px solid var(--ink-10)}
+.row{
+  display:grid;grid-template-columns:46px 16px 1fr;align-items:start;gap:0 8px;
+  padding:5px 16px;cursor:pointer;transition:opacity .18s,background .12s;
 }
-.ev-year{
-  font-family:var(--serif);font-size:13px;color:var(--ink-80);
-  text-align:right;padding-right:18px;padding-top:1px;
-}
-.ev-year.repeat{color:var(--ink-20)}
-.ev-spine{position:relative;height:100%}
-.ev-spine .glyph{position:absolute;left:-4px;top:6px}
-.ev-body{padding-left:2px;min-width:0}
-.ev-title{font-size:13px;line-height:1.35}
-.ev-loc{font-size:8.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-40);margin-top:2px}
-.ev:hover .ev-title{text-decoration:underline}
-#chart.has-sel .ev{opacity:0.16}
-#chart.has-sel .ev.rel{opacity:1}
-#chart.has-sel .ev.sel{opacity:1}
-.ev.sel .ev-title{font-weight:700}
-.ev.sel .ev-spine .glyph{box-shadow:0 0 0 3px var(--paper),0 0 0 4px var(--red)}
-.ev-detail{display:none;max-width:60ch;padding:10px 0 6px}
-.ev.sel .ev-detail{display:block}
-.ev-desc{font-size:12.5px;line-height:1.6;color:var(--ink-80)}
-.ev-links{margin-top:10px;display:flex;flex-direction:column;gap:3px;align-items:flex-start}
-.ev-link{
-  background:none;border:none;cursor:pointer;
-  font-family:var(--sans);font-size:10px;letter-spacing:0.04em;
-  color:var(--red);text-align:left;padding:0;
-}
-.ev-link:hover{text-decoration:underline}
-.ev-link .yl{font-family:var(--serif);font-size:11px}
+.row .ry{font-family:var(--serif);font-size:12px;color:var(--ink-60);text-align:right;padding-top:1px}
+.row .ry.rep{color:var(--ink-20)}
+.row .rg{padding-top:5px}
+.row .rt{font-size:12px;line-height:1.35}
+.row .rl{font-size:8px;letter-spacing:0.11em;text-transform:uppercase;color:var(--ink-40);margin-top:1px}
+.row:hover{background:var(--ink-05)}
+.row.hov{background:var(--ink-05)}
+#list.filtered .row{opacity:.24}
+#list.filtered .row.rel,#list.filtered .row.sel{opacity:1}
+.row.sel{background:var(--ink);color:var(--paper)}
+.row.sel .ry,.row.sel .rl{color:rgba(255,255,255,.6)}
+.row.sel .rt{font-weight:700}
+.row.sel .glyph[data-cat="hukuki"]{background:var(--paper)}
+.row.sel .glyph[data-cat="yerinden"]{background:var(--paper)}
+.row.sel .glyph[data-cat="yikim"]{border-color:var(--paper)}
+.row.sel .glyph[data-cat="mimarlik"]{background:linear-gradient(135deg,var(--paper) 50%,var(--ink) 50%);border-color:var(--paper)}
+.row.rel .rt{text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:3px}
 
-/* ---------- YATAY ---------- */
-#view-yatay{overflow:auto}
-#hband{position:relative}
-#hband svg{display:block}
-.h-clickable{cursor:pointer}
+/* ============ SAG: DETAY KARTI ============ */
+#card{
+  position:absolute;right:0;top:0;bottom:0;width:var(--card);
+  background:var(--paper);border-left:1px solid var(--ink);
+  z-index:30;display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .34s cubic-bezier(.2,.7,.2,1);
+}
+#card.open{transform:none}
+#card-head{
+  flex-shrink:0;display:flex;align-items:flex-start;justify-content:space-between;
+  padding:12px 16px 0;
+}
+#card-idx{font-size:8.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-40)}
+#card-body{flex:1;overflow-y:auto;padding:2px 18px 34px;overscroll-behavior:contain}
+#c-year{font-family:var(--serif);font-size:46px;line-height:.94;letter-spacing:-0.02em;margin:2px 0 8px}
+#c-cat{display:flex;align-items:center;gap:7px;margin-bottom:9px}
+#c-cat span{font-size:8.5px;letter-spacing:0.13em;text-transform:uppercase;color:var(--ink-60)}
+#c-title{font-size:16px;line-height:1.28;font-weight:700;margin-bottom:3px}
+#c-loc{font-size:8.5px;letter-spacing:0.13em;text-transform:uppercase;color:var(--ink-40);margin-bottom:12px}
+#c-rule{border-top:1px solid var(--ink);margin-bottom:11px}
+#c-desc{font-size:12.5px;line-height:1.68;color:var(--ink-80);hyphens:auto}
+#c-rel-head{
+  margin:20px 0 7px;padding-top:9px;border-top:1px solid var(--ink-10);
+  font-size:8.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-40);
+}
+#c-rel{display:flex;flex-direction:column;gap:1px}
+.rlink{
+  background:none;border:none;cursor:pointer;text-align:left;padding:3px 0;
+  display:grid;grid-template-columns:14px 34px 1fr;gap:6px;align-items:baseline;
+  font-size:11px;line-height:1.3;color:var(--ink-80);
+}
+.rlink .ar{color:var(--red)}
+.rlink .yr{font-family:var(--serif);font-size:11px;color:var(--ink-40)}
+.rlink:hover{color:var(--red)}
+.rlink:hover .yr{color:var(--red)}
 
-/* ---------- HALKA ---------- */
-#view-halka{overflow:hidden;display:none;align-items:center;justify-content:center}
-#view-halka.active{display:flex}
-#halka-svg{display:block;max-width:100%;max-height:100%}
-
-/* ---------- HARITA ---------- */
-#view-harita{overflow:hidden;position:relative}
-#mp-canvas{display:block;width:100%;height:100%;cursor:grab}
-#mp-canvas.dragging{cursor:grabbing}
-#mp-hint{
-  position:absolute;left:24px;top:14px;
-  font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-40);
-  pointer-events:none;
+/* ============ ALT: ZAMAN SERIDI ============ */
+#strip{
+  flex-shrink:0;height:var(--strip);position:relative;
+  border-top:1px solid var(--ink);background:var(--paper);z-index:40;
 }
-#mp-attr{
-  position:absolute;right:8px;bottom:6px;
-  font-size:8.5px;color:var(--ink-40);
-  pointer-events:none;
+#strip svg{display:block;width:100%;height:100%}
+.tick{cursor:pointer}
+#strip-note{
+  position:absolute;left:14px;top:8px;pointer-events:none;
+  font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-40);
 }
 
-/* ---------- AG ---------- */
-#view-ag{overflow:hidden;position:relative}
-#ag-canvas{display:block;width:100%;height:100%;cursor:grab}
-#ag-canvas.dragging{cursor:grabbing}
-#ag-hint{
-  position:absolute;left:24px;top:14px;
-  font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-40);
-  pointer-events:none;
-}
-
-/* ---------- DETAIL PANEL (yatay/halka/ag) ---------- */
-#panel{
-  position:absolute;left:24px;bottom:24px;
-  width:360px;max-width:calc(100vw - 48px);
-  max-height:46%;
-  background:var(--paper);
-  border:1px solid var(--ink);
-  padding:16px 18px;
-  overflow-y:auto;
-  z-index:60;
-  display:none;
-}
-#panel.open{display:block}
-#panel-close{
-  position:absolute;top:6px;right:10px;
-  background:none;border:none;cursor:pointer;
-  font-size:14px;color:var(--ink);font-family:var(--sans);
-}
-#panel-year{font-family:var(--serif);font-size:26px;line-height:1;margin-bottom:2px}
-#panel-title{font-size:14px;font-weight:700;line-height:1.3;margin-bottom:4px;padding-right:16px}
-#panel-loc{font-size:8.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-40);margin-bottom:10px}
-#panel-desc{font-size:12px;line-height:1.6;color:var(--ink-80)}
-#panel-links{margin-top:10px;display:flex;flex-direction:column;gap:3px;align-items:flex-start}
-
-/* ---------- FOOTER ---------- */
-#footer{
-  border-top:1px solid var(--ink);
-  padding:10px 24px;
-  font-size:8.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-60);
-  flex-shrink:0;
-}
+/* ============ YUKLENIYOR ============ */
 #loading{
-  padding:120px 24px;text-align:center;
-  font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-60);
+  position:fixed;inset:0;background:var(--paper);z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-40);
 }
+#loading.gone{opacity:0;pointer-events:none;transition:opacity .5s}
 
-@media(max-width:640px){
-  :root{--spine:52px}
-  .hrow{padding:10px 14px 4px}
-  .hrow.second{padding:0 14px 8px}
-  #chart{padding:24px 14px 60px}
-  #spine-line{left:calc(14px + var(--spine));top:24px;bottom:60px}
-  .ev-year{font-size:11px;padding-right:10px}
-  .decade .d-label{font-size:14px;padding-right:10px}
-  .ev{grid-template-columns:var(--spine) 22px 1fr}
-  .decade{grid-template-columns:var(--spine) 22px 1fr}
-  #panel{left:10px;right:10px;bottom:10px;width:auto}
+/* giris */
+@keyframes rise{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.enter{animation:rise .5s both}
+
+@media(max-width:820px){
+  :root{--drawer:min(300px,84vw);--card:min(330px,90vw);--strip:96px}
+  #colophon{display:none}
+  #hint{display:none}
+  .mrow{padding:9px 12px 3px}
+  .mrow.b{padding:0 12px 8px}
+  #filters{border-left:none;padding-left:0;width:100%}
+  #c-year{font-size:38px}
+  /* dar ekranda kart alttan acilan bir levha — harita tam genislikte kalir */
+  #card{
+    left:0;right:0;top:auto;bottom:0;width:auto;height:56%;
+    border-left:none;border-top:1px solid var(--ink);
+    transform:translateY(100%);
+  }
+  #card.open{transform:none}
+  #card-head{padding-top:9px}
+  #c-year{margin-top:0}
 }
-
-::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar{width:9px;height:9px}
 ::-webkit-scrollbar-track{background:var(--paper)}
 ::-webkit-scrollbar-thumb{background:var(--ink-20);border:3px solid var(--paper)}
 ::-webkit-scrollbar-thumb:hover{background:var(--ink-60)}
@@ -242,28 +261,32 @@ body{
 </head>
 <body>
 
-<header id="header">
-  <div class="hrow">
+<div id="loading">veri yükleniyor / loading</div>
+
+<header id="masthead">
+  <div class="mrow">
     <div id="brand">
-      <div id="brand-mark">demxetname</div>
-      <div id="brand-sub"
+      <div id="mark">demxetname</div>
+      <div id="sub"
         data-tr="Diyarbakır ve Kürdistan'da bir zaman çizelgesi · 1853 — 2026"
         data-en="A timeline of Diyarbakır and Kurdistan · 1853 — 2026">Diyarbakır ve Kürdistan'da bir zaman çizelgesi · 1853 — 2026</div>
     </div>
-    <div id="langs">
-      <button class="lang-btn active" data-lang="tr">TR</button>
-      <button class="lang-btn" data-lang="en">EN</button>
+    <div style="display:flex;align-items:baseline;gap:10px">
+      <div id="colophon"
+        data-tr="Araştırma · derleme — Yıldız Tahtacı · Pelin Tan · Yelta Köm — Arazi Assembly"
+        data-en="Research · compilation — Yıldız Tahtacı · Pelin Tan · Yelta Köm — Arazi Assembly">Araştırma · derleme — Yıldız Tahtacı · Pelin Tan · Yelta Köm — Arazi Assembly</div>
+      <div id="langs">
+        <button class="lang-btn active" data-lang="tr">TR</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
     </div>
   </div>
-  <div class="hrow second">
-    <div id="views">
-      <button class="v-btn active" data-view="liste" data-tr="Liste" data-en="List">Liste</button>
-      <button class="v-btn" data-view="yatay" data-tr="Yatay" data-en="Horizontal">Yatay</button>
-      <button class="v-btn" data-view="halka" data-tr="Halka" data-en="Circle">Halka</button>
-      <button class="v-btn" data-view="harita" data-tr="Harita 3B" data-en="Map 3D">Harita 3B</button>
-      <button class="v-btn" data-view="ag" data-tr="Ağ 3B" data-en="Network 3D">Ağ 3B</button>
-    </div>
-    <div id="ctrl">
+  <div class="mrow b">
+    <div id="tools">
+      <button id="drawer-toggle" aria-expanded="false">
+        <span class="bars"><i></i><i></i><i></i></span>
+        <span data-tr="Kronoloji" data-en="Chronology">Kronoloji</span>
+      </button>
       <div id="filters">
         <button class="f-btn" data-cat="hukuki"><span class="glyph" data-cat="hukuki"></span><span data-tr="Hukuki &amp; İdari" data-en="Legal &amp; Administrative">Hukuki &amp; İdari</span></button>
         <button class="f-btn" data-cat="yikim"><span class="glyph" data-cat="yikim"></span><span data-tr="Kentsel Yıkım" data-en="Urban Destruction">Kentsel Yıkım</span></button>
@@ -272,78 +295,81 @@ body{
         <button class="f-btn" data-cat="direnis"><span class="glyph" data-cat="direnis"></span><span data-tr="Direniş &amp; Siyaset" data-en="Resistance &amp; Politics">Direniş &amp; Siyaset</span></button>
       </div>
     </div>
+    <div id="hint"
+      data-tr="Bir olay seç — ilişkileri kırmızıyla çizilir"
+      data-en="Select an event — its relations are drawn in red">Bir olay seç — ilişkileri kırmızıyla çizilir</div>
   </div>
 </header>
 
-<div id="loading">veri yükleniyor / loading data…</div>
+<main id="frame">
+  <canvas id="map"></canvas>
+  <div id="grain"></div>
 
-<main id="stage" style="display:none">
-  <!-- LISTE -->
-  <div class="view active" id="view-liste">
-    <div id="chart">
-      <div id="spine-line"></div>
-      <svg id="arcs"></svg>
-      <div id="rows"></div>
+  <div id="scale"><div class="bar" id="scale-bar" style="width:80px"></div><span id="scale-txt">100 km</span></div>
+  <div id="zoomer">
+    <button id="z-in" title="+">+</button>
+    <button id="z-out" title="−">−</button>
+  </div>
+  <div id="attr">© OpenStreetMap · CARTO</div>
+
+  <aside id="drawer">
+    <div class="pane-head">
+      <span class="t" data-tr="Kronoloji" data-en="Chronology">Kronoloji</span>
+      <span style="display:flex;align-items:baseline">
+        <span class="n" id="list-count"></span>
+        <button class="x-btn" id="drawer-close">×</button>
+      </span>
     </div>
-  </div>
+    <div id="list"></div>
+  </aside>
 
-  <!-- YATAY -->
-  <div class="view" id="view-yatay"><div id="hband"></div></div>
-
-  <!-- HALKA -->
-  <div class="view" id="view-halka"></div>
-
-  <!-- HARITA 3B -->
-  <div class="view" id="view-harita">
-    <canvas id="mp-canvas"></canvas>
-    <div id="mp-hint"
-      data-tr="sürükle: kaydır · shift+sürükle: döndür / eğ · tekerlek: yakınlaş · tık: olay"
-      data-en="drag: pan · shift+drag: rotate / tilt · wheel: zoom · click: event">sürükle: kaydır · shift+sürükle: döndür / eğ · tekerlek: yakınlaş · tık: olay</div>
-    <div id="mp-attr">© OpenStreetMap · CARTO</div>
-  </div>
-
-  <!-- AG 3B -->
-  <div class="view" id="view-ag">
-    <canvas id="ag-canvas"></canvas>
-    <div id="ag-hint"
-      data-tr="sürükle: döndür · tekerlek: yakınlaş · tık: olay"
-      data-en="drag: rotate · wheel: zoom · click: event">sürükle: döndür · tekerlek: yakınlaş · tık: olay</div>
-  </div>
-
-  <!-- DETAIL PANEL -->
-  <aside id="panel">
-    <button id="panel-close">×</button>
-    <div id="panel-year"></div>
-    <div id="panel-title"></div>
-    <div id="panel-loc"></div>
-    <div id="panel-desc"></div>
-    <div id="panel-links"></div>
+  <aside id="card">
+    <div id="card-head">
+      <div id="card-idx"></div>
+      <button class="x-btn" id="card-close">×</button>
+    </div>
+    <div id="card-body">
+      <div id="c-year"></div>
+      <div id="c-cat"><span class="glyph"></span><span></span></div>
+      <div id="c-title"></div>
+      <div id="c-loc"></div>
+      <div id="c-rule"></div>
+      <div id="c-desc"></div>
+      <div id="c-rel-head" data-tr="Anılan yıllar üzerinden ilişkiler" data-en="Relations via years cited in the text">Anılan yıllar üzerinden ilişkiler</div>
+      <div id="c-rel"></div>
+    </div>
   </aside>
 </main>
 
-<footer id="footer" style="display:none">
-  <span data-tr="Araştırma · Derleme" data-en="Research · Compilation">Araştırma · Derleme</span>
-  — Yıldız Tahtacı — Pelin Tan — Yelta Köm · Arazi Assembly · 2020 / 2026
-</footer>
+<section id="strip">
+  <div id="strip-note" data-tr="Zaman şeridi" data-en="Timeline">Zaman şeridi</div>
+  <svg id="strip-svg"></svg>
+</section>
 
 <script>
-// ============================================================
-// demxetname — bes gorunum: liste, yatay, halka, harita 3B, ag 3B
-// Veri: events.csv. İlişkiler yalnızca veriden türetilir:
-// bir olayın metninde anılan yıllar, o yıllardaki olaylara bağlanır.
-// ============================================================
+/* ============================================================
+   demxetname — tek butunlesik gorunum.
+   Sahne: duz (2B) gri tonlamali Mercator harita.
+   Altta zaman seridi, solda kronoloji, sagda detay karti —
+   ucu de tek bir secim durumunu paylasir.
+   Iliskiler yalnizca veriden turetilir: bir olayin TR metninde
+   anilan yillar, o yillardaki olaylara cift yonlu kenar olur.
+============================================================ */
 
 const YEAR_MIN=1853, YEAR_MAX=2026;
-let events=[];
-const state={
-  view:'liste', lang:'tr',
-  cats:new Set(['hukuki','yikim','yerinden','mimarlik','direnis']),
-  sel:null
-};
-const rel=new Map();          // id -> Set(id)
-let edges=[];                 // [{a,b}] benzersiz kenarlar
+const CAT_TR={hukuki:'Hukuki & İdari',yikim:'Kentsel Yıkım',yerinden:'Yerinden Edilme',mimarlik:'Mimarlık & Miras',direnis:'Direniş & Siyaset'};
+const CAT_EN={hukuki:'Legal & Administrative',yikim:'Urban Destruction',yerinden:'Displacement',mimarlik:'Architecture & Heritage',direnis:'Resistance & Politics'};
 
-/* ---- CSV ---- */
+let events=[];
+const rel=new Map();      // id -> Set(id)
+let edges=[];             // [{a,b}]
+const state={
+  lang:'tr',
+  cats:new Set(['hukuki','yikim','yerinden','mimarlik','direnis']),
+  sel:null, hov:null, drawer:false
+};
+
+/* ---------- CSV ---------- */
 function parseCSV(text){
   const rows=[];let row=[],field='',q=false,i=0;
   while(i<text.length){
@@ -382,32 +408,22 @@ async function load(){
       en:{t:r[idx.title_en],l:r[idx.location_en],d:r[idx.description_en]}
     }));
     events.sort((a,b)=>a.year-b.year||(+a.id)-(+b.id));
-    // cakisan koordinatlari kucuk bir halkaya yay
-    const grouped=new Map();
+    // ayni koordinati paylasan olaylar ekran uzerinde kucuk bir rozet olarak acilir
+    const grp=new Map();
     events.forEach(e=>{
-      const k=e.lat.toFixed(3)+'_'+e.lng.toFixed(3);
-      if(!grouped.has(k))grouped.set(k,[]);
-      grouped.get(k).push(e);
+      const k=e.lat.toFixed(3)+'/'+e.lng.toFixed(3);
+      if(!grp.has(k))grp.set(k,[]);
+      grp.get(k).push(e);
     });
-    grouped.forEach(g=>{
-      if(g.length>1){
-        const r=0.02*Math.sqrt(g.length);
-        g.forEach((e,i)=>{
-          const a=(Math.PI*2*i)/g.length;
-          e._lat=e.lat+Math.sin(a)*r;
-          e._lng=e.lng+Math.cos(a)*r*1.3;
-        });
-      }else{g[0]._lat=g[0].lat;g[0]._lng=g[0].lng;}
-    });
+    grp.forEach(g=>g.forEach((e,i)=>{e._fi=i;e._fn=g.length;}));
     buildRelations();
     init();
-  }catch(e){
-    console.error(e);
-    document.getElementById('loading').textContent='hata / error: events.csv bulunamadı';
+  }catch(err){
+    console.error(err);
+    document.getElementById('loading').textContent='hata / error — events.csv okunamadı';
   }
 }
 
-/* ---- iliskiler ---- */
 function buildRelations(){
   const byYear=new Map();
   events.forEach(e=>{
@@ -430,34 +446,563 @@ function buildRelations(){
     });
   });
   const seen=new Set();
-  rel.forEach((set,a)=>{
-    set.forEach(b=>{
-      const k=a<b?a+'|'+b:b+'|'+a;
-      if(!seen.has(k)){seen.add(k);edges.push({a,b});}
-    });
-  });
+  rel.forEach((set,a)=>set.forEach(b=>{
+    const k=a<b?a+'|'+b:b+'|'+a;
+    if(!seen.has(k)){seen.add(k);edges.push({a,b});}
+  }));
 }
 
 const visible=()=>events.filter(e=>state.cats.has(e.cat));
 const byId=id=>events.find(e=>e.id===id);
 const relSetOf=id=>id?(rel.get(id)||new Set()):new Set();
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const L=e=>e[state.lang];
 
-/* ---- init ---- */
-function init(){
-  document.getElementById('loading').style.display='none';
-  document.getElementById('stage').style.display='flex';
-  document.getElementById('footer').style.display='block';
+/* ============================================================
+   HARITA — duz Web Mercator
+============================================================ */
+const TS=256, DEG=Math.PI/180;
+const cam={lng:37.6,lat:38.6,zoom:5.4};
+const anim={on:false,t0:0,dur:640,from:null,to:null};
+const tiles=new Map();
+let W=0,H=0,needDraw=false;
 
-  document.querySelectorAll('.v-btn').forEach(b=>{
-    b.addEventListener('click',()=>setView(b.dataset.view));
+const wX=(lng,ws)=>(lng+180)/360*ws;
+const wY=(lat,ws)=>{const s=Math.min(.9999,Math.max(-.9999,Math.sin(lat*DEG)));return (0.5-Math.log((1+s)/(1-s))/(4*Math.PI))*ws;};
+const xLng=(x,ws)=>x/ws*360-180;
+const yLat=(y,ws)=>{const n=Math.PI*(1-2*y/ws);return Math.atan(Math.sinh(n))/DEG;};
+const wsz=z=>TS*Math.pow(2,z);
+
+function project(lng,lat){
+  const ws=wsz(cam.zoom);
+  return{x:wX(lng,ws)-wX(cam.lng,ws)+W/2, y:wY(lat,ws)-wY(cam.lat,ws)+H/2};
+}
+function unproject(x,y){
+  const ws=wsz(cam.zoom);
+  return{lng:xLng(x-W/2+wX(cam.lng,ws),ws), lat:yLat(y-H/2+wY(cam.lat,ws),ws)};
+}
+function clampCam(){
+  cam.zoom=Math.max(3.2,Math.min(12,cam.zoom));
+  cam.lat=Math.max(-79,Math.min(79,cam.lat));
+  cam.lng=((cam.lng+180)%360+360)%360-180;
+}
+
+function tileURL(z,x,y){
+  const s=['a','b','c','d'][(x+y)%4];
+  return `https://${s}.basemaps.cartocdn.com/light_nolabels/${z}/${x}/${y}.png`;
+}
+function getTile(z,x,y){
+  const key=z+'/'+x+'/'+y;
+  let t=tiles.get(key);
+  if(t)return t;
+  if(tiles.size>420)tiles.clear();
+  t={img:new Image(),ok:false};
+  t.img.crossOrigin='anonymous';
+  t.img.onload=()=>{t.ok=true;requestDraw();};
+  t.img.onerror=()=>{t.bad=true;};
+  t.img.src=tileURL(z,x,y);
+  tiles.set(key,t);
+  return t;
+}
+function requestDraw(){
+  if(needDraw)return;
+  needDraw=true;
+  requestAnimationFrame(()=>{needDraw=false;drawMap();});
+}
+
+/* --- kamera gecisi --- */
+function easeIO(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+function flyTo(to,dur){
+  anim.from={lng:cam.lng,lat:cam.lat,zoom:cam.zoom};
+  anim.to=to;anim.dur=dur||640;anim.t0=performance.now();anim.on=true;
+  requestAnimationFrame(stepAnim);
+}
+function stepAnim(now){
+  if(!anim.on)return;
+  const k=Math.min(1,(now-anim.t0)/anim.dur), u=easeIO(k);
+  cam.lng=anim.from.lng+(anim.to.lng-anim.from.lng)*u;
+  cam.lat=anim.from.lat+(anim.to.lat-anim.from.lat)*u;
+  cam.zoom=anim.from.zoom+(anim.to.zoom-anim.from.zoom)*u;
+  clampCam();drawMap();
+  if(k<1)requestAnimationFrame(stepAnim); else anim.on=false;
+}
+
+/* alan: panellerin ortmedigi bolge */
+function clearRect(){
+  const dv=document.getElementById('drawer'), cd=document.getElementById('card');
+  const dl=dv.classList.contains('open')?dv.offsetWidth:0;
+  const open=cd.classList.contains('open');
+  const nar=window.innerWidth<=820;
+  const dr=(open&&!nar)?cd.offsetWidth:0;
+  const db=(open&&nar)?cd.offsetHeight:0;
+  return{
+    x0:dl+58, x1:Math.max(dl+120,W-dr-58),
+    y0:52,    y1:Math.max(140,H-db-46)
+  };
+}
+function fitPoints(pts,ease){
+  if(!pts.length)return;
+  const R=clearRect();
+  const bw=Math.max(60,R.x1-R.x0), bh=Math.max(60,R.y1-R.y0);
+  const ws0=TS;
+  let xa=Infinity,xb=-Infinity,ya=Infinity,yb=-Infinity;
+  pts.forEach(p=>{
+    const x=wX(p.lng,ws0),y=wY(p.lat,ws0);
+    xa=Math.min(xa,x);xb=Math.max(xb,x);ya=Math.min(ya,y);yb=Math.max(yb,y);
   });
+  const sx=Math.max(xb-xa,1e-4), sy=Math.max(yb-ya,1e-4);
+  let z=Math.min(Math.log2(bw/sx),Math.log2(bh/sy));
+  z=Math.max(3.4,Math.min(8.6,z));
+  const ws=wsz(z);
+  const midX=(xa+xb)/2*(ws/ws0), midY=(ya+yb)/2*(ws/ws0);
+  const rcx=(R.x0+R.x1)/2, rcy=(R.y0+R.y1)/2;
+  const to={lng:xLng(midX-rcx+W/2,ws), lat:yLat(midY-rcy+H/2,ws), zoom:z};
+  if(ease)flyTo(to); else {Object.assign(cam,to);clampCam();requestDraw();}
+}
+function allVisibleOnScreen(pts){
+  const R=clearRect();
+  return pts.every(p=>{const s=project(p.lng,p.lat);return s.x>R.x0&&s.x<R.x1&&s.y>R.y0&&s.y<R.y1;});
+}
+
+/* --- ekran konumlari (rozet acilimi dahil) --- */
+let scr=new Map();
+function computePositions(){
+  scr=new Map();
+  visible().forEach(e=>{
+    const p=project(e.lng,e.lat);
+    let ox=0,oy=0;
+    if(e._fn>1){
+      const a=-Math.PI/2+2*Math.PI*e._fi/e._fn;
+      const r=Math.min(27,5.5+e._fn*0.95);
+      ox=Math.cos(a)*r;oy=Math.sin(a)*r;
+    }
+    scr.set(e.id,{x:p.x+ox,y:p.y+oy,ax:p.x,ay:p.y});
+  });
+}
+
+function drawMap(){
+  const cv=document.getElementById('map');
+  const fr=document.getElementById('frame');
+  W=fr.clientWidth;H=fr.clientHeight;
+  if(!W||!H)return;
+  const dpr=Math.min(2,window.devicePixelRatio||1);
+  if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(H*dpr)){
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+  }
+  const ctx=cv.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H);
+
+  /* --- karolar --- */
+  const zi=Math.max(2,Math.min(12,Math.floor(cam.zoom)));
+  const scale=Math.pow(2,cam.zoom-zi);
+  const tsz=TS*scale;
+  const ws=wsz(cam.zoom);
+  const originX=wX(cam.lng,ws)-W/2, originY=wY(cam.lat,ws)-H/2;
+  const n=Math.pow(2,zi);
+  const tx0=Math.floor(originX/tsz), tx1=Math.floor((originX+W)/tsz);
+  const ty0=Math.floor(originY/tsz), ty1=Math.floor((originY+H)/tsz);
+  ctx.save();
+  ctx.filter='grayscale(1) contrast(1.12) brightness(0.99)';
+  for(let x=tx0;x<=tx1;x++){
+    for(let y=ty0;y<=ty1;y++){
+      if(y<0||y>=n)continue;
+      const wx=((x%n)+n)%n;
+      const t=getTile(zi,wx,y);
+      if(!t.ok)continue;
+      const sx=x*tsz-originX, sy=y*tsz-originY;
+      ctx.drawImage(t.img,sx,sy,tsz+0.6,tsz+0.6);
+    }
+  }
+  ctx.restore();
+  // kagit orusu: karolari solutur, mürekkep ustte kalsin
+  ctx.fillStyle='rgba(255,255,255,0.22)';
+  ctx.fillRect(0,0,W,H);
+
+  computePositions();
+  const rs=relSetOf(state.sel);
+  const has=!!state.sel;
+
+  /* --- iliski egrileri --- */
+  const arc=(p1,p2,color,w,alpha)=>{
+    const a=p1.x<=p2.x?p1:p2, b=p1.x<=p2.x?p2:p1;
+    const dx=b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy)||1;
+    const k=Math.min(160,d*0.24);
+    const cx=(a.x+b.x)/2-dy/d*k, cy=(a.y+b.y)/2+dx/d*k;
+    ctx.strokeStyle=color;ctx.lineWidth=w;ctx.globalAlpha=alpha;
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(cx,cy,b.x,b.y);ctx.stroke();
+    ctx.globalAlpha=1;
+  };
+  const hot=[];
+  edges.forEach(({a,b})=>{
+    const p1=scr.get(a),p2=scr.get(b);
+    if(!p1||!p2)return;
+    if(has&&(a===state.sel||b===state.sel)){hot.push([p1,p2]);return;}
+    arc(p1,p2,'#000',0.6,has?0.035:0.085);
+  });
+  hot.forEach(([p1,p2])=>{
+    arc(p1,p2,'#ffffff',3.2,0.7);
+    arc(p1,p2,'#ff2d00',1.15,0.92);
+  });
+
+  /* --- isaretler --- */
+  const draw=(e,pos)=>{
+    const isSel=e.id===state.sel, isRel=rs.has(e.id), isHov=e.id===state.hov;
+    const dim=has&&!isSel&&!isRel;
+    ctx.globalAlpha=dim?0.16:1;
+    if(e._fn>1&&(isSel||isRel||isHov)){
+      ctx.strokeStyle='rgba(0,0,0,0.25)';ctx.lineWidth=0.6;
+      ctx.beginPath();ctx.moveTo(pos.ax,pos.ay);ctx.lineTo(pos.x,pos.y);ctx.stroke();
+    }
+    if(isSel){
+      ctx.strokeStyle='#ff2d00';ctx.lineWidth=1.2;
+      ctx.beginPath();ctx.arc(pos.x,pos.y,9.5,0,7);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(pos.x-15,pos.y);ctx.lineTo(pos.x-11,pos.y);
+      ctx.moveTo(pos.x+11,pos.y);ctx.lineTo(pos.x+15,pos.y);
+      ctx.moveTo(pos.x,pos.y-15);ctx.lineTo(pos.x,pos.y-11);
+      ctx.moveTo(pos.x,pos.y+11);ctx.lineTo(pos.x,pos.y+15);ctx.stroke();
+    }else if(isHov){
+      ctx.strokeStyle='#000';ctx.lineWidth=0.9;
+      ctx.beginPath();ctx.arc(pos.x,pos.y,8,0,7);ctx.stroke();
+    }
+    glyph(ctx,pos.x,pos.y,isSel?5.2:3.9,e.cat);
+    ctx.globalAlpha=1;
+  };
+  const evs=visible();
+  evs.forEach(e=>{const p=scr.get(e.id);if(p&&!(e.id===state.sel||rs.has(e.id)))draw(e,p);});
+  evs.forEach(e=>{const p=scr.get(e.id);if(p&&rs.has(e.id)&&e.id!==state.sel)draw(e,p);});
+  if(state.sel&&scr.get(state.sel))draw(byId(state.sel),scr.get(state.sel));
+
+  /* --- etiketler: yalnizca secim, iliski, hover --- */
+  const R=clearRect();
+  const labels=[];
+  evs.forEach(e=>{
+    const isSel=e.id===state.sel, isRel=rs.has(e.id), isHov=e.id===state.hov;
+    if(!isSel&&!isRel&&!isHov)return;
+    const p=scr.get(e.id);if(!p)return;
+    labels.push({e,p,isSel,isHov,rank:isSel?0:(isHov?1:2)});
+  });
+  labels.sort((a,b)=>a.rank-b.rank);
+  const placed=[];
+  const free=b=>!placed.some(q=>!(b.x1<q.x0||b.x0>q.x1||b.y1<q.y0||b.y0>q.y1));
+  ctx.lineJoin='round';ctx.textBaseline='alphabetic';
+  labels.forEach(({e,p,isSel,isHov})=>{
+    const t=L(e).t;
+    const txt=(isSel||isHov)?`${e.year} · ${t}`:`${e.year} · ${t.length>30?t.slice(0,29)+'…':t}`;
+    ctx.font=(isSel?'bold 11px ':'10.5px ')+"'Helvetica Neue',Arial,sans-serif";
+    const w=ctx.measureText(txt).width, hh=11;
+    // dort aday: sag, sol, ust, alt
+    const cands=[
+      [p.x+11,p.y+3.5],   [p.x-11-w,p.y+3.5],
+      [p.x-w/2,p.y-12],   [p.x-w/2,p.y+17],
+      [p.x+9,p.y-9],      [p.x-9-w,p.y-9],
+      [p.x+9,p.y+16],     [p.x-9-w,p.y+16]
+    ];
+    let spot=null;
+    for(const [lx,ly] of cands){
+      const box={x0:lx-2,x1:lx+w+2,y0:ly-hh,y1:ly+4};
+      if(box.x0<R.x0-52||box.x1>Math.min(W-8,R.x1+46))continue;
+      if(!free(box))continue;
+      spot={lx,ly,box};break;
+    }
+    if(!spot){
+      if(!isSel&&!isHov)return;                    // sikisiksa iliski etiketini atla
+      spot={lx:p.x+11,ly:p.y+3.5,box:{x0:p.x+9,x1:p.x+13+w,y0:p.y-7.5,y1:p.y+7.5}};
+    }
+    placed.push(spot.box);
+    ctx.strokeStyle='rgba(255,255,255,0.94)';ctx.lineWidth=3.4;
+    ctx.strokeText(txt,spot.lx,spot.ly);
+    ctx.fillStyle=isSel?'#ff2d00':'#000';
+    ctx.fillText(txt,spot.lx,spot.ly);
+  });
+
+  updateScale();
+}
+
+function glyph(ctx,x,y,r,cat){
+  if(cat==='direnis'){ctx.fillStyle='#ff2d00';ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();return;}
+  if(cat==='yikim'){ctx.fillStyle='#fff';ctx.strokeStyle='#000';ctx.lineWidth=1.4;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();ctx.stroke();return;}
+  if(cat==='yerinden'){ctx.fillStyle='#000';ctx.fillRect(x-r*0.92,y-r*0.92,r*1.84,r*1.84);return;}
+  if(cat==='mimarlik'){
+    ctx.fillStyle='#fff';ctx.strokeStyle='#000';ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#000';ctx.beginPath();ctx.arc(x,y,r,Math.PI*0.75,Math.PI*1.75);ctx.closePath();ctx.fill();
+    return;
+  }
+  ctx.fillStyle='#000';ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();
+}
+
+function updateScale(){
+  const mPerPx=156543.03392*Math.cos(cam.lat*DEG)/Math.pow(2,cam.zoom);
+  const targets=[10,20,50,100,200,500,1000,2000];
+  let km=100,px=0;
+  for(const t of targets){
+    const p=t*1000/mPerPx;
+    if(p>=54&&p<=150){km=t;px=p;break;}
+    km=t;px=p;
+  }
+  if(px<40||px>190){
+    km=targets.reduce((best,t)=>{
+      const p=t*1000/mPerPx;
+      return Math.abs(p-90)<Math.abs(best.p-90)?{t,p}:best;
+    },{t:100,p:1e9}).t;
+    px=km*1000/mPerPx;
+  }
+  document.getElementById('scale-bar').style.width=Math.round(px)+'px';
+  document.getElementById('scale-txt').textContent=km+' km';
+}
+
+function nodeAt(mx,my){
+  let best=null,bd=225;
+  scr.forEach((p,id)=>{
+    const d=(p.x-mx)**2+(p.y-my)**2;
+    if(d<bd){bd=d;best=id;}
+  });
+  return best;
+}
+
+/* ============================================================
+   ZAMAN SERIDI
+============================================================ */
+function renderStrip(){
+  const host=document.getElementById('strip');
+  const svg=document.getElementById('strip-svg');
+  const w=host.clientWidth, h=host.clientHeight;
+  if(!w||!h)return;
+  const padL=18, padR=18;
+  const axisY=h-25;
+  const X=y=>padL+(y-YEAR_MIN)/(YEAR_MAX-YEAR_MIN)*(w-padL-padR);
+  const evs=visible();
+  const rs=relSetOf(state.sel);
+  const has=!!state.sel;
+
+  let g='';
+  // onyil cizgileri + etiketler
+  const step=(w<760)?20:10;
+  for(let y=1860;y<=2020;y+=step){
+    const x=X(y);
+    const major=y%50===0;
+    const nearEnd=Math.min(Math.abs(x-X(YEAR_MIN)),Math.abs(x-X(YEAR_MAX)))<30;
+    g+=`<line x1="${x.toFixed(1)}" y1="${axisY-(major?7:4)}" x2="${x.toFixed(1)}" y2="${axisY}" stroke="${major?'#000':'#c0c0c0'}" stroke-width="1"/>`;
+    if(!nearEnd)g+=`<text x="${x.toFixed(1)}" y="${axisY+14}" font-family="Georgia,serif" font-size="${major?11:9.5}" fill="${major?'#000':'#808080'}" text-anchor="middle">${y}</text>`;
+  }
+  g+=`<line x1="${X(YEAR_MIN)}" y1="${axisY}" x2="${X(YEAR_MAX)}" y2="${axisY}" stroke="#000" stroke-width="1"/>`;
+  g+=`<text x="${X(YEAR_MIN)}" y="${axisY+14}" font-family="Georgia,serif" font-size="10" fill="#000" text-anchor="start">1853</text>`;
+  g+=`<text x="${X(YEAR_MAX)}" y="${axisY+14}" font-family="Georgia,serif" font-size="10" fill="#000" text-anchor="end">2026</text>`;
+
+  // yila gore istifleme
+  const rowsFor=new Map();
+  const rowH=(h<105)?7.5:8.6;
+  const maxRow=Math.max(2,Math.floor((axisY-26)/rowH));
+  const posY=new Map();
+  evs.forEach(e=>{
+    const c=rowsFor.get(e.year)||0;
+    rowsFor.set(e.year,c+1);
+    posY.set(e.id,axisY-9-Math.min(c,maxRow)*rowH);
+  });
+
+  // secim: dikey kilavuz
+  if(has&&posY.has(state.sel)){
+    const x=X(byId(state.sel).year);
+    g+=`<line x1="${x.toFixed(1)}" y1="6" x2="${x.toFixed(1)}" y2="${axisY}" stroke="#ff2d00" stroke-width="1" opacity="0.5"/>`;
+  }
+
+  let marks='';
+  evs.forEach(e=>{
+    const x=X(e.year), y=posY.get(e.id);
+    const isSel=e.id===state.sel, isRel=rs.has(e.id), isHov=e.id===state.hov;
+    const op=(!has||isSel||isRel)?1:0.17;
+    let mk='';
+    if(isSel)mk+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6.4" fill="none" stroke="#ff2d00" stroke-width="1.1"/>`;
+    else if(isRel)mk+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5.4" fill="none" stroke="#ff2d00" stroke-width="0.9" opacity="0.75"/>`;
+    else if(isHov)mk+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5.4" fill="none" stroke="#000" stroke-width="0.8"/>`;
+    mk+=`<line x1="${x.toFixed(1)}" y1="${axisY}" x2="${x.toFixed(1)}" y2="${(y+3.6).toFixed(1)}" stroke="#c0c0c0" stroke-width="0.6"/>`;
+    mk+=stripGlyph(x,y,e.cat);
+    marks+=`<g class="tick" data-id="${e.id}" opacity="${op}">${mk}<rect x="${(x-5).toFixed(1)}" y="${(y-6).toFixed(1)}" width="10" height="12" fill="transparent"/></g>`;
+  });
+
+  // hover / secim etiketi
+  let tag='';
+  const tid=state.hov||state.sel;
+  if(tid&&posY.has(tid)){
+    const e=byId(tid), x=X(e.year);
+    const t=`${e.year} · ${L(e).t}`;
+    const anchor=x>w*0.62?'end':'start';
+    const tx=anchor==='end'?x-8:x+8;
+    tag=`<text x="${tx.toFixed(1)}" y="12" font-family="'Helvetica Neue',Arial,sans-serif" font-size="10.5" font-weight="${tid===state.sel?'bold':'normal'}" fill="${tid===state.sel?'#ff2d00':'#000'}" text-anchor="${anchor}">${esc(t.length>72?t.slice(0,71)+'…':t)}</text>`;
+  }
+
+  document.getElementById('strip-note').style.opacity=tag?0:1;
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+  svg.innerHTML=g+marks+tag;
+  svg.querySelectorAll('.tick').forEach(el=>{
+    const id=el.dataset.id;
+    el.addEventListener('click',()=>select(state.sel===id?null:id));
+    el.addEventListener('mouseenter',()=>setHover(id));
+    el.addEventListener('mouseleave',()=>setHover(null));
+  });
+}
+function stripGlyph(x,y,cat){
+  x=+x.toFixed(1);y=+y.toFixed(1);
+  if(cat==='direnis')return `<circle cx="${x}" cy="${y}" r="3" fill="#ff2d00"/>`;
+  if(cat==='yikim')return `<circle cx="${x}" cy="${y}" r="2.8" fill="#fff" stroke="#000" stroke-width="1.1"/>`;
+  if(cat==='yerinden')return `<rect x="${x-2.7}" y="${y-2.7}" width="5.4" height="5.4" fill="#000"/>`;
+  if(cat==='mimarlik')return `<circle cx="${x}" cy="${y}" r="2.9" fill="#fff" stroke="#000" stroke-width="0.9"/><path d="M ${x-2.05} ${y-2.05} A 2.9 2.9 0 0 0 ${x+2.05} ${y+2.05} Z" fill="#000"/>`;
+  return `<circle cx="${x}" cy="${y}" r="2.9" fill="#000"/>`;
+}
+
+/* ============================================================
+   KRONOLOJI LISTESI
+============================================================ */
+function renderList(){
+  const box=document.getElementById('list');
+  box.innerHTML='';
+  let prevDec=null,prevYear=null;
+  const evs=visible();
+  evs.forEach((e,i)=>{
+    const dec=Math.floor(e.year/10)*10;
+    if(dec!==prevDec){
+      const d=document.createElement('div');
+      d.className='dec';
+      d.innerHTML=`<div class="dl">${dec}</div><div class="dr"></div>`;
+      box.appendChild(d);
+      prevDec=dec;prevYear=null;
+    }
+    const t=L(e);
+    const r=document.createElement('div');
+    r.className='row';
+    r.dataset.id=e.id;
+    r.innerHTML=
+      `<div class="ry${e.year===prevYear?' rep':''}">${e.year}</div>`+
+      `<div class="rg"><span class="glyph" data-cat="${e.cat}"></span></div>`+
+      `<div><div class="rt">${esc(t.t)}</div><div class="rl">${esc(t.l)}</div></div>`;
+    r.addEventListener('click',()=>select(state.sel===e.id?null:e.id));
+    r.addEventListener('mouseenter',()=>setHover(e.id));
+    r.addEventListener('mouseleave',()=>setHover(null));
+    box.appendChild(r);
+    prevYear=e.year;
+  });
+  document.getElementById('list-count').textContent=evs.length;
+  applyListState();
+}
+function applyListState(){
+  const box=document.getElementById('list');
+  const rs=relSetOf(state.sel);
+  box.classList.toggle('filtered',!!state.sel);
+  box.querySelectorAll('.row').forEach(r=>{
+    const id=r.dataset.id;
+    r.classList.toggle('sel',id===state.sel);
+    r.classList.toggle('rel',rs.has(id));
+    r.classList.toggle('hov',id===state.hov);
+  });
+}
+
+/* ============================================================
+   DETAY KARTI
+============================================================ */
+// dar ekranda liste ile kart ayni anda haritayi kapatmasin
+const narrow=()=>window.innerWidth<=820;
+
+function renderCard(){
+  const card=document.getElementById('card');
+  if(!state.sel||(narrow()&&state.drawer)){card.classList.remove('open');return;}
+  const e=byId(state.sel);
+  if(!e){card.classList.remove('open');return;}
+  const t=L(e);
+  const evs=visible();
+  const n=evs.findIndex(x=>x.id===e.id)+1;
+  document.getElementById('card-idx').textContent=
+    (state.lang==='tr'?'Olay ':'Event ')+String(n).padStart(3,'0')+' / '+String(evs.length).padStart(3,'0');
+  document.getElementById('c-year').textContent=e.year;
+  const cg=document.querySelector('#c-cat .glyph');
+  cg.setAttribute('data-cat',e.cat);
+  document.querySelector('#c-cat span:last-child').textContent=(state.lang==='tr'?CAT_TR:CAT_EN)[e.cat]||'';
+  document.getElementById('c-title').textContent=t.t;
+  document.getElementById('c-loc').textContent=t.l;
+  document.getElementById('c-desc').textContent=t.d;
+
+  const rs=relSetOf(e.id);
+  const links=evs.filter(x=>rs.has(x.id));
+  const head=document.getElementById('c-rel-head');
+  const box=document.getElementById('c-rel');
+  box.innerHTML='';
+  if(!links.length){
+    head.style.display='none';
+  }else{
+    head.style.display='';
+    head.textContent=state.lang==='tr'
+      ? `Anılan yıllar üzerinden ${links.length} ilişki`
+      : `${links.length} relations via years cited`;
+    links.forEach(x=>{
+      const b=document.createElement('button');
+      b.className='rlink';
+      b.innerHTML=`<span class="ar">↔</span><span class="yr">${x.year}</span><span>${esc(L(x).t)}</span>`;
+      b.addEventListener('click',()=>select(x.id));
+      b.addEventListener('mouseenter',()=>setHover(x.id));
+      b.addEventListener('mouseleave',()=>setHover(null));
+      box.appendChild(b);
+    });
+  }
+  card.classList.add('open');
+  document.getElementById('card-body').scrollTop=0;
+}
+
+/* ============================================================
+   SECIM / HOVER — tek durum, uc gorunum
+============================================================ */
+function select(id,noFly){
+  const changed=state.sel!==id;
+  state.sel=id;
+  if(id&&narrow()&&state.drawer)setDrawer(false);
+  if(id)location.hash='e'+id; else if(location.hash)history.replaceState(null,'','#');
+  renderCard();
+  applyListState();
+  renderStrip();
+  if(id&&changed&&!noFly){
+    const e=byId(id);
+    const rs=relSetOf(id);
+    const pts=[{lng:e.lng,lat:e.lat}].concat(visible().filter(x=>rs.has(x.id)).map(x=>({lng:x.lng,lat:x.lat})));
+    // panel acilma animasyonu bitsin, sonra kadraji tazele
+    setTimeout(()=>{if(state.sel===id&&!allVisibleOnScreen(pts))fitPoints(pts,true);else requestDraw();},state.drawer?0:340);
+  }
+  requestDraw();
+  if(id&&state.drawer)scrollListTo(id);
+}
+function setHover(id){
+  if(state.hov===id)return;
+  state.hov=id;
+  applyListState();
+  renderStrip();
+  requestDraw();
+}
+function setDrawer(v){
+  state.drawer=v;
+  document.getElementById('drawer').classList.toggle('open',v);
+  document.getElementById('drawer-toggle').setAttribute('aria-expanded',v);
+  renderCard();
+  requestDraw();
+  if(v&&state.sel)setTimeout(()=>scrollListTo(state.sel),340);
+}
+function scrollListTo(id){
+  const r=document.querySelector(`#list .row[data-id="${id}"]`);
+  if(r)r.scrollIntoView({block:'nearest'});
+}
+
+/* ============================================================
+   KURULUM
+============================================================ */
+function init(){
+  const ld=document.getElementById('loading');
+  ld.classList.add('gone');
+  setTimeout(()=>ld.remove(),520);
+
   document.querySelectorAll('.f-btn').forEach(b=>{
     b.addEventListener('click',()=>{
       const c=b.dataset.cat;
       if(state.cats.has(c)){state.cats.delete(c);b.classList.add('off');}
       else{state.cats.add(c);b.classList.remove('off');}
-      if(state.sel&&!visible().some(e=>e.id===state.sel))select(null);
-      renderAll();
+      if(state.sel&&!state.cats.has(byId(state.sel).cat))select(null);
+      renderList();renderStrip();requestDraw();
     });
   });
   document.querySelectorAll('.lang-btn').forEach(b=>{
@@ -469,876 +1014,135 @@ function init(){
         const t=el.getAttribute('data-'+state.lang);
         if(t)el.innerHTML=t;
       });
-      renderAll();
+      renderList();renderStrip();renderCard();requestDraw();
     });
   });
-  document.getElementById('panel-close').addEventListener('click',()=>select(null));
-  window.addEventListener('resize',()=>{renderCurrent();});
+
+  document.getElementById('drawer-toggle').addEventListener('click',()=>setDrawer(!state.drawer));
+  document.getElementById('drawer-close').addEventListener('click',()=>setDrawer(false));
+  document.getElementById('card-close').addEventListener('click',()=>select(null));
+
+  document.getElementById('z-in').addEventListener('click',()=>{cam.zoom+=0.7;clampCam();requestDraw();});
+  document.getElementById('z-out').addEventListener('click',()=>{cam.zoom-=0.7;clampCam();requestDraw();});
+
+  document.addEventListener('keydown',ev=>{
+    if(ev.key==='Escape'){select(null);return;}
+    if(ev.key!=='ArrowLeft'&&ev.key!=='ArrowRight')return;
+    const evs=visible();
+    if(!evs.length)return;
+    let i=state.sel?evs.findIndex(x=>x.id===state.sel):-1;
+    i=ev.key==='ArrowRight'?Math.min(evs.length-1,i+1):Math.max(0,(i<0?0:i-1));
+    ev.preventDefault();
+    select(evs[i].id);
+  });
+
+  initMapInteraction();
+  renderList();
+  renderStrip();
+
+  // ilk kadraj: ana kume (Anadolu / Mezopotamya)
+  const core=events.filter(e=>e.lng>25&&e.lng<48).map(e=>({lng:e.lng,lat:e.lat}));
+  W=document.getElementById('frame').clientWidth;
+  H=document.getElementById('frame').clientHeight;
+  fitPoints(core.length?core:events.map(e=>({lng:e.lng,lat:e.lat})),false);
+  drawMap();
 
   const h=(location.hash||'').replace('#','');
-  if(['liste','yatay','halka','harita','ag'].includes(h))state.view=h;
-  setView(state.view,true);
-  agInitInteraction();
-  mpInitInteraction();
-}
+  if(h.startsWith('e')&&byId(h.slice(1)))setTimeout(()=>select(h.slice(1)),300);
 
-function setView(v,force){
-  if(!force&&state.view===v)return;
-  state.view=v;
-  location.hash=v;
-  document.querySelectorAll('.v-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
-  document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id==='view-'+v));
-  renderCurrent();
-  updatePanel();
-}
-
-function renderAll(){renderCurrent();updatePanel();}
-function renderCurrent(){
-  if(state.view==='liste')renderListe();
-  else if(state.view==='yatay')renderYatay();
-  else if(state.view==='halka')renderHalka();
-  else if(state.view==='harita')mpDraw();
-  else if(state.view==='ag')renderAg(true);
-}
-
-/* ---- secim ---- */
-function select(id,scroll){
-  state.sel=id;
-  if(state.view==='liste'){applySelectionListe();}
-  else if(state.view==='yatay'){renderYatay();if(id&&scroll)yatayScrollTo(id);}
-  else if(state.view==='halka'){renderHalka();}
-  else if(state.view==='harita'){if(id&&scroll)mpCenterOn(id);mpDraw();}
-  else if(state.view==='ag'){agDraw();}
-  updatePanel();
-  if(state.view==='liste'&&id&&scroll){
-    const row=document.querySelector(`.ev[data-id="${id}"]`);
-    if(row)row.scrollIntoView({block:'center'});
-  }
-}
-
-/* ---- detay paneli (liste disi) ---- */
-function updatePanel(){
-  const p=document.getElementById('panel');
-  if(state.view==='liste'||!state.sel){p.classList.remove('open');return;}
-  const e=byId(state.sel);
-  if(!e){p.classList.remove('open');return;}
-  const t=e[state.lang];
-  document.getElementById('panel-year').textContent=e.year;
-  document.getElementById('panel-title').textContent=t.t;
-  document.getElementById('panel-loc').textContent=t.l;
-  document.getElementById('panel-desc').textContent=t.d;
-  const links=document.getElementById('panel-links');
-  links.innerHTML='';
-  const rs=relSetOf(e.id);
-  visible().filter(x=>rs.has(x.id)).forEach(x=>{
-    const b=document.createElement('button');
-    b.className='ev-link';
-    b.innerHTML=`↔ <span class="yl">${x.year}</span> · ${x[state.lang].t}`;
-    b.addEventListener('click',()=>select(x.id,true));
-    links.appendChild(b);
+  let rt=null;
+  window.addEventListener('resize',()=>{
+    clearTimeout(rt);
+    renderCard();renderStrip();requestDraw();
+    rt=setTimeout(()=>{renderCard();renderStrip();requestDraw();},160);
   });
-  p.classList.add('open');
+  document.querySelector('#masthead').classList.add('enter');
 }
 
-/* ============================================================
-   GORUNUM 1 — LISTE (dikey omurga + kirmizi yaylar)
-============================================================ */
-function renderListe(){
-  const c=document.getElementById('rows');
-  c.innerHTML='';
-  let prevYear=null,prevDecade=null;
-  visible().forEach(e=>{
-    const dec=Math.floor(e.year/10)*10;
-    if(dec!==prevDecade){
-      const d=document.createElement('div');
-      d.className='decade';
-      d.innerHTML=`<div class="d-label">${dec}</div><div class="d-rule"></div>`;
-      c.appendChild(d);
-      prevDecade=dec;prevYear=null;
-    }
-    const t=e[state.lang];
-    const row=document.createElement('div');
-    row.className='ev';
-    row.dataset.id=e.id;
-    row.innerHTML=
-      `<div class="ev-year${e.year===prevYear?' repeat':''}">${e.year}</div>`+
-      `<div class="ev-spine"><span class="glyph" data-cat="${e.cat}"></span></div>`+
-      `<div class="ev-body"><div class="ev-title">${t.t}</div><div class="ev-loc">${t.l}</div>`+
-      `<div class="ev-detail"><div class="ev-desc">${t.d}</div><div class="ev-links"></div></div></div>`;
-    row.addEventListener('click',ev=>{
-      if(ev.target.closest('.ev-link'))return;
-      select(state.sel===e.id?null:e.id,false);
-    });
-    c.appendChild(row);
-    prevYear=e.year;
-  });
-  applySelectionListe();
-}
+function initMapInteraction(){
+  const cv=document.getElementById('map');
+  let drag=null,moved=false;
+  const pt=ev=>{const r=cv.getBoundingClientRect();return{x:ev.clientX-r.left,y:ev.clientY-r.top};};
 
-function applySelectionListe(){
-  const chart=document.getElementById('chart');
-  const rs=relSetOf(state.sel);
-  chart.classList.toggle('has-sel',!!state.sel);
-  document.querySelectorAll('#rows .ev').forEach(row=>{
-    const id=row.dataset.id;
-    row.classList.toggle('sel',id===state.sel);
-    row.classList.toggle('rel',rs.has(id));
-    if(id===state.sel){
-      const box=row.querySelector('.ev-links');
-      box.innerHTML='';
-      visible().filter(e=>rs.has(e.id)).forEach(e=>{
-        const b=document.createElement('button');
-        b.className='ev-link';
-        b.innerHTML=`↔ <span class="yl">${e.year}</span> · ${e[state.lang].t}`;
-        b.addEventListener('click',()=>select(e.id,true));
-        box.appendChild(b);
-      });
-    }
-  });
-  drawArcsListe();
-}
-
-function drawArcsListe(){
-  const svg=document.getElementById('arcs');
-  const chart=document.getElementById('chart');
-  const W=chart.clientWidth,H=chart.scrollHeight;
-  svg.setAttribute('width',W);svg.setAttribute('height',H);
-  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-  svg.innerHTML='';
-  if(!state.sel)return;
-  const cr=chart.getBoundingClientRect();
-  const dot=id=>{
-    const g=document.querySelector(`#rows .ev[data-id="${id}"] .glyph`);
-    if(!g)return null;
-    const r=g.getBoundingClientRect();
-    return{x:r.left-cr.left+r.width/2,y:r.top-cr.top+r.height/2};
-  };
-  const s=dot(state.sel);
-  if(!s)return;
-  const rs=relSetOf(state.sel);
-  let paths='';
-  visible().forEach(e=>{
-    if(!rs.has(e.id))return;
-    const t=dot(e.id);
-    if(!t)return;
-    const k=Math.min(s.x-10,34+Math.abs(t.y-s.y)*0.05);
-    paths+=`<path d="M ${s.x} ${s.y} C ${s.x-k} ${s.y}, ${s.x-k} ${t.y}, ${t.x} ${t.y}" fill="none" stroke="#ff2d00" stroke-width="1" opacity="0.85"/>`+
-           `<circle cx="${t.x}" cy="${t.y}" r="2" fill="#ff2d00"/>`;
-  });
-  paths+=`<circle cx="${s.x}" cy="${s.y}" r="2.5" fill="#ff2d00"/>`;
-  svg.innerHTML=paths;
-}
-
-/* ============================================================
-   GORUNUM 2 — YATAY (bant: onyil kolonlari, kulvarli etiketler)
-============================================================ */
-const H_YEARW=26, H_PADL=70, H_PADR=220, H_AXISY=64, H_ROWH=30, H_TOP=110;
-const hX=y=>H_PADL+(y-YEAR_MIN)*H_YEARW;
-
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-
-function renderYatay(){
-  const host=document.getElementById('hband');
-  const evs=visible();
-  // kulvar atama
-  const lanes=[];
-  evs.forEach(e=>{
-    const x=hX(e.year);
-    const t=e[state.lang].t;
-    const w=14+t.length*5.6+34;
-    let li=lanes.findIndex(end=>end+16<x);
-    if(li<0){li=lanes.length;lanes.push(0);}
-    lanes[li]=x+w;
-    e._lane=li;
-  });
-  const W=H_PADL+H_PADR+(YEAR_MAX-YEAR_MIN)*H_YEARW;
-  const H=Math.max(H_TOP+lanes.length*H_ROWH+60,420);
-  const rs=relSetOf(state.sel);
-  const hasSel=!!state.sel;
-
-  let g='';
-  // onyil dikey cizgileri + etiketler (bahce cizelgesi kolonlari)
-  for(let y=1860;y<=2020;y+=10){
-    const x=hX(y);
-    g+=`<line x1="${x}" y1="${H_AXISY}" x2="${x}" y2="${H-30}" stroke="#e5e5e5" stroke-width="1"/>`;
-    g+=`<text x="${x}" y="${H_AXISY-26}" font-family="Georgia,serif" font-size="15" fill="#000" text-anchor="middle">${y}</text>`;
-  }
-  // eksen
-  g+=`<line x1="${hX(YEAR_MIN)-20}" y1="${H_AXISY}" x2="${hX(YEAR_MAX)+20}" y2="${H_AXISY}" stroke="#000" stroke-width="1"/>`;
-
-  const pos=new Map();
-  evs.forEach(e=>{
-    const x=hX(e.year), y=H_TOP+e._lane*H_ROWH;
-    pos.set(e.id,{x,y});
-  });
-
-  // yaylar (secim)
-  let arcs='';
-  if(hasSel&&pos.has(state.sel)){
-    const s=pos.get(state.sel);
-    evs.forEach(e=>{
-      if(!rs.has(e.id))return;
-      const t=pos.get(e.id);
-      const mid=H_AXISY-34-Math.min(24,Math.abs(t.x-s.x)*0.02);
-      arcs+=`<path d="M ${s.x} ${s.y} C ${s.x} ${mid}, ${t.x} ${mid}, ${t.x} ${t.y}" fill="none" stroke="#ff2d00" stroke-width="1" opacity="0.85"/>`;
-      arcs+=`<circle cx="${t.x}" cy="${t.y}" r="2.5" fill="#ff2d00"/>`;
-    });
-    arcs+=`<circle cx="${s.x}" cy="${s.y}" r="3" fill="#ff2d00"/>`;
-  }
-
-  // olaylar
-  let items='';
-  evs.forEach(e=>{
-    const p=pos.get(e.id);
-    const t=e[state.lang];
-    const isSel=e.id===state.sel, isRel=rs.has(e.id);
-    const op=!hasSel||isSel||isRel?1:0.14;
-    const glyph=hGlyph(p.x,p.y,e.cat,isSel);
-    const fw=isSel?'bold':'normal';
-    items+=`<g class="h-clickable" data-id="${e.id}" opacity="${op}">`+
-      `<line x1="${p.x}" y1="${H_AXISY}" x2="${p.x}" y2="${p.y-6}" stroke="#c0c0c0" stroke-width="0.7"/>`+
-      glyph+
-      `<text x="${p.x+10}" y="${p.y+3}" font-family="Arial" font-size="11" font-weight="${fw}" fill="#000">${esc(t.t)}</text>`+
-      `<text x="${p.x+10}" y="${p.y+14}" font-family="Georgia,serif" font-size="9" fill="#808080">${e.year} · ${esc(t.l)}</text>`+
-      `</g>`;
-  });
-
-  host.innerHTML=`<svg id="hsvg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${g}${items}${arcs}</svg>`;
-  host.querySelectorAll('.h-clickable').forEach(el=>{
-    el.addEventListener('click',()=>{
-      const id=el.dataset.id;
-      select(state.sel===id?null:id,false);
-    });
-  });
-}
-
-function hGlyph(x,y,cat,isSel){
-  const ring=isSel?`<circle cx="${x}" cy="${y}" r="7" fill="none" stroke="#ff2d00" stroke-width="1.5"/>`:'';
-  if(cat==='yikim')return ring+`<circle cx="${x}" cy="${y}" r="4" fill="#fff" stroke="#000" stroke-width="1.5"/>`;
-  if(cat==='yerinden')return ring+`<rect x="${x-4}" y="${y-4}" width="8" height="8" fill="#000"/>`;
-  if(cat==='mimarlik')return ring+`<circle cx="${x}" cy="${y}" r="4" fill="#fff" stroke="#000" stroke-width="1"/><path d="M ${x-2.85} ${y-2.85} A 4 4 0 0 0 ${x+2.85} ${y+2.85} Z" fill="#000"/>`;
-  if(cat==='direnis')return ring+`<circle cx="${x}" cy="${y}" r="4" fill="#ff2d00"/>`;
-  return ring+`<circle cx="${x}" cy="${y}" r="4" fill="#000"/>`;
-}
-
-function yatayScrollTo(id){
-  const el=document.querySelector(`#hband .h-clickable[data-id="${id}"]`);
-  const wrap=document.getElementById('view-yatay');
-  if(!el||!wrap)return;
-  const x=hX(byId(id).year);
-  wrap.scrollLeft=x-wrap.clientWidth/2;
-}
-
-/* ============================================================
-   GORUNUM 3 — HALKA (cevrede kronoloji, iceride kirisler)
-============================================================ */
-function renderHalka(){
-  const host=document.getElementById('view-halka');
-  const stage=document.getElementById('stage');
-  const S=Math.min(stage.clientWidth,stage.clientHeight)-8;
-  const cx=S/2, cy=S/2;
-  const R=S/2-120;
-  const evs=visible();
-  const n=evs.length;
-  const GAP=Math.PI/9;            // ustte bosluk
-  const a0=-Math.PI/2+GAP/2, sweep=Math.PI*2-GAP;
-  const ang=i=>a0+(i/Math.max(n-1,1))*sweep;
-  const pt=(a,r)=>({x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r});
-  const pos=new Map(), angOf=new Map();
-  evs.forEach((e,i)=>{pos.set(e.id,pt(ang(i),R));angOf.set(e.id,ang(i));});
-
-  const rs=relSetOf(state.sel);
-  const hasSel=!!state.sel;
-
-  // kirisler — hepsi soluk, secilenler kirmizi
-  let chords='', chordsSel='';
-  edges.forEach(({a,b})=>{
-    if(!pos.has(a)||!pos.has(b))return;
-    const p1=pos.get(a),p2=pos.get(b);
-    const mx=(p1.x+p2.x)/2, my=(p1.y+p2.y)/2;
-    const qx=cx+(mx-cx)*0.25, qy=cy+(my-cy)*0.25;
-    const d=`M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} Q ${qx.toFixed(1)} ${qy.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
-    const isSelEdge=hasSel&&(a===state.sel||b===state.sel);
-    if(isSelEdge)chordsSel+=`<path d="${d}" fill="none" stroke="#ff2d00" stroke-width="1.1" opacity="0.9"/>`;
-    else chords+=`<path d="${d}" fill="none" stroke="#000" stroke-width="0.6" opacity="${hasSel?0.03:0.10}"/>`;
-  });
-
-  // onyil isaretleri (kronolojik indeks uzerinden ilk olayina)
-  let ticks='';
-  const seenDec=new Set();
-  evs.forEach((e,i)=>{
-    const dec=Math.floor(e.year/10)*10;
-    if(seenDec.has(dec))return;
-    seenDec.add(dec);
-    const a=ang(i);
-    const p1=pt(a,R+2),p2=pt(a,R+8);
-    ticks+=`<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#000" stroke-width="1"/>`;
-  });
-
-  // olay noktalari + etiketler
-  let items='';
-  evs.forEach((e,i)=>{
-    const a=ang(i);
-    const p=pos.get(e.id);
-    const t=e[state.lang];
-    const isSel=e.id===state.sel, isRel=rs.has(e.id);
-    const op=!hasSel||isSel||isRel?1:0.13;
-    const deg=a*180/Math.PI;
-    const flip=deg>90&&deg<270;
-    const lp=pt(a,R+14);
-    const anchor=flip?'end':'start';
-    const rot=flip?deg+180:deg;
-    const fw=isSel?'bold':'normal';
-    const label=t.t.startsWith(String(e.year))?t.t:`${e.year} ${t.t}`;
-    const short=label.length>34?label.slice(0,33)+'…':label;
-    items+=`<g class="h-clickable" data-id="${e.id}" opacity="${op}">`+
-      hGlyphSmall(p.x,p.y,e.cat,isSel)+
-      `<text x="${lp.x}" y="${lp.y}" font-family="Arial" font-size="8.5" font-weight="${fw}" fill="#000" text-anchor="${anchor}" transform="rotate(${rot} ${lp.x} ${lp.y})" dominant-baseline="middle">${esc(short)}</text>`+
-      `</g>`;
-  });
-
-  const title=`<text x="${cx}" y="${cy-R-58}" font-family="Georgia,serif" font-size="15" fill="#000" text-anchor="middle">1853 — 2026</text>`;
-
-  host.innerHTML=`<svg id="halka-svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">`+
-    `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#e5e5e5" stroke-width="1"/>`+
-    ticks+chords+chordsSel+items+title+`</svg>`;
-  host.querySelectorAll('.h-clickable').forEach(el=>{
-    el.addEventListener('click',()=>{
-      const id=el.dataset.id;
-      select(state.sel===id?null:id,false);
-    });
-  });
-}
-
-function hGlyphSmall(x,y,cat,isSel){
-  const ring=isSel?`<circle cx="${x}" cy="${y}" r="6.5" fill="none" stroke="#ff2d00" stroke-width="1.4"/>`:'';
-  if(cat==='yikim')return ring+`<circle cx="${x}" cy="${y}" r="3.2" fill="#fff" stroke="#000" stroke-width="1.3"/>`;
-  if(cat==='yerinden')return ring+`<rect x="${x-3.2}" y="${y-3.2}" width="6.4" height="6.4" fill="#000"/>`;
-  if(cat==='mimarlik')return ring+`<circle cx="${x}" cy="${y}" r="3.2" fill="#fff" stroke="#000" stroke-width="0.9"/><path d="M ${x-2.3} ${y-2.3} A 3.2 3.2 0 0 0 ${x+2.3} ${y+2.3} Z" fill="#000"/>`;
-  if(cat==='direnis')return ring+`<circle cx="${x}" cy="${y}" r="3.2" fill="#ff2d00"/>`;
-  return ring+`<circle cx="${x}" cy="${y}" r="3.2" fill="#000"/>`;
-}
-
-/* ============================================================
-   GORUNUM 4 — HARITA 3B (egik Mercator karolari + igneler + yaylar)
-============================================================ */
-const MP_R=6378137;
-const mpRad=d=>d*Math.PI/180;
-function mpMercX(lng){return MP_R*mpRad(lng);}
-function mpMercY(lat){return MP_R*Math.log(Math.tan(Math.PI/4+mpRad(lat)/2));}
-function mpLatOfMercY(Y){return (2*Math.atan(Math.exp(Y/MP_R))-Math.PI/2)*180/Math.PI;}
-
-const MP_C={lng:39.5,lat:38.6};                 // dunya merkezi (SE Anadolu)
-const MP_S=1/2300;                              // metre -> dunya birimi
-const mpW=(lng,lat)=>({x:(mpMercX(lng)-mpMercX(MP_C.lng))*MP_S, z:-(mpMercY(lat)-mpMercY(MP_C.lat))*MP_S});
-
-const mp={
-  tx:0,tz:0,            // hedef (dunya)
-  yaw:0, tilt:mpRad(54), dist:760,
-  drag:null, mode:null, hover:null,
-  tiles:new Map(), tileFails:0, redraw:false
-};
-const MP_F=900, MP_PIN=26;
-
-function mpProject(wx,wy,wz){
-  let x=wx-mp.tx, y=wy, z=wz-mp.tz;
-  const cy=Math.cos(mp.yaw), sy=Math.sin(mp.yaw);
-  const x1=x*cy - z*sy, z1=x*sy + z*cy;
-  const ct=Math.cos(mp.tilt), st=Math.sin(mp.tilt);
-  const y2=y*st - z1*ct;        // ekran-dikey bileseni
-  const z2=y*ct + z1*st;        // derinlik bileseni
-  const depth=mp.dist+z2;
-  if(depth<60)return null;
-  const s=MP_F/depth;
-  return{x:x1*s, y:-y2*s, s, depth};
-}
-function mpScreen(p,W,H){return{x:W/2+p.x,y:H*0.56+p.y,s:p.s,depth:p.depth};}
-
-function mpTileURL(z,x,y){
-  const s=['a','b','c','d'][(x+y)%4];
-  return `https://${s}.basemaps.cartocdn.com/light_all/${z}/${x}/${y}.png`;
-}
-function mpGetTile(z,x,y){
-  const key=z+'/'+x+'/'+y;
-  let t=mp.tiles.get(key);
-  if(t)return t;
-  if(mp.tiles.size>600){mp.tiles.clear();}      // basit sinir
-  t={img:new Image(),ok:false,fail:false};
-  t.img.crossOrigin='anonymous';
-  t.img.onload=()=>{t.ok=true;mpRequestDraw();};
-  t.img.onerror=()=>{t.fail=true;mp.tileFails++;};
-  t.img.src=mpTileURL(z,x,y);
-  mp.tiles.set(key,t);
-  return t;
-}
-function mpRequestDraw(){
-  if(mp.redraw)return;
-  mp.redraw=true;
-  requestAnimationFrame(()=>{mp.redraw=false;if(state.view==='harita')mpDraw();});
-}
-
-function mpDraw(){
-  const cv=document.getElementById('mp-canvas');
-  const wrap=document.getElementById('view-harita');
-  const W=wrap.clientWidth,H=wrap.clientHeight;
-  if(!W||!H)return;
-  if(cv.width!==W*devicePixelRatio){cv.width=W*devicePixelRatio;cv.height=H*devicePixelRatio;}
-  const ctx=cv.getContext('2d');
-  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
-  ctx.clearRect(0,0,W,H);
-
-  const P=(wx,wy,wz)=>{const p=mpProject(wx,wy,wz);return p?mpScreen(p,W,H):null;};
-
-  // --- karolar ---
-  const zt=Math.max(4,Math.min(11,Math.round(6.4+Math.log2(760/mp.dist))));
-  const n=Math.pow(2,zt);
-  // hedefin cografi konumu
-  const tLng=(mpMercX(MP_C.lng)+mp.tx/MP_S)/MP_R*180/Math.PI;
-  const tLat=mpLatOfMercY(mpMercY(MP_C.lat)-mp.tz/MP_S);
-  const spanM=mp.dist/MP_S*1.7;                 // gorunur yaricap (metre)
-  const dLng=spanM/ (MP_R*Math.PI/180) ;
-  const dLat=dLng*0.75;
-  const lngA=tLng-dLng, lngB=tLng+dLng;
-  const latA=Math.max(-84,tLat-dLat), latB=Math.min(84,tLat+dLat);
-  const tx1=Math.floor((lngA+180)/360*n), tx2=Math.floor((lngB+180)/360*n);
-  const ty=lat=>Math.floor((1-Math.log(Math.tan(mpRad(lat))+1/Math.cos(mpRad(lat)))/Math.PI)/2*n);
-  const ty1=ty(latB), ty2=ty(latA);
-  let count=0;
-  ctx.save();
-  ctx.filter='grayscale(1) contrast(1.06)';
-  for(let x=tx1;x<=tx2&&count<160;x++){
-    for(let y=ty1;y<=ty2&&count<160;y++){
-      if(x<0||y<0||x>=n||y>=n)continue;
-      count++;
-      const t=mpGetTile(zt,x,y);
-      if(!t.ok)continue;
-      const lngL=x/n*360-180, lngR=(x+1)/n*360-180;
-      const latT=mpLatOfMercY((1-2*y/n)*Math.PI*MP_R), latBm=mpLatOfMercY((1-2*(y+1)/n)*Math.PI*MP_R);
-      const w00=mpW(lngL,latT), w10=mpW(lngR,latT), w01=mpW(lngL,latBm);
-      const p0=P(w00.x,0,w00.z), p1=P(w10.x,0,w10.z), p2=P(w01.x,0,w01.z);
-      if(!p0||!p1||!p2)continue;
-      if(Math.max(p0.x,p1.x)< -40||Math.min(p0.x,p1.x)>W+40)continue;
-      if(Math.max(p0.y,p2.y)< -40||Math.min(p0.y,p2.y)>H+40)continue;
-      ctx.setTransform(
-        devicePixelRatio*(p1.x-p0.x)/256, devicePixelRatio*(p1.y-p0.y)/256,
-        devicePixelRatio*(p2.x-p0.x)/256, devicePixelRatio*(p2.y-p0.y)/256,
-        devicePixelRatio*p0.x, devicePixelRatio*p0.y);
-      ctx.drawImage(t.img,0,0,257,257);
-    }
-  }
-  ctx.restore();
-  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
-
-  // --- graticule (karo yokken zemin, varken cok soluk) ---
-  ctx.strokeStyle='rgba(0,0,0,0.07)';
-  ctx.lineWidth=0.6;
-  for(let lat=34;lat<=48;lat+=2){
-    ctx.beginPath();let started=false;
-    for(let lng=4;lng<=48;lng+=1){
-      const w=mpW(lng,lat);const p=P(w.x,0,w.z);
-      if(!p){started=false;continue;}
-      if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);
-    }
-    ctx.stroke();
-  }
-  for(let lng=4;lng<=48;lng+=2){
-    ctx.beginPath();let started=false;
-    for(let lat=34;lat<=48;lat+=0.5){
-      const w=mpW(lng,lat);const p=P(w.x,0,w.z);
-      if(!p){started=false;continue;}
-      if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);
-    }
-    ctx.stroke();
-  }
-
-  // --- olay konumlari ---
-  const visSet=new Set(visible().map(e=>e.id));
-  const rs=relSetOf(state.sel);
-  const hasSel=!!state.sel;
-  const ground=new Map();
-  events.forEach(e=>{
-    if(!visSet.has(e.id))return;
-    const w=mpW(e._lng,e._lat);
-    const g=P(w.x,0,w.z), t=P(w.x,MP_PIN,w.z);
-    if(g&&t){ground.set(e.id,{g,t,w});}
-  });
-  mp._tops=ground;
-
-  // --- yaylar: hepsi soluk, secim kirmizi ---
-  const drawArc=(wa,wb,color,width,alpha)=>{
-    const dx=wb.x-wa.x, dz=wb.z-wa.z;
-    const d3=Math.sqrt(dx*dx+dz*dz);
-    const hmax=Math.min(300,Math.max(30,d3*0.30));
-    ctx.strokeStyle=color;ctx.lineWidth=width;ctx.globalAlpha=alpha;
-    ctx.beginPath();let started=false;
-    const N=22;
-    for(let i=0;i<=N;i++){
-      const u=i/N;
-      const x=wa.x+dx*u, z=wa.z+dz*u;
-      const y=MP_PIN+Math.sin(Math.PI*u)*hmax;
-      const p=P(x,y,z);
-      if(!p){started=false;continue;}
-      if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);
-    }
-    ctx.stroke();ctx.globalAlpha=1;
-  };
-  edges.forEach(({a,b})=>{
-    const A=ground.get(a),B=ground.get(b);
-    if(!A||!B)return;
-    const selEdge=hasSel&&(a===state.sel||b===state.sel);
-    if(!selEdge)drawArc(A.w,B.w,'#000',0.6,hasSel?0.04:0.10);
-  });
-  edges.forEach(({a,b})=>{
-    const A=ground.get(a),B=ground.get(b);
-    if(!A||!B)return;
-    if(hasSel&&(a===state.sel||b===state.sel))drawArc(A.w,B.w,'#ff2d00',1.2,0.9);
-  });
-
-  // --- igneler (derinlige gore) ---
-  const order=[...ground.entries()].sort((A,B)=>B[1].g.depth-A[1].g.depth);
-  order.forEach(([id,o])=>{
-    const e=byId(id);
-    const isSel=id===state.sel, isRel=rs.has(id);
-    const dim=hasSel&&!isSel&&!isRel;
-    ctx.globalAlpha=dim?0.15:1;
-    // govde
-    ctx.strokeStyle=dim?'#808080':'#000';
-    ctx.lineWidth=0.8;
-    ctx.beginPath();ctx.moveTo(o.g.x,o.g.y);ctx.lineTo(o.t.x,o.t.y);ctx.stroke();
-    // zemin noktasi
-    ctx.fillStyle='#000';
-    ctx.beginPath();ctx.arc(o.g.x,o.g.y,Math.min(2,1.3*o.g.s),0,7);ctx.fill();
-    // baslik isareti
-    const r=Math.max(2,Math.min(6,3.4*o.t.s));
-    agGlyph(ctx,o.t.x,o.t.y,r,e.cat,isSel);
-    ctx.globalAlpha=1;
-    if(isSel||isRel||id===mp.hover){
-      const t=e[state.lang].t;
-      const label=t.startsWith(String(e.year))?t:`${e.year} ${t}`;
-      const short=label.length>34?label.slice(0,33)+'…':label;
-      ctx.font=(isSel?'bold ':'')+'10px Arial';
-      ctx.fillStyle=isSel?'#ff2d00':'#000';
-      ctx.fillText(short,o.t.x+r+5,o.t.y+3);
-    }
-  });
-}
-
-function mpNodeAt(mx,my){
-  if(!mp._tops)return null;
-  let best=null,bd=196;
-  mp._tops.forEach((o,id)=>{
-    const d1=(o.t.x-mx)**2+(o.t.y-my)**2;
-    const d2=(o.g.x-mx)**2+(o.g.y-my)**2;
-    const d=Math.min(d1,d2);
-    if(d<bd){bd=d;best=id;}
-  });
-  return best;
-}
-
-function mpCenterOn(id){
-  const e=byId(id);
-  if(!e)return;
-  const w=mpW(e._lng,e._lat);
-  mp.tx=w.x;mp.tz=w.z;
-}
-
-function mpInitInteraction(){
-  const cv=document.getElementById('mp-canvas');
-  let moved=false;
   cv.addEventListener('mousedown',ev=>{
-    mp.drag={x:ev.clientX,y:ev.clientY};
-    mp.mode=(ev.shiftKey||ev.button===2)?'rot':'pan';
-    moved=false;
-    cv.classList.add('dragging');
-  });
-  cv.addEventListener('contextmenu',ev=>ev.preventDefault());
-  window.addEventListener('mousemove',ev=>{
-    if(mp.drag){
-      const dx=ev.clientX-mp.drag.x, dy=ev.clientY-mp.drag.y;
-      if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
-      if(mp.mode==='rot'){
-        mp.yaw+=dx*0.005;
-        mp.tilt=Math.max(mpRad(15),Math.min(mpRad(78),mp.tilt+dy*0.004));
-      }else{
-        const s=MP_F/mp.dist;
-        const st=Math.max(0.3,Math.cos(mp.tilt));
-        const cy=Math.cos(mp.yaw), sy=Math.sin(mp.yaw);
-        const ux=-dx/s, uz=-dy/(s*st);
-        mp.tx+=ux*cy + uz*sy;
-        mp.tz+=-ux*sy + uz*cy;
-      }
-      mp.drag={x:ev.clientX,y:ev.clientY};
-      mpRequestDraw();
-    }else if(state.view==='harita'){
-      const r=cv.getBoundingClientRect();
-      const h=mpNodeAt(ev.clientX-r.left,ev.clientY-r.top);
-      if(h!==mp.hover){mp.hover=h;mpRequestDraw();}
-      cv.style.cursor=h?'pointer':'grab';
-    }
-  });
-  window.addEventListener('mouseup',ev=>{
-    if(mp.drag){
-      cv.classList.remove('dragging');
-      if(!moved&&mp.mode==='pan'){
-        const r=cv.getBoundingClientRect();
-        const id=mpNodeAt(ev.clientX-r.left,ev.clientY-r.top);
-        select(state.sel===id?null:id,false);
-      }
-      mp.drag=null;mp.mode=null;
-    }
-  });
-  cv.addEventListener('wheel',ev=>{
-    ev.preventDefault();
-    mp.dist=Math.max(90,Math.min(2600,mp.dist*(ev.deltaY<0?0.9:1.11)));
-    mpRequestDraw();
-  },{passive:false});
-  // dokunmatik: tek parmak kaydir
-  cv.addEventListener('touchstart',ev=>{
-    if(ev.touches.length===1){mp.drag={x:ev.touches[0].clientX,y:ev.touches[0].clientY};mp.mode='pan';moved=false;}
-  },{passive:true});
-  cv.addEventListener('touchmove',ev=>{
-    if(mp.drag&&ev.touches.length===1){
-      const dx=ev.touches[0].clientX-mp.drag.x, dy=ev.touches[0].clientY-mp.drag.y;
-      if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
-      const s=MP_F/mp.dist;
-      const st=Math.max(0.3,Math.cos(mp.tilt));
-      const cy=Math.cos(mp.yaw), sy=Math.sin(mp.yaw);
-      const ux=-dx/s, uz=-dy/(s*st);
-      mp.tx+=ux*cy + uz*sy;
-      mp.tz+=-ux*sy + uz*cy;
-      mp.drag={x:ev.touches[0].clientX,y:ev.touches[0].clientY};
-      mpRequestDraw();
-    }
-  },{passive:true});
-  cv.addEventListener('touchend',ev=>{
-    if(mp.drag&&!moved&&ev.changedTouches.length===1){
-      const r=cv.getBoundingClientRect();
-      const id=mpNodeAt(ev.changedTouches[0].clientX-r.left,ev.changedTouches[0].clientY-r.top);
-      select(state.sel===id?null:id,false);
-    }
-    mp.drag=null;mp.mode=null;
-  });
-}
-
-/* ============================================================
-   GORUNUM 5 — AG 3B (kuvvet yerlesimi, canvas, coğrafyasız)
-============================================================ */
-const ag={nodes:[],yaw:0,pitch:-0.15,zoom:1,auto:true,laidOut:false,raf:null,drag:null,hover:null};
-
-function agLayout(){
-  // 3B kuvvet yerlesimi — tum olaylar (filtre cizimde uygulanir)
-  const N=events.length;
-  const nodes=events.map((e,i)=>{
-    // kure uzerinde rastgele ama deterministik baslangic
-    const t1=(i*2.399963)%(Math.PI*2), t2=Math.acos(1-2*((i*0.618034)%1));
-    const r=170;
-    return{e,
-      x:r*Math.sin(t2)*Math.cos(t1),
-      y:r*Math.sin(t2)*Math.sin(t1),
-      z:r*Math.cos(t2),
-      vx:0,vy:0,vz:0,deg:relSetOf(e.id).size};
-  });
-  const iOf=new Map();nodes.forEach((n,i)=>iOf.set(n.e.id,i));
-  const eIdx=edges.map(({a,b})=>[iOf.get(a),iOf.get(b)]).filter(p=>p[0]!=null&&p[1]!=null);
-  const REST=115;
-  for(let it=0;it<280;it++){
-    // itme
-    for(let i=0;i<N;i++)for(let j=i+1;j<N;j++){
-      const A=nodes[i],B=nodes[j];
-      let dx=A.x-B.x,dy=A.y-B.y,dz=A.z-B.z;
-      let d2=dx*dx+dy*dy+dz*dz+0.01;
-      if(d2>90000)continue;
-      const f=2600/d2;
-      const d=Math.sqrt(d2);
-      dx/=d;dy/=d;dz/=d;
-      A.vx+=dx*f;A.vy+=dy*f;A.vz+=dz*f;
-      B.vx-=dx*f;B.vy-=dy*f;B.vz-=dz*f;
-    }
-    // yaylar
-    eIdx.forEach(([i,j])=>{
-      const A=nodes[i],B=nodes[j];
-      let dx=B.x-A.x,dy=B.y-A.y,dz=B.z-A.z;
-      const d=Math.sqrt(dx*dx+dy*dy+dz*dz)+0.01;
-      const f=(d-REST)*0.012;
-      dx/=d;dy/=d;dz/=d;
-      A.vx+=dx*f*d*0.02;A.vy+=dy*f*d*0.02;A.vz+=dz*f*d*0.02;
-      B.vx-=dx*f*d*0.02;B.vy-=dy*f*d*0.02;B.vz-=dz*f*d*0.02;
-    });
-    // merkez + surtunme
-    nodes.forEach(n=>{
-      n.vx-=n.x*0.004;n.vy-=n.y*0.004;n.vz-=n.z*0.004;
-      n.x+=n.vx;n.y+=n.vy;n.z+=n.vz;
-      n.vx*=0.8;n.vy*=0.8;n.vz*=0.8;
-    });
-  }
-  ag.nodes=nodes;
-  ag.laidOut=true;
-}
-
-function agProject(n,W,H){
-  const cy=Math.cos(ag.yaw),sy=Math.sin(ag.yaw);
-  const cp=Math.cos(ag.pitch),sp=Math.sin(ag.pitch);
-  let x=n.x*cy+n.z*sy;
-  let z=-n.x*sy+n.z*cy;
-  let y=n.y*cp-z*sp;
-  z=n.y*sp+z*cp;
-  const f=760;
-  const s=(f/(f+z))*ag.zoom;
-  return{x:W/2+x*s,y:H/2+y*s,s,z};
-}
-
-function renderAg(reset){
-  if(!ag.laidOut)agLayout();
-  agDraw();
-  if(ag.raf)cancelAnimationFrame(ag.raf);
-  const loop=()=>{
-    if(state.view==='ag'){
-      if(ag.auto&&!ag.drag){ag.yaw+=0.0022;agDraw();}
-      ag.raf=requestAnimationFrame(loop);
-    }
-  };
-  ag.raf=requestAnimationFrame(loop);
-}
-
-function agDraw(){
-  const cv=document.getElementById('ag-canvas');
-  const wrap=document.getElementById('view-ag');
-  const W=wrap.clientWidth,H=wrap.clientHeight;
-  if(cv.width!==W*devicePixelRatio){cv.width=W*devicePixelRatio;cv.height=H*devicePixelRatio;}
-  const ctx=cv.getContext('2d');
-  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
-  ctx.clearRect(0,0,W,H);
-  if(!ag.nodes.length)return;
-
-  const visSet=new Set(visible().map(e=>e.id));
-  const rs=relSetOf(state.sel);
-  const hasSel=!!state.sel;
-  const proj=new Map();
-  ag.nodes.forEach(n=>{if(visSet.has(n.e.id))proj.set(n.e.id,agProject(n,W,H));});
-
-  // kenarlar
-  edges.forEach(({a,b})=>{
-    const p1=proj.get(a),p2=proj.get(b);
-    if(!p1||!p2)return;
-    const selEdge=hasSel&&(a===state.sel||b===state.sel);
-    if(selEdge){ctx.strokeStyle='rgba(255,45,0,0.9)';ctx.lineWidth=1.2;}
-    else{
-      const depth=Math.max(0.06,Math.min(0.30,(p1.s+p2.s)/2*0.3));
-      ctx.strokeStyle=`rgba(0,0,0,${hasSel?0.04:depth*0.6})`;
-      ctx.lineWidth=0.7;
-    }
-    ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
-  });
-
-  // dugumler (derinlige gore sirali)
-  const order=[...proj.entries()].sort((A,B)=>B[1].z-A[1].z);
-  order.forEach(([id,p])=>{
-    const n=ag.nodes.find(x=>x.e.id===id);
-    const e=n.e;
-    const isSel=id===state.sel, isRel=rs.has(id);
-    const dim=hasSel&&!isSel&&!isRel;
-    const r=Math.max(2,(3+Math.min(n.deg,6)*0.55)*p.s);
-    ctx.globalAlpha=dim?0.10:Math.max(0.35,Math.min(1,p.s));
-    agGlyph(ctx,p.x,p.y,r,e.cat,isSel);
-    ctx.globalAlpha=1;
-    if(isSel||isRel||id===ag.hover){
-      const t=e[state.lang].t;
-      const label=t.startsWith(String(e.year))?t:`${e.year} ${t}`;
-      const short=label.length>34?label.slice(0,33)+'…':label;
-      ctx.font=(isSel?'bold ':'')+'10px Arial';
-      ctx.fillStyle=isSel?'#ff2d00':'#000';
-      ctx.fillText(short,p.x+r+5,p.y+3);
-    }
-  });
-}
-
-function agGlyph(ctx,x,y,r,cat,isSel){
-  if(isSel){ctx.strokeStyle='#ff2d00';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,r+3.5,0,7);ctx.stroke();}
-  if(cat==='direnis'){ctx.fillStyle='#ff2d00';ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();return;}
-  if(cat==='yikim'){ctx.fillStyle='#fff';ctx.strokeStyle='#000';ctx.lineWidth=1.3;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();ctx.stroke();return;}
-  if(cat==='yerinden'){ctx.fillStyle='#000';ctx.fillRect(x-r,y-r,r*2,r*2);return;}
-  if(cat==='mimarlik'){
-    ctx.fillStyle='#fff';ctx.strokeStyle='#000';ctx.lineWidth=1;
-    ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();ctx.stroke();
-    ctx.fillStyle='#000';ctx.beginPath();ctx.arc(x,y,r,Math.PI*0.75,Math.PI*1.75);ctx.closePath();ctx.fill();
-    return;
-  }
-  ctx.fillStyle='#000';ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();
-}
-
-function agNodeAt(mx,my){
-  const wrap=document.getElementById('view-ag');
-  const W=wrap.clientWidth,H=wrap.clientHeight;
-  const visSet=new Set(visible().map(e=>e.id));
-  let best=null,bd=144;
-  ag.nodes.forEach(n=>{
-    if(!visSet.has(n.e.id))return;
-    const p=agProject(n,W,H);
-    const d=(p.x-mx)**2+(p.y-my)**2;
-    if(d<bd){bd=d;best=n.e.id;}
-  });
-  return best;
-}
-
-function agInitInteraction(){
-  const cv=document.getElementById('ag-canvas');
-  let moved=false;
-  cv.addEventListener('mousedown',ev=>{
-    ag.drag={x:ev.clientX,y:ev.clientY};moved=false;
+    anim.on=false;
+    drag={x:ev.clientX,y:ev.clientY};moved=false;
     cv.classList.add('dragging');
   });
   window.addEventListener('mousemove',ev=>{
-    if(ag.drag){
-      const dx=ev.clientX-ag.drag.x, dy=ev.clientY-ag.drag.y;
+    if(drag){
+      const dx=ev.clientX-drag.x, dy=ev.clientY-drag.y;
       if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
-      ag.yaw+=dx*0.005;
-      ag.pitch=Math.max(-1.4,Math.min(1.4,ag.pitch+dy*0.005));
-      ag.drag={x:ev.clientX,y:ev.clientY};
-      agDraw();
-    }else if(state.view==='ag'){
-      const r=cv.getBoundingClientRect();
-      const h=agNodeAt(ev.clientX-r.left,ev.clientY-r.top);
-      if(h!==ag.hover){ag.hover=h;agDraw();}
-      cv.style.cursor=h?'pointer':'grab';
+      const ws=wsz(cam.zoom);
+      cam.lng=xLng(wX(cam.lng,ws)-dx,ws);
+      cam.lat=yLat(Math.max(0,Math.min(ws,wY(cam.lat,ws)-dy)),ws);
+      drag={x:ev.clientX,y:ev.clientY};
+      clampCam();requestDraw();
+      return;
     }
+    const p=pt(ev);
+    if(p.x<0||p.y<0||p.x>W||p.y>H)return;
+    const id=nodeAt(p.x,p.y);
+    cv.style.cursor=id?'pointer':'crosshair';
+    setHover(id);
   });
   window.addEventListener('mouseup',ev=>{
-    if(ag.drag){
-      cv.classList.remove('dragging');
-      if(!moved){
-        const r=cv.getBoundingClientRect();
-        const id=agNodeAt(ev.clientX-r.left,ev.clientY-r.top);
-        select(state.sel===id?null:id,false);
-      }
-      ag.drag=null;
+    if(!drag)return;
+    cv.classList.remove('dragging');
+    if(!moved){
+      const p=pt(ev);
+      const id=nodeAt(p.x,p.y);
+      select(id&&state.sel===id?null:id);
     }
+    drag=null;
   });
   cv.addEventListener('wheel',ev=>{
     ev.preventDefault();
-    ag.zoom=Math.max(0.4,Math.min(3,ag.zoom*(ev.deltaY<0?1.08:0.92)));
-    agDraw();
+    anim.on=false;
+    const p=pt(ev);
+    const before=unproject(p.x,p.y);
+    cam.zoom+= ev.deltaY<0?0.32:-0.32;
+    clampCam();
+    const after=unproject(p.x,p.y);
+    cam.lng+=before.lng-after.lng;
+    cam.lat+=before.lat-after.lat;
+    clampCam();requestDraw();
   },{passive:false});
-  // dokunmatik
+
+  // dokunmatik: kaydir + iki parmak yakinlastir
+  let touch=null;
   cv.addEventListener('touchstart',ev=>{
-    if(ev.touches.length===1){ag.drag={x:ev.touches[0].clientX,y:ev.touches[0].clientY};moved=false;}
+    anim.on=false;
+    if(ev.touches.length===1){
+      touch={x:ev.touches[0].clientX,y:ev.touches[0].clientY,moved:false,n:1};
+    }else if(ev.touches.length===2){
+      const d=Math.hypot(ev.touches[0].clientX-ev.touches[1].clientX,ev.touches[0].clientY-ev.touches[1].clientY);
+      touch={n:2,d,moved:true};
+    }
   },{passive:true});
   cv.addEventListener('touchmove',ev=>{
-    if(ag.drag&&ev.touches.length===1){
-      const dx=ev.touches[0].clientX-ag.drag.x, dy=ev.touches[0].clientY-ag.drag.y;
-      if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
-      ag.yaw+=dx*0.005;
-      ag.pitch=Math.max(-1.4,Math.min(1.4,ag.pitch+dy*0.005));
-      ag.drag={x:ev.touches[0].clientX,y:ev.touches[0].clientY};
-      agDraw();
+    if(!touch)return;
+    if(touch.n===1&&ev.touches.length===1){
+      const dx=ev.touches[0].clientX-touch.x, dy=ev.touches[0].clientY-touch.y;
+      if(Math.abs(dx)+Math.abs(dy)>4)touch.moved=true;
+      const ws=wsz(cam.zoom);
+      cam.lng=xLng(wX(cam.lng,ws)-dx,ws);
+      cam.lat=yLat(Math.max(0,Math.min(ws,wY(cam.lat,ws)-dy)),ws);
+      touch.x=ev.touches[0].clientX;touch.y=ev.touches[0].clientY;
+      clampCam();requestDraw();
+    }else if(touch.n===2&&ev.touches.length===2){
+      const d=Math.hypot(ev.touches[0].clientX-ev.touches[1].clientX,ev.touches[0].clientY-ev.touches[1].clientY);
+      cam.zoom+=Math.log2(Math.max(0.2,d/touch.d));
+      touch.d=d;clampCam();requestDraw();
     }
   },{passive:true});
   cv.addEventListener('touchend',ev=>{
-    if(ag.drag&&!moved&&ev.changedTouches.length===1){
+    if(touch&&touch.n===1&&!touch.moved&&ev.changedTouches.length===1){
       const r=cv.getBoundingClientRect();
-      const id=agNodeAt(ev.changedTouches[0].clientX-r.left,ev.changedTouches[0].clientY-r.top);
-      select(state.sel===id?null:id,false);
+      const id=nodeAt(ev.changedTouches[0].clientX-r.left,ev.changedTouches[0].clientY-r.top);
+      select(id&&state.sel===id?null:id);
     }
-    ag.drag=null;
+    touch=null;
   });
 }
 
