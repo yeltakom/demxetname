@@ -160,6 +160,21 @@ body{
 #view-halka.active{display:flex}
 #halka-svg{display:block;max-width:100%;max-height:100%}
 
+/* ---------- HARITA ---------- */
+#view-harita{overflow:hidden;position:relative}
+#mp-canvas{display:block;width:100%;height:100%;cursor:grab}
+#mp-canvas.dragging{cursor:grabbing}
+#mp-hint{
+  position:absolute;left:24px;top:14px;
+  font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-40);
+  pointer-events:none;
+}
+#mp-attr{
+  position:absolute;right:8px;bottom:6px;
+  font-size:8.5px;color:var(--ink-40);
+  pointer-events:none;
+}
+
 /* ---------- AG ---------- */
 #view-ag{overflow:hidden;position:relative}
 #ag-canvas{display:block;width:100%;height:100%;cursor:grab}
@@ -245,6 +260,7 @@ body{
       <button class="v-btn active" data-view="liste" data-tr="Liste" data-en="List">Liste</button>
       <button class="v-btn" data-view="yatay" data-tr="Yatay" data-en="Horizontal">Yatay</button>
       <button class="v-btn" data-view="halka" data-tr="Halka" data-en="Circle">Halka</button>
+      <button class="v-btn" data-view="harita" data-tr="Harita 3B" data-en="Map 3D">Harita 3B</button>
       <button class="v-btn" data-view="ag" data-tr="Ağ 3B" data-en="Network 3D">Ağ 3B</button>
     </div>
     <div id="ctrl">
@@ -277,6 +293,15 @@ body{
   <!-- HALKA -->
   <div class="view" id="view-halka"></div>
 
+  <!-- HARITA 3B -->
+  <div class="view" id="view-harita">
+    <canvas id="mp-canvas"></canvas>
+    <div id="mp-hint"
+      data-tr="sürükle: kaydır · shift+sürükle: döndür / eğ · tekerlek: yakınlaş · tık: olay"
+      data-en="drag: pan · shift+drag: rotate / tilt · wheel: zoom · click: event">sürükle: kaydır · shift+sürükle: döndür / eğ · tekerlek: yakınlaş · tık: olay</div>
+    <div id="mp-attr">© OpenStreetMap · CARTO</div>
+  </div>
+
   <!-- AG 3B -->
   <div class="view" id="view-ag">
     <canvas id="ag-canvas"></canvas>
@@ -303,7 +328,7 @@ body{
 
 <script>
 // ============================================================
-// demxetname — dört görünüm: liste, yatay, halka, ağ 3B
+// demxetname — bes gorunum: liste, yatay, halka, harita 3B, ag 3B
 // Veri: events.csv. İlişkiler yalnızca veriden türetilir:
 // bir olayın metninde anılan yıllar, o yıllardaki olaylara bağlanır.
 // ============================================================
@@ -351,10 +376,29 @@ async function load(){
       id:r[idx.id],
       year:parseInt(r[idx.year]),
       cat:r[idx.category].trim(),
+      lat:parseFloat(r[idx.lat]),
+      lng:parseFloat(r[idx.lng]),
       tr:{t:r[idx.title_tr],l:r[idx.location_tr],d:r[idx.description_tr]},
       en:{t:r[idx.title_en],l:r[idx.location_en],d:r[idx.description_en]}
     }));
     events.sort((a,b)=>a.year-b.year||(+a.id)-(+b.id));
+    // cakisan koordinatlari kucuk bir halkaya yay
+    const grouped=new Map();
+    events.forEach(e=>{
+      const k=e.lat.toFixed(3)+'_'+e.lng.toFixed(3);
+      if(!grouped.has(k))grouped.set(k,[]);
+      grouped.get(k).push(e);
+    });
+    grouped.forEach(g=>{
+      if(g.length>1){
+        const r=0.02*Math.sqrt(g.length);
+        g.forEach((e,i)=>{
+          const a=(Math.PI*2*i)/g.length;
+          e._lat=e.lat+Math.sin(a)*r;
+          e._lng=e.lng+Math.cos(a)*r*1.3;
+        });
+      }else{g[0]._lat=g[0].lat;g[0]._lng=g[0].lng;}
+    });
     buildRelations();
     init();
   }catch(e){
@@ -432,9 +476,10 @@ function init(){
   window.addEventListener('resize',()=>{renderCurrent();});
 
   const h=(location.hash||'').replace('#','');
-  if(['liste','yatay','halka','ag'].includes(h))state.view=h;
+  if(['liste','yatay','halka','harita','ag'].includes(h))state.view=h;
   setView(state.view,true);
   agInitInteraction();
+  mpInitInteraction();
 }
 
 function setView(v,force){
@@ -452,6 +497,7 @@ function renderCurrent(){
   if(state.view==='liste')renderListe();
   else if(state.view==='yatay')renderYatay();
   else if(state.view==='halka')renderHalka();
+  else if(state.view==='harita')mpDraw();
   else if(state.view==='ag')renderAg(true);
 }
 
@@ -461,6 +507,7 @@ function select(id,scroll){
   if(state.view==='liste'){applySelectionListe();}
   else if(state.view==='yatay'){renderYatay();if(id&&scroll)yatayScrollTo(id);}
   else if(state.view==='halka'){renderHalka();}
+  else if(state.view==='harita'){if(id&&scroll)mpCenterOn(id);mpDraw();}
   else if(state.view==='ag'){agDraw();}
   updatePanel();
   if(state.view==='liste'&&id&&scroll){
@@ -773,7 +820,308 @@ function hGlyphSmall(x,y,cat,isSel){
 }
 
 /* ============================================================
-   GORUNUM 4 — AG 3B (kuvvet yerlesimi, canvas, coğrafyasız)
+   GORUNUM 4 — HARITA 3B (egik Mercator karolari + igneler + yaylar)
+============================================================ */
+const MP_R=6378137;
+const mpRad=d=>d*Math.PI/180;
+function mpMercX(lng){return MP_R*mpRad(lng);}
+function mpMercY(lat){return MP_R*Math.log(Math.tan(Math.PI/4+mpRad(lat)/2));}
+function mpLatOfMercY(Y){return (2*Math.atan(Math.exp(Y/MP_R))-Math.PI/2)*180/Math.PI;}
+
+const MP_C={lng:39.5,lat:38.6};                 // dunya merkezi (SE Anadolu)
+const MP_S=1/2300;                              // metre -> dunya birimi
+const mpW=(lng,lat)=>({x:(mpMercX(lng)-mpMercX(MP_C.lng))*MP_S, z:-(mpMercY(lat)-mpMercY(MP_C.lat))*MP_S});
+
+const mp={
+  tx:0,tz:0,            // hedef (dunya)
+  yaw:0, tilt:mpRad(54), dist:760,
+  drag:null, mode:null, hover:null,
+  tiles:new Map(), tileFails:0, redraw:false
+};
+const MP_F=900, MP_PIN=26;
+
+function mpProject(wx,wy,wz){
+  let x=wx-mp.tx, y=wy, z=wz-mp.tz;
+  const cy=Math.cos(mp.yaw), sy=Math.sin(mp.yaw);
+  const x1=x*cy - z*sy, z1=x*sy + z*cy;
+  const ct=Math.cos(mp.tilt), st=Math.sin(mp.tilt);
+  const y2=y*st - z1*ct;        // ekran-dikey bileseni
+  const z2=y*ct + z1*st;        // derinlik bileseni
+  const depth=mp.dist+z2;
+  if(depth<60)return null;
+  const s=MP_F/depth;
+  return{x:x1*s, y:-y2*s, s, depth};
+}
+function mpScreen(p,W,H){return{x:W/2+p.x,y:H*0.56+p.y,s:p.s,depth:p.depth};}
+
+function mpTileURL(z,x,y){
+  const s=['a','b','c','d'][(x+y)%4];
+  return `https://${s}.basemaps.cartocdn.com/light_all/${z}/${x}/${y}.png`;
+}
+function mpGetTile(z,x,y){
+  const key=z+'/'+x+'/'+y;
+  let t=mp.tiles.get(key);
+  if(t)return t;
+  if(mp.tiles.size>600){mp.tiles.clear();}      // basit sinir
+  t={img:new Image(),ok:false,fail:false};
+  t.img.crossOrigin='anonymous';
+  t.img.onload=()=>{t.ok=true;mpRequestDraw();};
+  t.img.onerror=()=>{t.fail=true;mp.tileFails++;};
+  t.img.src=mpTileURL(z,x,y);
+  mp.tiles.set(key,t);
+  return t;
+}
+function mpRequestDraw(){
+  if(mp.redraw)return;
+  mp.redraw=true;
+  requestAnimationFrame(()=>{mp.redraw=false;if(state.view==='harita')mpDraw();});
+}
+
+function mpDraw(){
+  const cv=document.getElementById('mp-canvas');
+  const wrap=document.getElementById('view-harita');
+  const W=wrap.clientWidth,H=wrap.clientHeight;
+  if(!W||!H)return;
+  if(cv.width!==W*devicePixelRatio){cv.width=W*devicePixelRatio;cv.height=H*devicePixelRatio;}
+  const ctx=cv.getContext('2d');
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  ctx.clearRect(0,0,W,H);
+
+  const P=(wx,wy,wz)=>{const p=mpProject(wx,wy,wz);return p?mpScreen(p,W,H):null;};
+
+  // --- karolar ---
+  const zt=Math.max(4,Math.min(11,Math.round(6.4+Math.log2(760/mp.dist))));
+  const n=Math.pow(2,zt);
+  // hedefin cografi konumu
+  const tLng=(mpMercX(MP_C.lng)+mp.tx/MP_S)/MP_R*180/Math.PI;
+  const tLat=mpLatOfMercY(mpMercY(MP_C.lat)-mp.tz/MP_S);
+  const spanM=mp.dist/MP_S*1.7;                 // gorunur yaricap (metre)
+  const dLng=spanM/ (MP_R*Math.PI/180) ;
+  const dLat=dLng*0.75;
+  const lngA=tLng-dLng, lngB=tLng+dLng;
+  const latA=Math.max(-84,tLat-dLat), latB=Math.min(84,tLat+dLat);
+  const tx1=Math.floor((lngA+180)/360*n), tx2=Math.floor((lngB+180)/360*n);
+  const ty=lat=>Math.floor((1-Math.log(Math.tan(mpRad(lat))+1/Math.cos(mpRad(lat)))/Math.PI)/2*n);
+  const ty1=ty(latB), ty2=ty(latA);
+  let count=0;
+  ctx.save();
+  ctx.filter='grayscale(1) contrast(1.06)';
+  for(let x=tx1;x<=tx2&&count<160;x++){
+    for(let y=ty1;y<=ty2&&count<160;y++){
+      if(x<0||y<0||x>=n||y>=n)continue;
+      count++;
+      const t=mpGetTile(zt,x,y);
+      if(!t.ok)continue;
+      const lngL=x/n*360-180, lngR=(x+1)/n*360-180;
+      const latT=mpLatOfMercY((1-2*y/n)*Math.PI*MP_R), latBm=mpLatOfMercY((1-2*(y+1)/n)*Math.PI*MP_R);
+      const w00=mpW(lngL,latT), w10=mpW(lngR,latT), w01=mpW(lngL,latBm);
+      const p0=P(w00.x,0,w00.z), p1=P(w10.x,0,w10.z), p2=P(w01.x,0,w01.z);
+      if(!p0||!p1||!p2)continue;
+      if(Math.max(p0.x,p1.x)< -40||Math.min(p0.x,p1.x)>W+40)continue;
+      if(Math.max(p0.y,p2.y)< -40||Math.min(p0.y,p2.y)>H+40)continue;
+      ctx.setTransform(
+        devicePixelRatio*(p1.x-p0.x)/256, devicePixelRatio*(p1.y-p0.y)/256,
+        devicePixelRatio*(p2.x-p0.x)/256, devicePixelRatio*(p2.y-p0.y)/256,
+        devicePixelRatio*p0.x, devicePixelRatio*p0.y);
+      ctx.drawImage(t.img,0,0,257,257);
+    }
+  }
+  ctx.restore();
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+
+  // --- graticule (karo yokken zemin, varken cok soluk) ---
+  ctx.strokeStyle='rgba(0,0,0,0.07)';
+  ctx.lineWidth=0.6;
+  for(let lat=34;lat<=48;lat+=2){
+    ctx.beginPath();let started=false;
+    for(let lng=4;lng<=48;lng+=1){
+      const w=mpW(lng,lat);const p=P(w.x,0,w.z);
+      if(!p){started=false;continue;}
+      if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);
+    }
+    ctx.stroke();
+  }
+  for(let lng=4;lng<=48;lng+=2){
+    ctx.beginPath();let started=false;
+    for(let lat=34;lat<=48;lat+=0.5){
+      const w=mpW(lng,lat);const p=P(w.x,0,w.z);
+      if(!p){started=false;continue;}
+      if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);
+    }
+    ctx.stroke();
+  }
+
+  // --- olay konumlari ---
+  const visSet=new Set(visible().map(e=>e.id));
+  const rs=relSetOf(state.sel);
+  const hasSel=!!state.sel;
+  const ground=new Map();
+  events.forEach(e=>{
+    if(!visSet.has(e.id))return;
+    const w=mpW(e._lng,e._lat);
+    const g=P(w.x,0,w.z), t=P(w.x,MP_PIN,w.z);
+    if(g&&t){ground.set(e.id,{g,t,w});}
+  });
+  mp._tops=ground;
+
+  // --- yaylar: hepsi soluk, secim kirmizi ---
+  const drawArc=(wa,wb,color,width,alpha)=>{
+    const dx=wb.x-wa.x, dz=wb.z-wa.z;
+    const d3=Math.sqrt(dx*dx+dz*dz);
+    const hmax=Math.min(300,Math.max(30,d3*0.30));
+    ctx.strokeStyle=color;ctx.lineWidth=width;ctx.globalAlpha=alpha;
+    ctx.beginPath();let started=false;
+    const N=22;
+    for(let i=0;i<=N;i++){
+      const u=i/N;
+      const x=wa.x+dx*u, z=wa.z+dz*u;
+      const y=MP_PIN+Math.sin(Math.PI*u)*hmax;
+      const p=P(x,y,z);
+      if(!p){started=false;continue;}
+      if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);
+    }
+    ctx.stroke();ctx.globalAlpha=1;
+  };
+  edges.forEach(({a,b})=>{
+    const A=ground.get(a),B=ground.get(b);
+    if(!A||!B)return;
+    const selEdge=hasSel&&(a===state.sel||b===state.sel);
+    if(!selEdge)drawArc(A.w,B.w,'#000',0.6,hasSel?0.04:0.10);
+  });
+  edges.forEach(({a,b})=>{
+    const A=ground.get(a),B=ground.get(b);
+    if(!A||!B)return;
+    if(hasSel&&(a===state.sel||b===state.sel))drawArc(A.w,B.w,'#ff2d00',1.2,0.9);
+  });
+
+  // --- igneler (derinlige gore) ---
+  const order=[...ground.entries()].sort((A,B)=>B[1].g.depth-A[1].g.depth);
+  order.forEach(([id,o])=>{
+    const e=byId(id);
+    const isSel=id===state.sel, isRel=rs.has(id);
+    const dim=hasSel&&!isSel&&!isRel;
+    ctx.globalAlpha=dim?0.15:1;
+    // govde
+    ctx.strokeStyle=dim?'#808080':'#000';
+    ctx.lineWidth=0.8;
+    ctx.beginPath();ctx.moveTo(o.g.x,o.g.y);ctx.lineTo(o.t.x,o.t.y);ctx.stroke();
+    // zemin noktasi
+    ctx.fillStyle='#000';
+    ctx.beginPath();ctx.arc(o.g.x,o.g.y,Math.min(2,1.3*o.g.s),0,7);ctx.fill();
+    // baslik isareti
+    const r=Math.max(2,Math.min(6,3.4*o.t.s));
+    agGlyph(ctx,o.t.x,o.t.y,r,e.cat,isSel);
+    ctx.globalAlpha=1;
+    if(isSel||isRel||id===mp.hover){
+      const t=e[state.lang].t;
+      const label=t.startsWith(String(e.year))?t:`${e.year} ${t}`;
+      const short=label.length>34?label.slice(0,33)+'…':label;
+      ctx.font=(isSel?'bold ':'')+'10px Arial';
+      ctx.fillStyle=isSel?'#ff2d00':'#000';
+      ctx.fillText(short,o.t.x+r+5,o.t.y+3);
+    }
+  });
+}
+
+function mpNodeAt(mx,my){
+  if(!mp._tops)return null;
+  let best=null,bd=196;
+  mp._tops.forEach((o,id)=>{
+    const d1=(o.t.x-mx)**2+(o.t.y-my)**2;
+    const d2=(o.g.x-mx)**2+(o.g.y-my)**2;
+    const d=Math.min(d1,d2);
+    if(d<bd){bd=d;best=id;}
+  });
+  return best;
+}
+
+function mpCenterOn(id){
+  const e=byId(id);
+  if(!e)return;
+  const w=mpW(e._lng,e._lat);
+  mp.tx=w.x;mp.tz=w.z;
+}
+
+function mpInitInteraction(){
+  const cv=document.getElementById('mp-canvas');
+  let moved=false;
+  cv.addEventListener('mousedown',ev=>{
+    mp.drag={x:ev.clientX,y:ev.clientY};
+    mp.mode=(ev.shiftKey||ev.button===2)?'rot':'pan';
+    moved=false;
+    cv.classList.add('dragging');
+  });
+  cv.addEventListener('contextmenu',ev=>ev.preventDefault());
+  window.addEventListener('mousemove',ev=>{
+    if(mp.drag){
+      const dx=ev.clientX-mp.drag.x, dy=ev.clientY-mp.drag.y;
+      if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
+      if(mp.mode==='rot'){
+        mp.yaw+=dx*0.005;
+        mp.tilt=Math.max(mpRad(15),Math.min(mpRad(78),mp.tilt+dy*0.004));
+      }else{
+        const s=MP_F/mp.dist;
+        const st=Math.max(0.3,Math.cos(mp.tilt));
+        const cy=Math.cos(mp.yaw), sy=Math.sin(mp.yaw);
+        const ux=-dx/s, uz=-dy/(s*st);
+        mp.tx+=ux*cy + uz*sy;
+        mp.tz+=-ux*sy + uz*cy;
+      }
+      mp.drag={x:ev.clientX,y:ev.clientY};
+      mpRequestDraw();
+    }else if(state.view==='harita'){
+      const r=cv.getBoundingClientRect();
+      const h=mpNodeAt(ev.clientX-r.left,ev.clientY-r.top);
+      if(h!==mp.hover){mp.hover=h;mpRequestDraw();}
+      cv.style.cursor=h?'pointer':'grab';
+    }
+  });
+  window.addEventListener('mouseup',ev=>{
+    if(mp.drag){
+      cv.classList.remove('dragging');
+      if(!moved&&mp.mode==='pan'){
+        const r=cv.getBoundingClientRect();
+        const id=mpNodeAt(ev.clientX-r.left,ev.clientY-r.top);
+        select(state.sel===id?null:id,false);
+      }
+      mp.drag=null;mp.mode=null;
+    }
+  });
+  cv.addEventListener('wheel',ev=>{
+    ev.preventDefault();
+    mp.dist=Math.max(90,Math.min(2600,mp.dist*(ev.deltaY<0?0.9:1.11)));
+    mpRequestDraw();
+  },{passive:false});
+  // dokunmatik: tek parmak kaydir
+  cv.addEventListener('touchstart',ev=>{
+    if(ev.touches.length===1){mp.drag={x:ev.touches[0].clientX,y:ev.touches[0].clientY};mp.mode='pan';moved=false;}
+  },{passive:true});
+  cv.addEventListener('touchmove',ev=>{
+    if(mp.drag&&ev.touches.length===1){
+      const dx=ev.touches[0].clientX-mp.drag.x, dy=ev.touches[0].clientY-mp.drag.y;
+      if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
+      const s=MP_F/mp.dist;
+      const st=Math.max(0.3,Math.cos(mp.tilt));
+      const cy=Math.cos(mp.yaw), sy=Math.sin(mp.yaw);
+      const ux=-dx/s, uz=-dy/(s*st);
+      mp.tx+=ux*cy + uz*sy;
+      mp.tz+=-ux*sy + uz*cy;
+      mp.drag={x:ev.touches[0].clientX,y:ev.touches[0].clientY};
+      mpRequestDraw();
+    }
+  },{passive:true});
+  cv.addEventListener('touchend',ev=>{
+    if(mp.drag&&!moved&&ev.changedTouches.length===1){
+      const r=cv.getBoundingClientRect();
+      const id=mpNodeAt(ev.changedTouches[0].clientX-r.left,ev.changedTouches[0].clientY-r.top);
+      select(state.sel===id?null:id,false);
+    }
+    mp.drag=null;mp.mode=null;
+  });
+}
+
+/* ============================================================
+   GORUNUM 5 — AG 3B (kuvvet yerlesimi, canvas, coğrafyasız)
 ============================================================ */
 const ag={nodes:[],yaw:0,pitch:-0.15,zoom:1,auto:true,laidOut:false,raf:null,drag:null,hover:null};
 
